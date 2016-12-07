@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop
+                            http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+                            http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                            http://www.springframework.org/schema/jee
+                            http://www.springframework.org/schema/jee/spring-jee-3.2.xsd 
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+                            http://www.springframework.org/schema/mvc
+        					http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+
+	<context:annotation-config />
+
+	<bean name="postgresDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/sindquimica" />
+		<property name="username" value="postgres" />
+		<property name="password" value="123456" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="postgresDataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+	</bean>
+
+	<bean id="sindicatoService" class="br.developersd3.sindquimica.service.MunicipioService">
+	</bean>
+	
+	<bean id="sindicatoDAO" class="br.developersd3.sindquimica.daos.SindicatoDao">
+	</bean>
+	
+	<bean id="sindicato" class="br.developersd3.sindquimica.models.Sindicato">
+	</bean>
+	
+	<bean id="handlerMapping"
+		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+		<property name="interceptors">
+			<ref bean="localeChangeInterceptor" />
+		</property>
+	</bean>
+
+	<mvc:annotation-driven />
+	
+	<context:property-placeholder location="classpath*:*.properties" />
+</beans>
