@@ -1,0 +1,103 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+
+		<h3>Cadastrar Sindicato</h3>
+
+
+
+		<br />
+
+		<h:form id="form">
+
+			<p:panelGrid columns="4">
+
+				<h:outputLabel value="Descrição"></h:outputLabel>
+				<p:inputText id="descricao" size="40"></p:inputText>
+
+				<h:outputLabel value="Ramo   "></h:outputLabel>
+				<p:inputText id="ramo" size="40"></p:inputText>
+
+			</p:panelGrid>
+
+			<br />
+
+			<p:panelGrid columns="4">
+
+				<h:outputLabel value="Presidente"></h:outputLabel>
+				<p:inputText id="presidente" size="40"></p:inputText>
+
+				<h:outputLabel value="Dados Institucionais"></h:outputLabel>
+				<p:inputText id="dadosInstitucional" size="40"></p:inputText>
+
+			</p:panelGrid>
+
+			<br />
+
+			<p:panelGrid columns="2">
+
+				<h:outputLabel value="Telefone"></h:outputLabel>
+				<p:inputText id="telefone" size="40"></p:inputText>
+
+			</p:panelGrid>
+
+			<br />
+
+			<p:panelGrid columns="2" style="width:800px">
+				<f:facet name="header">
+					<h:outputLabel value="Dados de Endereço"></h:outputLabel>
+				</f:facet>
+
+			</p:panelGrid>
+
+			<p:panelGrid columns="4">
+
+				<h:outputLabel value="Logradouro"></h:outputLabel>
+				<p:inputText id="logradouro" size="40"></p:inputText>
+
+				<h:outputLabel value="Número"></h:outputLabel>
+				<p:inputText id="numero" size="40"></p:inputText>
+
+			</p:panelGrid>
+
+			<br />
+
+			<p:panelGrid columns="4">
+
+				<h:outputLabel value="Bairro"></h:outputLabel>
+				<p:inputText id="bairro" size="40"></p:inputText>
+
+				<h:outputLabel value="Cidade"></h:outputLabel>
+				<p:inputText id="cidade" size="40"></p:inputText>
+
+			</p:panelGrid>
+			
+			<br />
+
+			<p:panelGrid columns="4">
+
+				<h:outputLabel value="Complemento"></h:outputLabel>
+				<p:inputText id="complemento" size="40"></p:inputText>
+
+				<h:outputLabel value="Cep"></h:outputLabel>
+				<p:inputText id="cep" size="40"></p:inputText>
+
+			</p:panelGrid>
+			
+			<br />
+
+			<p:panelGrid columns="4">
+			
+			<p:commandButton value="Salvar" />
+			
+			<p:commandButton value="Limpar" />
+			
+			</p:panelGrid>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

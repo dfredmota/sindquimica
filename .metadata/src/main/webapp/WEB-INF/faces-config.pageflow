@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14810110206191" configfile="/sind_quimica/src/main/webapp/WEB-INF/faces-config.xml"/>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14810110206191" configfile="/sind_quimica/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" id="pf14810865857620" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14810865857631" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="home.xhtml" id="pf14810865857632" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14810865857631" path="/index.xhtml"/>
+  <links id="pf14810865857631" target="pf14810865857632" source="pf14810865857620" outcome="admin"/>
+</pageflow:Pageflow>

@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -14,6 +16,8 @@ public class Sindicato {
 	@SequenceGenerator(name = "sindicato_id_seq", sequenceName = "sindicato_id_seq", allocationSize = 1)
 	private Integer id;
 	
+	private String descricao;
+	
 	private String ramo;
 		
 	private String presidente;
@@ -23,8 +27,9 @@ public class Sindicato {
 	
 	private String telefone;
 	
-	private String endereco;
-	
+    @OneToOne
+    @JoinColumn(name="endereco_id")
+	private Endereco endereco;	
 		
 	public Integer getId() {
 		return id;
@@ -56,15 +61,18 @@ public class Sindicato {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
-	public String getEndereco() {
+	public Endereco getEndereco() {
 		return endereco;
 	}
-	public void setEndereco(String endereco) {
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
-	
-	
-	
+	public String getDescricao() {
+		return descricao;
+	}
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
 
+	
 }

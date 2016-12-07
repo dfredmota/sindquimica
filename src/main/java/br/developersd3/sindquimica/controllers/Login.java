@@ -57,10 +57,6 @@ public class Login implements Serializable {
 	//validate login
 	public String validateUsernamePassword() {
 		
-		List<Sindicato> list = new ArrayList<Sindicato>();
-		
-		list = sindicatoService.all();
-		
 		boolean valid = LoginDAO.validate(user, pwd);
 		
 		if (valid) {
