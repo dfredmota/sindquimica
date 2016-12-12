@@ -7,15 +7,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.transaction.annotation.Transactional;
 
 public class GenericDao<T, PK extends Serializable> {
 
-	private EntityManagerFactory entityManagerF = Persistence.createEntityManagerFactory("entityManagerFactory");
+	private EntityManagerFactory entityManagerF;
 	
 	private EntityManager entityManager;
 
@@ -26,14 +25,30 @@ public class GenericDao<T, PK extends Serializable> {
 		ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
 		entityManagerF = Persistence.createEntityManagerFactory("entityManagerFactory");
 		this.entityClass = ((Class<T>) genericSuperclass.getActualTypeArguments()[0]);
-		
 	}
  
 	public T save(final T entity) {
 		entityManager=entityManagerF.createEntityManager();
 		Session session = (Session) entityManager.unwrap(Session.class);
-		session.persist(entity);
+		
+		Transaction tx = null;
+		
+		try{
+			
+		tx = session.beginTransaction();
+				
+		session.save(entity);
 		session.flush();
+		
+		tx.commit();
+			
+		}catch (Exception e) {
+			if (tx!=null) tx.rollback();
+		     throw e;
+		}finally {
+			session.close();
+		 }
+		
 		return entity;
 	}
 
@@ -47,9 +62,27 @@ public class GenericDao<T, PK extends Serializable> {
 	public T update(T entity) {
 		entityManager=entityManagerF.createEntityManager();
 		Session session = (Session) entityManager.unwrap(Session.class);
+		
+		Transaction tx = null;
+		
+		try{
+			
+		tx = session.beginTransaction();
+				
 		session.merge(entity);
 		session.flush();
+		
+		tx.commit();
+			
+		}catch (Exception e) {
+			if (tx!=null) tx.rollback();
+		     throw e;
+		}finally {
+			session.close();
+		 }
+		
 		return entity;
+
 	}
 
 	public void delete(final T entity) {
@@ -58,8 +91,24 @@ public class GenericDao<T, PK extends Serializable> {
 		
 		entityManager=entityManagerF.createEntityManager();
 		Session session = (Session) entityManager.unwrap(Session.class);
-		session.delete(session.merge(entity));
+		
+		Transaction tx = null;
+		
+		try{
+			
+		tx = session.beginTransaction();
+				
+		session.delete(session.contains(entity) ? entity : session.merge(entity));
 		session.flush();
+		
+		tx.commit();
+			
+		}catch (Exception e) {
+			if (tx!=null) tx.rollback();
+		     throw e;
+		}finally {
+			session.close();
+		 }
 		
 		}catch(Exception e){
 			e.printStackTrace();

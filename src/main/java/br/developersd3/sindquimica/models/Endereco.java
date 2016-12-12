@@ -5,7 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
+@SQLDelete(sql="UPDATE endereco set deleted_at = now() WHERE id = ?")
+@Where(clause="deleted_at is null")
 public class Endereco {
 	
 	@Id

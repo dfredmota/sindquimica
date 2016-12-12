@@ -6,73 +6,46 @@
      xmlns:p="http://primefaces.org/ui">
      <ui:define name="content">
     
-    <h3>Lista de Sindicatos</h3>
+    <h2>Lista de Sindicatos</h2>
     
-    <p:commandButton value="Incluir" action="/sindicato/insert.xhtml">
+    <br/>   
+    
+    <p:commandButton value="Incluir" action="#{sindicatoController.prepareInsert}">
     </p:commandButton>
     
     <br/>     
+    <br/>
          
     <h:form id="form">
     <p:dataTable var="sindicato" value="#{sindicatoController.lazyModel}" paginator="true" rows="10"
     			 rowKey="#{sindicato.id}"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{sindicatoController.selectedSindicato}" id="sindicatoTable" lazy="true">
-        <p:ajax event="rowSelect" listener="#{sindicatoController.onRowSelect}" update=":form:sindicatoDetail" oncomplete="PF('sindicatoDialog').show()" />
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{sindicatoController.sindicato}" id="sindicatoTable" lazy="true">
+        <p:ajax event="rowSelect" listener="#{sindicatoController.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />
         <p:column headerText="Id" sortBy="#{sindicato.id}" filterBy="#{sindicato.id}">
             <h:outputText value="#{sindicato.id}" />
         </p:column>
-        <p:column headerText="Descrição" sortBy="#{sindicato.descricao}" filterBy="#{sindicato.descricao}">
-            <h:outputText value="#{sindicato.descricao}" />
+        <p:column headerText="Razão Social" sortBy="#{sindicato.razaoSocial}" filterBy="#{sindicato.razaoSocial}">
+            <h:outputText value="#{sindicato.razaoSocial}" />
         </p:column>
-        <p:column headerText="Ramo" sortBy="#{sindicato.ramo}" filterBy="#{sindicato.ramo}">
-            <h:outputText value="#{sindicato.ramo}" />
+        <p:column headerText="Nome Fantasia" sortBy="#{sindicato.nomeFantasia}" filterBy="#{sindicato.nomeFantasia}">
+            <h:outputText value="#{sindicato.nomeFantasia}" />
         </p:column>
-        <p:column headerText="Presidente" sortBy="#{sindicato.presidente}" filterBy="#{sindicato.presidente}">
-            <h:outputText value="#{sindicato.presidente}" />
+        <p:column headerText="Responsável" sortBy="#{sindicato.responsavel}" filterBy="#{sindicato.responsavel}">
+            <h:outputText value="#{sindicato.responsavel}" />
         </p:column>
-        <p:column headerText="Telefone" sortBy="#{sindicato.telefone}" filterBy="#{sindicato.telefone}">
-            <h:outputText value="#{sindicato.telefone}" />
+        <p:column headerText="Telefones" sortBy="#{sindicato.telefones}" filterBy="#{sindicato.telefones}">
+            <h:outputText value="#{sindicato.telefones}" />
         </p:column>
         <p:column headerText="Endereço" sortBy="#{sindicato.endereco.logradouro}" filterBy="#{sindicato.endereco.logradouro}">
             <h:outputText value="#{sindicato.endereco.logradouro}" />
         </p:column>
-        <p:column headerText="Dados Institucionais" sortBy="#{sindicato.dadosInstitucional}" filterBy="#{sindicato.dadosInstitucional}">
-            <h:outputText value="#{sindicato.dadosInstitucional}" />
-        </p:column>
     </p:dataTable>
- 
-    <p:dialog header="Sindicato Detalhe" widgetVar="sindicatoDialog">
-        <p:outputPanel id="sindicatoDetail" style="text-align:center;">
-            <p:panelGrid  columns="2" columnClasses="label,value">
- 
-                <h:outputText value="Id:" />
-                <h:outputText value="#{sindicatoController.selectedSindicato.id}" />
-                
-                <h:outputText value="Descrição" />
-                <h:outputText value="#{sindicatoController.selectedSindicato.descricao}" />
- 
-                <h:outputText value="Ramo" />
-                <h:outputText value="#{sindicatoController.selectedSindicato.ramo}" />
- 
-                <h:outputText value="Presidente:" />
-                <h:outputText value="#{sindicatoController.selectedSindicato.presidente}" style="color:#{sindicatoController.selectedSindicato.presidente}"/>
- 
-                <h:outputText value="Telefone:" />
-                <h:outputText value="#{sindicatoController.selectedSindicato.telefone}">
-                </h:outputText>
-                
-                <h:outputText value="Endereço:" />
-                <h:outputText value="#{sindicatoController.selectedSindicato.endereco.logradouro}">
-                </h:outputText>
-                
-                <h:outputText value="Dados Institucionais:" />
-                <h:outputText value="#{sindicatoController.selectedSindicato.dadosInstitucional}">
-                </h:outputText>
-                
-            </p:panelGrid>
-        </p:outputPanel>
-    </p:dialog>
-</h:form>
+             
+        <h:commandButton ajax="false" title="Edit" action="/sindicato/show.xhtml" id="btnOpenShow" style="display:none"
+            value="Show">    
+        <f:setPropertyActionListener target="#{sindicatoController.sindicato}" value="#{sindicatoController.sindicato}" />
+        </h:commandButton>
+    </h:form>
 </ui:define>
 </ui:composition>

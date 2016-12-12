@@ -12,15 +12,16 @@
  
     <p:growl id="messages"/>
  
-    <p:menubar>
-            <p:menuitem value="Sindicato"  url="/sindicato/lista.xhtml" />
-            <p:menuitem value="Usuário" url="#" />
-            <p:menuitem value="Eventos" url="#" />
+    <p:menubar styleClass="menu">
+            <p:menuitem value="Sindicato"  url="/sindicato/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Usuário" url="#"  style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Eventos" url="#"  style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Grupos" url="#"   style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Timeline" url="#" style="font-weight:bold; color:#FFFFFF;"/>
  
-        <p:menuitem value="Sair" url="http://www.primefaces.org" icon="ui-icon-close" />
+        <p:menuitem value="Sair" url="http://www.primefaces.org" icon="ui-icon-close" style="font-weight:bold; color:#FFFFFF;" />
  
         <f:facet name="options">
-            <p:inputText style="margin-right:10px" placeholder="Search"/>
             <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
         </f:facet>
     </p:menubar>

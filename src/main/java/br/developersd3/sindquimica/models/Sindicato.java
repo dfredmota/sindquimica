@@ -1,78 +1,162 @@
 package br.developersd3.sindquimica.models;
 
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.PrePersist;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
-public class Sindicato {
-	
-	@Id
-	@GeneratedValue(generator = "sindicato_id_seq")
-	@SequenceGenerator(name = "sindicato_id_seq", sequenceName = "sindicato_id_seq", allocationSize = 1)
+@SQLDelete(sql="UPDATE sindicato set deleted_at = now() WHERE id = ?")
+@Where(clause="deleted_at is null")
+public class Sindicato  implements Serializable{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
+	private String  cnpj;
 	
-	private String descricao;
+	@Column(name="razao_social")
+	private String  razaoSocial;
 	
-	private String ramo;
-		
-	private String presidente;
+	@Column(name="nome_fantasia")
+	private String  nomeFantasia;
 	
-	@Column(name="dados_institucionais")
-	private String dadosInstitucional;
+	private String  responsavel;
 	
-	private String telefone;
+	private String  email;
 	
-    @OneToOne
-    @JoinColumn(name="endereco_id")
-	private Endereco endereco;	
-		
+	private String  site;
+	
+	private Boolean status;
+	
+	private String  telefones;
+
+	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "endereco_id")
+	private Endereco endereco;
+	
+	@Column(name="created_at", nullable=false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+
+	@PrePersist
+	protected void onCreate() {
+	    createdAt = new Date();
+	}
+	
+	@Column(name="deleted_at", nullable=false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date deletedAt;
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getRamo() {
-		return ramo;
-	}
-	public void setRamo(String ramo) {
-		this.ramo = ramo;
-	}
-	public String getPresidente() {
-		return presidente;
-	}
-	public void setPresidente(String presidente) {
-		this.presidente = presidente;
-	}
-	public String getDadosInstitucional() {
-		return dadosInstitucional;
-	}
-	public void setDadosInstitucional(String dadosInstitucional) {
-		this.dadosInstitucional = dadosInstitucional;
-	}
-	public String getTelefone() {
-		return telefone;
-	}
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
+
 	public Endereco getEndereco() {
 		return endereco;
 	}
+
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+
+	public String getCnpj() {
+		return cnpj;
 	}
 
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
+	}
+
+	public String getRazaoSocial() {
+		return razaoSocial;
+	}
+
+	public void setRazaoSocial(String razaoSocial) {
+		this.razaoSocial = razaoSocial;
+	}
+
+	public String getNomeFantasia() {
+		return nomeFantasia;
+	}
+
+	public void setNomeFantasia(String nomeFantasia) {
+		this.nomeFantasia = nomeFantasia;
+	}
+
+	public String getResponsavel() {
+		return responsavel;
+	}
+
+	public void setResponsavel(String responsavel) {
+		this.responsavel = responsavel;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getSite() {
+		return site;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(String telefones) {
+		this.telefones = telefones;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getDeletedAt() {
+		return deletedAt;
+	}
+
+	public void setDeletedAt(Date deletedAt) {
+		this.deletedAt = deletedAt;
+	}
 	
 }

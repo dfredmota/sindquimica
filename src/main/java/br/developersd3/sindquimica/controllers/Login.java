@@ -57,6 +57,8 @@ public class Login implements Serializable {
 	//validate login
 	public String validateUsernamePassword() {
 		
+		System.out.println("ENTROUUUUUUUUUUUUUUUUUU");
+		
 		boolean valid = LoginDAO.validate(user, pwd);
 		
 		if (valid) {
@@ -77,6 +79,7 @@ public class Login implements Serializable {
 	public String logout() {
 		HttpSession session = SessionUtils.getSession();
 		session.invalidate();
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return "login";
 	}
 }

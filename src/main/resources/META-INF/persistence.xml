@@ -8,7 +8,6 @@
       <property name="javax.persistence.jdbc.password" value="123456"/>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/sindquimica"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
     </properties>
