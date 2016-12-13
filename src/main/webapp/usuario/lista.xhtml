@@ -1,0 +1,53 @@
+<ui:composition template="/template/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui">
+     <ui:define name="content">
+    
+    <h2>Lista de Usuários</h2>
+    
+    <br/>   
+    
+    <p:commandButton value="Incluir" action="#{usuarioMB.prepareInsert}">
+    </p:commandButton>
+    
+    <br/>     
+    <br/>
+         
+    <h:form id="form">
+    <p:dataTable var="usuario" value="#{usuarioMB.lazyModel}" paginator="true" rows="10"
+    			 rowKey="#{usuario.id}"
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{usuarioMB.usuario}" id="usuarioTable" lazy="true">
+        <p:ajax event="rowSelect" listener="#{usuarioMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />
+        <p:column headerText="Id" sortBy="#{usuario.id}" filterBy="#{usuario.id}">
+            <h:outputText value="#{usuario.id}" />
+        </p:column>
+        <p:column headerText="Nome" sortBy="#{usuario.nome}" filterBy="#{usuario.nome}">
+            <h:outputText value="#{usuario.nome}" />
+        </p:column>
+        <p:column headerText="Data de Nascimento" sortBy="#{usuario.dtNascimento}" filterBy="#{usuario.dtNascimento}">
+          <h:outputText value="#{usuarioMB.usuario.dtNascimento}">
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+          </h:outputText>
+        </p:column>
+        <p:column headerText="Email" sortBy="#{usuario.email}" filterBy="#{usuario.email}">
+            <h:outputText value="#{usuario.email}" />
+        </p:column>
+        <p:column headerText="Site" sortBy="#{usuario.site}" filterBy="#{usuario.site}">
+            <h:outputText value="#{usuario.site}" />
+        </p:column>
+        <p:column headerText="Endereço" sortBy="#{usuario.endereco.logradouro}" filterBy="#{usuario.endereco.logradouro}">
+            <h:outputText value="#{usuario.endereco.logradouro}" />
+        </p:column>
+    </p:dataTable>
+             
+        <h:commandButton ajax="false" title="Edit" action="/usuario/show.xhtml" id="btnOpenShow" style="display:none"
+            value="Show">    
+        <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuarioMB.usuario}" />
+        </h:commandButton>
+    </h:form>
+</ui:define>
+</ui:composition>

@@ -1,37 +1,76 @@
 package br.developersd3.sindquimica.models;
 
-import java.util.List;
+import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+@Entity
+@Table(name = "empresa_associada")
+@SQLDelete(sql = "UPDATE empresa_associada set deleted_at = now() WHERE id = ?")
+@Where(clause = "deleted_at is null")
 public class EmpresaAssociada {
-	
-	private Integer        id;
-	
-	private String         cnpj;
-	
-	private String         razaoSocial;
-	
-	private String         nomeFantasia;
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	private String cnpj;
+
+	@Column(name = "razao_social")
+	private String razaoSocial;
+
+	@Column(name = "nome_fantasia")
+	private String nomeFantasia;
+
+	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "endereco_id")
+	private Endereco endereco;
+
+	private String telefones;
+
+	private String responsavel;
+
+	private String email;
+
+	private String site;
+
 	@OneToOne
-    @JoinColumn(name="endereco_id")
-	private Endereco       endereco;
-	
-	private List<Telefone> listaDeTelefones;
-	
-	private String         responsavel;
-	
-	private String         email;
-	
-	private String         site;
-	
-	@OneToOne
-    @JoinColumn(name="sindicato_id")
-	private Sindicato       sindicato;
-	
-	private Boolean         status;
+	@JoinColumn(name = "empresa_id")
+	private Empresa empresa;
+
+	private Boolean status;
+
+	@Column(name = "created_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+
+	@PrePersist
+	protected void onCreate() {
+		createdAt = new Date();
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
 
 	public Integer getId() {
 		return id;
@@ -73,12 +112,12 @@ public class EmpresaAssociada {
 		this.endereco = endereco;
 	}
 
-	public List<Telefone> getListaDeTelefones() {
-		return listaDeTelefones;
+	public String getTelefones() {
+		return telefones;
 	}
 
-	public void setListaDeTelefones(List<Telefone> listaDeTelefones) {
-		this.listaDeTelefones = listaDeTelefones;
+	public void setTelefones(String telefones) {
+		this.telefones = telefones;
 	}
 
 	public String getResponsavel() {
@@ -105,12 +144,12 @@ public class EmpresaAssociada {
 		this.site = site;
 	}
 
-	public Sindicato getSindicato() {
-		return sindicato;
+	public Empresa getEmpresa() {
+		return empresa;
 	}
 
-	public void setSindicato(Sindicato sindicato) {
-		this.sindicato = sindicato;
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	public Boolean getStatus() {

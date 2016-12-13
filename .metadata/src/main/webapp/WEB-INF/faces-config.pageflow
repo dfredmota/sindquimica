@@ -1,9 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14810110206191" configfile="/sind_quimica/src/main/webapp/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" id="pf14810865857620" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14810865857631" path="/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="home.xhtml" id="pf14810865857632" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14810865857631" path="/index.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="sindicato/lista.xhtml" id="pf14815207286648" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf14815207286649" path="/sindicato/lista.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="sindicato/show.xhtml" id="pf148152072866410" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf14815207286649" path="/sindicato/show.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="122" y="178" id="pf14810865857620" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14810865857631" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="home.xhtml" x="338" y="178" id="pf14810865857632" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14810865857631" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="sindicato/lista.xhtml" x="554" y="1148" id="pf14815207286648" referenceLink="//@navigationRule.6/@navigationCase.1/@toViewId|" outlinks="pf14815207286649 pf14815524067610" inlinks="pf14815524067612 pf14815524067613 pf14815524067614 pf14815524067615" path="/empresa/lista.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="sindicato/show.xhtml" x="122" y="1169" id="pf148152072866410" referenceLink="//@navigationRule.6/@fromViewId|" outlinks="pf148155240676110 pf14815524067614 pf14815524067615" inlinks="pf14815207286649" path="/empresa/show.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="sindicato/insert.xhtml" x="338" y="562" id="pf148155240676112" referenceLink="//@navigationRule.2/@navigationCase.1/@toViewId|" outlinks="pf14815524067612 pf148155240676113" inlinks="pf14815524067610 pf148155240676113" path="/empresa/insert.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="sindicato/edit.xhtml" x="338" y="946" id="pf148155240676116" referenceLink="//@navigationRule.5/@navigationCase.1/@toViewId|" outlinks="pf14815524067613 pf148155240676117" inlinks="pf148155240676110 pf148155240676117" path="/empresa/edit.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="tipoDocumento/lista.xhtml" id="pf148155242991320" referenceLink="//@navigationRule.12/@navigationCase.1/@toViewId|" outlinks="pf148155242991321 pf148155242991322" inlinks="pf148155242991323 pf148155242991324 pf148155242991325 pf148155242991326" path="/tipoDocumento/lista.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="tipoDocumento/insert.xhtml" id="pf148155242991327" referenceLink="//@navigationRule.8/@navigationCase.1/@toViewId|" outlinks="pf148155242991323 pf148155242991328" inlinks="pf148155242991321 pf148155242991328" path="/tipoDocumento/insert.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="tipoDocumento/show.xhtml" id="pf148155242991329" referenceLink="//@navigationRule.12/@fromViewId|" outlinks="pf148155242991330 pf148155242991325 pf148155242991326" inlinks="pf148155242991322" path="/tipoDocumento/show.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="tipoDocumento/edit.xhtml" id="pf148155242991331" referenceLink="//@navigationRule.11/@navigationCase.1/@toViewId|" outlinks="pf148155242991324 pf148155242991332" inlinks="pf148155242991330 pf148155242991332" path="/tipoDocumento/edit.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="empresaAssociada/lista.xhtml" id="pf148155810034911" referenceLink="//@navigationRule.18/@navigationCase.1/@toViewId|" outlinks="pf148155810034912 pf148155810034913" inlinks="pf148155810034914 pf148155810034915 pf148155810034916 pf148155810034917" path="/empresaAssociada/lista.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="empresaAssociada/insert.xhtml" id="pf148155810034918" referenceLink="//@navigationRule.14/@navigationCase.1/@toViewId|" outlinks="pf148155810034914 pf148155810034919" inlinks="pf148155810034912 pf148155810034919" path="/empresaAssociada/insert.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="empresaAssociada/show.xhtml" id="pf148155810034920" referenceLink="//@navigationRule.18/@fromViewId|" outlinks="pf148155810034921 pf148155810034916 pf148155810034917" inlinks="pf148155810034913" path="/empresaAssociada/show.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="empresaAssociada/edit.xhtml" id="pf148155810034922" referenceLink="//@navigationRule.17/@navigationCase.1/@toViewId|" outlinks="pf148155810034915 pf148155810034923" inlinks="pf148155810034921 pf148155810034923" path="/empresaAssociada/edit.xhtml"/>
   <links id="pf14810865857631" target="pf14810865857632" source="pf14810865857620" outcome="admin"/>
   <links id="pf14815207286649" target="pf148152072866410" source="pf14815207286648" outcome="show"/>
+  <links id="pf14815524067610" target="pf148155240676112" source="pf14815207286648" outcome="prepareInsert"/>
+  <links id="pf14815524067612" target="pf14815207286648" source="pf148155240676112" outcome="insert"/>
+  <links id="pf148155240676110" target="pf148155240676116" source="pf148152072866410" outcome="prepareUpdate"/>
+  <links id="pf14815524067613" target="pf14815207286648" source="pf148155240676116" outcome="update"/>
+  <links id="pf14815524067614" target="pf14815207286648" source="pf148152072866410" outcome="delete"/>
+  <links id="pf14815524067615" target="pf14815207286648" source="pf148152072866410" outcome="deleteError"/>
+  <links id="pf148155240676113" target="pf148155240676112" source="pf148155240676112" outcome="insertError">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+  <links id="pf148155240676117" target="pf148155240676116" source="pf148155240676116" outcome="updateError">
+    <bendPoints d1Height="-36" d2Height="-36"/>
+    <bendPoints d1Width="-64" d1Height="-36" d2Width="-64" d2Height="-36"/>
+    <bendPoints d1Width="-64" d2Width="-64"/>
+  </links>
+  <links id="pf148155242991321" target="pf148155242991327" source="pf148155242991320" outcome="prepareInsert"/>
+  <links id="pf148155242991323" target="pf148155242991320" source="pf148155242991327" outcome="insert"/>
+  <links id="pf148155242991328" target="pf148155242991327" source="pf148155242991327" outcome="insertError"/>
+  <links id="pf148155242991322" target="pf148155242991329" source="pf148155242991320" outcome="show"/>
+  <links id="pf148155242991330" target="pf148155242991331" source="pf148155242991329" outcome="prepareUpdate"/>
+  <links id="pf148155242991324" target="pf148155242991320" source="pf148155242991331" outcome="update"/>
+  <links id="pf148155242991332" target="pf148155242991331" source="pf148155242991331" outcome="updateError"/>
+  <links id="pf148155242991325" target="pf148155242991320" source="pf148155242991329" outcome="delete"/>
+  <links id="pf148155242991326" target="pf148155242991320" source="pf148155242991329" outcome="deleteError"/>
+  <links id="pf148155810034912" target="pf148155810034918" source="pf148155810034911" outcome="prepareInsert"/>
+  <links id="pf148155810034914" target="pf148155810034911" source="pf148155810034918" outcome="insert"/>
+  <links id="pf148155810034919" target="pf148155810034918" source="pf148155810034918" outcome="insertError"/>
+  <links id="pf148155810034913" target="pf148155810034920" source="pf148155810034911" outcome="show"/>
+  <links id="pf148155810034921" target="pf148155810034922" source="pf148155810034920" outcome="prepareUpdate"/>
+  <links id="pf148155810034915" target="pf148155810034911" source="pf148155810034922" outcome="update"/>
+  <links id="pf148155810034923" target="pf148155810034922" source="pf148155810034922" outcome="updateError"/>
+  <links id="pf148155810034916" target="pf148155810034911" source="pf148155810034920" outcome="delete"/>
+  <links id="pf148155810034917" target="pf148155810034911" source="pf148155810034920" outcome="deleteError"/>
 </pageflow:Pageflow>

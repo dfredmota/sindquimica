@@ -1,0 +1,104 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+	
+	
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Detalhe de Usuário</title>
+
+    <!-- Bootstrap -->
+<h:form id="form">	
+	<div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="page-header" style="border-bottom:0; margin-top:0">
+              <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.prepareUpdate}" id="btnOpenEdit" 
+              value="Editar"  class="btn btn-primary">  
+       		 <f:param name="idUsuario" value="#{usuarioMB.usuario.id}" />  
+        	</h:commandButton>
+            <span class="pull-right"></span>
+              <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.delete}" id="btnOpenDelete"
+              value="Deletar"  class="btn btn-primary">    
+        	 <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuarioMB.usuario}" />   
+             </h:commandButton>
+            <h2>Informações da usuario</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Código:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.id}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Nome:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.nome}</div>
+      </div>  
+      <div class="row form-group">
+        <div class="col-md-2"><b>Data de Nascimento:</b></div>
+        <div class="col-md-10">
+        <h:outputText value="#{usuarioMB.usuario.dtNascimento}">
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+        </h:outputText>        
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Email:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.email}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Telefones:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.telefones}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Site:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.site}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Email:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.email}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Site:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.site}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Empresa:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.empresa.razaoSocial}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Endereço:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.endereco.logradouro}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Número:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.endereco.numero}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Bairro:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.endereco.bairro}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Cidade:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.endereco.cidade}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Complemento:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.endereco.complemento}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Status:</b></div>
+        <div class="col-md-10">#{usuarioMB.usuario.status}</div>
+      </div>
+      <a href="/sindquimica/usuario/lista.xhtml">Voltar</a>
+    </div>
+			
+</h:form>
+</ui:define>
+</ui:composition>

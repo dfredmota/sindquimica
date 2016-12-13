@@ -130,6 +130,7 @@ public class GenericDao<T, PK extends Serializable> {
 	}
 
 	protected Session getSession() {
+		entityManager=entityManagerF.createEntityManager();
 		return (Session) getEntityManager().getDelegate();
 	}
 

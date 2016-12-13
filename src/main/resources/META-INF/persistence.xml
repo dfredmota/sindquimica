@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="entityManagerFactory">
-    <class>br.developersd3.sindquimica.models.Sindicato</class>
+    <class>br.developersd3.sindquimica.models.Empresa</class>
     <class>br.developersd3.sindquimica.models.Endereco</class>
+    <class>br.developersd3.sindquimica.models.TipoDocumento</class>
+    <class>br.developersd3.sindquimica.models.EmpresaAssociada</class>
+    <class>br.developersd3.sindquimica.models.Usuario</class>
+    <class>br.developersd3.sindquimica.models.Documento</class>
     <properties>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
       <property name="javax.persistence.jdbc.password" value="123456"/>

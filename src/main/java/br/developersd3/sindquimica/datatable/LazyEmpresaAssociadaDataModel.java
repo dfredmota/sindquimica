@@ -9,27 +9,28 @@ import java.util.Map;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import br.developersd3.sindquimica.models.Sindicato;
+import br.developersd3.sindquimica.models.Empresa;
+import br.developersd3.sindquimica.models.EmpresaAssociada;
 
  
 /**
  * Dummy implementation of LazyDataModel that uses a list to mimic a real datasource like a database.
  */
-public class LazySindicatoDataModel extends LazyDataModel<Sindicato> {
+public class LazyEmpresaAssociadaDataModel extends LazyDataModel<EmpresaAssociada> {
      	
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -5003334716585763692L;
-	private List<Sindicato> datasource;
+	private List<EmpresaAssociada> datasource;
      
-    public LazySindicatoDataModel(List<Sindicato> datasource) {
+    public LazyEmpresaAssociadaDataModel(List<EmpresaAssociada> datasource) {
         this.datasource = datasource;
     }
      
     @Override
-    public Sindicato getRowData(String rowKey) {
-        for(Sindicato car : datasource) {
+    public EmpresaAssociada getRowData(String rowKey) {
+        for(EmpresaAssociada car : datasource) {
             if(car.getId().toString().equals(rowKey))
                 return car;
         }
@@ -38,16 +39,16 @@ public class LazySindicatoDataModel extends LazyDataModel<Sindicato> {
     }
  
     @Override
-    public Object getRowKey(Sindicato car) {
+    public Object getRowKey(EmpresaAssociada car) {
         return car.getId();
     }
  
     @Override
-    public List<Sindicato> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) {
-        List<Sindicato> data = new ArrayList<Sindicato>();
+    public List<EmpresaAssociada> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) {
+        List<EmpresaAssociada> data = new ArrayList<EmpresaAssociada>();
  
         //filter
-        for(Sindicato car : datasource) {
+        for(EmpresaAssociada car : datasource) {
             boolean match = true;
  
             if (filters != null) {

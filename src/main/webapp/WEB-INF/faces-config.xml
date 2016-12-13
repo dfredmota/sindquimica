@@ -13,66 +13,254 @@
 	</navigation-rule>
 	
 	<navigation-rule>
-		<from-view-id>/sindicato/lista.xhtml</from-view-id>
+		<from-view-id>/empresa/lista.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>prepareInsert</from-outcome>
-			<to-view-id>/sindicato/insert.xhtml</to-view-id>
+			<to-view-id>/empresa/insert.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>
-		<from-view-id>/sindicato/insert.xhtml</from-view-id>
+		<from-view-id>/empresa/insert.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>insert</from-outcome>
-			<to-view-id>/sindicato/lista.xhtml</to-view-id>
+			<to-view-id>/empresa/lista.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>insertError</from-outcome>
-			<to-view-id>/sindicato/insert.xhtml</to-view-id>
+			<to-view-id>/empresa/insert.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>	
 	
 	<navigation-rule>
-		<from-view-id>/sindicato/lista.xhtml</from-view-id>
+		<from-view-id>/empresa/lista.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>show</from-outcome>
-			<to-view-id>/sindicato/show.xhtml</to-view-id>
+			<to-view-id>/empresa/show.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>
-		<from-view-id>/sindicato/show.xhtml</from-view-id>
+		<from-view-id>/empresa/show.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>prepareUpdate</from-outcome>
-			<to-view-id>/sindicato/edit.xhtml</to-view-id>
+			<to-view-id>/empresa/edit.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>
-		<from-view-id>/sindicato/edit.xhtml</from-view-id>
+		<from-view-id>/empresa/edit.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>update</from-outcome>
-			<to-view-id>/sindicato/lista.xhtml</to-view-id>
+			<to-view-id>/empresa/lista.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>updateError</from-outcome>
-			<to-view-id>/sindicato/edit.xhtml</to-view-id>
+			<to-view-id>/empresa/edit.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
 	<navigation-rule>
-		<from-view-id>/sindicato/show.xhtml</from-view-id>
+		<from-view-id>/empresa/show.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>delete</from-outcome>
-			<to-view-id>/sindicato/lista.xhtml</to-view-id>
+			<to-view-id>/empresa/lista.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>deleteError</from-outcome>
-			<to-view-id>/sindicato/lista.xhtml</to-view-id>
+			<to-view-id>/empresa/lista.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	
 	
+	<!-- Tipo de Documento -->
+	
+	<navigation-rule>
+		<from-view-id>/tipoDocumento/lista.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>prepareInsert</from-outcome>
+			<to-view-id>/tipoDocumento/insert.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/tipoDocumento/insert.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>insert</from-outcome>
+			<to-view-id>/tipoDocumento/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>insertError</from-outcome>
+			<to-view-id>/tipoDocumento/insert.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>	
+	
+	<navigation-rule>
+		<from-view-id>/tipoDocumento/lista.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show</from-outcome>
+			<to-view-id>/tipoDocumento/show.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/tipoDocumento/show.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>prepareUpdate</from-outcome>
+			<to-view-id>/tipoDocumento/edit.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/tipoDocumento/edit.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>update</from-outcome>
+			<to-view-id>/tipoDocumento/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>updateError</from-outcome>
+			<to-view-id>/tipoDocumento/edit.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/tipoDocumento/show.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>delete</from-outcome>
+			<to-view-id>/tipoDocumento/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>deleteError</from-outcome>
+			<to-view-id>/tipoDocumento/lista.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	<!-- MPRESA ASSOCIADA -->
+	
+	<navigation-rule>
+		<from-view-id>/empresaAssociada/lista.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>prepareInsert</from-outcome>
+			<to-view-id>/empresaAssociada/insert.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/empresaAssociada/insert.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>insert</from-outcome>
+			<to-view-id>/empresaAssociada/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>insertError</from-outcome>
+			<to-view-id>/empresaAssociada/insert.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>	
+	
+	<navigation-rule>
+		<from-view-id>/empresaAssociada/lista.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show</from-outcome>
+			<to-view-id>/empresaAssociada/show.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/empresaAssociada/show.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>prepareUpdate</from-outcome>
+			<to-view-id>/empresaAssociada/edit.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/empresaAssociada/edit.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>update</from-outcome>
+			<to-view-id>/empresaAssociada/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>updateError</from-outcome>
+			<to-view-id>/empresaAssociada/edit.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/empresaAssociada/show.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>delete</from-outcome>
+			<to-view-id>/empresaAssociada/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>deleteError</from-outcome>
+			<to-view-id>/empresaAssociada/lista.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	
+	<!-- Usuários -->
+	
+	<navigation-rule>
+		<from-view-id>/usuario/lista.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>prepareInsert</from-outcome>
+			<to-view-id>/usuario/insert.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/usuario/insert.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>insert</from-outcome>
+			<to-view-id>/usuario/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>insertError</from-outcome>
+			<to-view-id>/usuario/insert.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>	
+	
+	<navigation-rule>
+		<from-view-id>/usuario/lista.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show</from-outcome>
+			<to-view-id>/usuario/show.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/usuario/show.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>prepareUpdate</from-outcome>
+			<to-view-id>/usuario/edit.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/usuario/edit.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>update</from-outcome>
+			<to-view-id>/usuario/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>updateError</from-outcome>
+			<to-view-id>/usuario/edit.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/usuario/show.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>delete</from-outcome>
+			<to-view-id>/usuario/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>deleteError</from-outcome>
+			<to-view-id>/usuario/lista.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	
 
 </faces-config>

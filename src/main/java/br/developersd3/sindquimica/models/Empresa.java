@@ -20,11 +20,18 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Entity
-@SQLDelete(sql="UPDATE sindicato set deleted_at = now() WHERE id = ?")
+@SQLDelete(sql="UPDATE empresa set deleted_at = now() WHERE id = ?")
 @Where(clause="deleted_at is null")
-public class Sindicato  implements Serializable{
+public class Empresa  implements Serializable{
 
-    @Id
+	
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6369752214780023704L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 

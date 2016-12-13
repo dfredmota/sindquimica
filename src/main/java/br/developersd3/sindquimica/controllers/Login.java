@@ -1,8 +1,6 @@
 package br.developersd3.sindquimica.controllers;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
@@ -12,8 +10,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import br.developersd3.sindquimica.daos.LoginDAO;
-import br.developersd3.sindquimica.models.Sindicato;
-import br.developersd3.sindquimica.service.SindicatoService;
+import br.developersd3.sindquimica.service.EmpresaService;
 import br.developersd3.sindquimica.util.SessionUtils;
 
 
@@ -27,8 +24,8 @@ public class Login implements Serializable {
 	private String user;
 
     @Inject
-    @Named("sindicatoService")
-	private SindicatoService sindicatoService;
+    @Named("empresaService")
+	private EmpresaService empresaService;
 	
 	public String getPwd() {
 		return pwd;
@@ -57,8 +54,6 @@ public class Login implements Serializable {
 	//validate login
 	public String validateUsernamePassword() {
 		
-		System.out.println("ENTROUUUUUUUUUUUUUUUUUU");
-		
 		boolean valid = LoginDAO.validate(user, pwd);
 		
 		if (valid) {
@@ -67,10 +62,8 @@ public class Login implements Serializable {
 			return "admin";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(
-					null,
-					new FacesMessage(FacesMessage.SEVERITY_WARN,
-							"Incorrect Username and Passowrd",
-							"Please enter correct username and Password"));
+					null,new FacesMessage(FacesMessage.SEVERITY_WARN,"Login e/ou Senha Inválidos","Tente Novamente!"));
+					
 			return "login";
 		}
 	}

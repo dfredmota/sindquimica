@@ -3,36 +3,74 @@ package br.developersd3.sindquimica.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+@Entity
+@Table(name="usuario")
+@SQLDelete(sql = "UPDATE usuario set deleted_at = now() WHERE id = ?")
+@Where(clause = "deleted_at is null")
 public class Usuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
+    
 	private String nome;
 
+	@Column(name="data_nascimento")
 	private Date dtNascimento;
 
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 
 	private String email;
 
-	private List<Telefone> listaDeTelefones;
+	private String telefones;
 
 	private String site;
-
-	@OneToOne
-	@JoinColumn(name = "sindicato_id")
-	private Sindicato sindicato;
 
 	private Boolean status;
 
 	@OneToOne
-	@JoinColumn(name = "empresa_id")
+	@JoinColumn(name = "empresa_associada_id")
 	private EmpresaAssociada empresa;
+	
+	@OneToMany(mappedBy="usuario")
+    private List<Documento> listaDocumentos;
+	
+	@Column(name = "created_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+
+	@PrePersist
+	protected void onCreate() {
+		createdAt = new Date();
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
 
 	public Integer getId() {
 		return id;
@@ -73,13 +111,13 @@ public class Usuario {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public List<Telefone> getListaDeTelefones() {
-		return listaDeTelefones;
+	
+	public String getTelefones() {
+		return telefones;
 	}
 
-	public void setListaDeTelefones(List<Telefone> listaDeTelefones) {
-		this.listaDeTelefones = listaDeTelefones;
+	public void setTelefones(String telefones) {
+		this.telefones = telefones;
 	}
 
 	public String getSite() {
@@ -88,14 +126,6 @@ public class Usuario {
 
 	public void setSite(String site) {
 		this.site = site;
-	}
-
-	public Sindicato getSindicato() {
-		return sindicato;
-	}
-
-	public void setSindicato(Sindicato sindicato) {
-		this.sindicato = sindicato;
 	}
 
 	public Boolean getStatus() {
