@@ -17,9 +17,11 @@ import org.primefaces.model.LazyDataModel;
 
 import br.developersd3.sindquimica.datatable.LazyEmpresaAssociadaDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
+import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.Empresa;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
+import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
 import br.developersd3.sindquimica.service.EmpresaService;
 
@@ -46,14 +48,62 @@ public class EmpresaAssociadaMB implements Serializable {
 	@ManagedProperty(name = "empresaService", value = "#{empresaService}")
 	private EmpresaService empresaService;
 	
-	
+	@ManagedProperty(name = "cnaeService", value = "#{cnaeService}")
+	private CnaeService cnaeService;
+		
 	private List<Empresa> empresas;
+	
+	private Integer     cnaeId;
+	
+	private List<Cnae>  cnaes;
 
 	@PostConstruct
 	public void init() {
 		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all());
 		empresas = empresaService.all();
 		telefones = new ArrayList<String>();
+	}
+	
+	public void setListaCnaes(){
+		
+		Empresa empresa = empresaService.getById(empresaId);
+		
+		this.cnaes = empresa.getCnaes();	
+		
+		this.empresaAssociada = new EmpresaAssociada();
+		
+		this.empresaAssociada.setEndereco(new Endereco());
+		
+		this.empresaAssociada.setCnaes(new ArrayList<Cnae>());
+		
+	}
+	
+	public String addCnae(){
+		
+		Cnae cnae = cnaeService.getById(cnaeId);
+		
+		if(!this.empresaAssociada.getCnaes().contains(cnae)){
+			this.empresaAssociada.getCnaes().add(cnae);
+		}else{
+			FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Esse Cnae já existe na lista!", "Esse Cnae já existe na lista!"));
+		}
+		
+		return null;
+	}
+	
+	public String deleteCnae(){
+		
+		Cnae cnae = cnaeService.getById(cnaeId);
+		
+		for(Cnae cn : this.empresaAssociada.getCnaes()){
+			
+			if(cn.getId().equals(cnae.getId()));
+			this.empresaAssociada.getCnaes().remove(cn);
+			break;
+		}
+				
+		return null;
 	}
 
 	public String addTelefone(){
@@ -87,7 +137,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		
 		telefones = new ArrayList<String>();
 		
-		if(this.empresaAssociada.getTelefones() != null && this.empresaAssociada.getTelefones().isEmpty()){
+		if(this.empresaAssociada.getTelefones() != null && !this.empresaAssociada.getTelefones().isEmpty()){
 			
 			String[] telefonesArr = this.empresaAssociada.getTelefones().split(";");
 			
@@ -107,7 +157,13 @@ public class EmpresaAssociadaMB implements Serializable {
 		
 		this.empresaAssociada.setEndereco(new Endereco());
 		
+		this.empresaAssociada.setCnaes(new ArrayList<Cnae>());
+		
 		telefones = new ArrayList<String>();
+		
+		empresas = empresaService.all();
+		
+		System.out.println("EMPRESA:"+empresas.size());
 
 		return "prepareInsert";
 	}
@@ -133,6 +189,13 @@ public class EmpresaAssociadaMB implements Serializable {
 			}	
 			
 			empresaAssociada.setTelefones(telefonesUsuario);			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um telefone","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
 		}
 		
 		try {
@@ -172,6 +235,13 @@ public class EmpresaAssociadaMB implements Serializable {
 			}	
 			
 			empresaAssociada.setTelefones(telefonesUsuario);			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um telefone","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
 		}
 
 		try {
@@ -289,6 +359,29 @@ public class EmpresaAssociadaMB implements Serializable {
 	public void setTelefones(List<String> telefones) {
 		this.telefones = telefones;
 	}
-		
+
+	public Integer getCnaeId() {
+		return cnaeId;
+	}
+
+	public void setCnaeId(Integer cnaeId) {
+		this.cnaeId = cnaeId;
+	}
+
+	public List<Cnae> getCnaes() {
+		return cnaes;
+	}
+
+	public void setCnaes(List<Cnae> cnaes) {
+		this.cnaes = cnaes;
+	}
+
+	public CnaeService getCnaeService() {
+		return cnaeService;
+	}
+
+	public void setCnaeService(CnaeService cnaeService) {
+		this.cnaeService = cnaeService;
+	}		
 	
 }

@@ -10,27 +10,28 @@ import br.developersd3.sindquimica.util.DataConnect;
 
 public class LoginDAO {
 
-	public static boolean validate(String user, String password) {
+	public static Integer validate(String user, String password) {
 		Connection con = null;
 		PreparedStatement ps = null;
+		Integer retorno = 0;
 
 		try {
 			con = DataConnect.getConnection();
-			ps = con.prepareStatement("Select uname, password from Users where uname = ? and password = ?");
+			ps = con.prepareStatement("Select id from usuario where login = ? and password = ?");
 			ps.setString(1, user);
 			ps.setString(2, password);
 
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
-				return true;
+				return rs.getInt("id");
 			}
 		} catch (SQLException ex) {
 			System.out.println("Login error -->" + ex.getMessage());
-			return false;
+			return 0;
 		} finally {
 			DataConnect.close(con);
 		}
-		return false;
+		return retorno;
 	}
 }

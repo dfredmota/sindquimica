@@ -8,12 +8,17 @@
     <class>br.developersd3.sindquimica.models.Usuario</class>
     <class>br.developersd3.sindquimica.models.Documento</class>
     <properties>
+
+      <!--<property name="javax.persistence.jdbc.user" value="fabricam_developer"/>
+      <property name="javax.persistence.jdbc.password" value="Valente@3873"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/fabricam_quimica"/> -->  
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/sindquimica"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
-      <property name="javax.persistence.jdbc.password" value="123456"/>
+      <property name="javax.persistence.jdbc.password" value="123456"/> 
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/sindquimica"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
     </properties>
   </persistence-unit>
 </persistence>
+

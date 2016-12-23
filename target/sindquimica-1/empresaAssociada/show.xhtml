@@ -1,0 +1,100 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+	
+	
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Detalhe de Empresa Associada</title>
+
+    <!-- Bootstrap -->
+<h:form id="form">	
+	<div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="page-header" style="border-bottom:0; margin-top:0">
+              <h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.prepareUpdate}" id="btnOpenEdit" 
+              value="Editar"  class="btn btn-primary">  
+       		 <f:param name="idEmpresaAssociada" value="#{empresaAssociadaMB.empresaAssociada.id}" />  
+        	</h:commandButton>
+            <span class="pull-right"></span>
+              <h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.delete}" id="btnOpenDelete"
+              value="Deletar"  class="btn btn-primary">    
+        	 <f:setPropertyActionListener target="#{empresaAssociadaMB.empresaAssociada}" value="#{empresaAssociadaMB.empresaAssociada}" />   
+             </h:commandButton>
+            <h2>Informações da empresaAssociada</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Código:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.id}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Nome de Fantasia:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.nomeFantasia}</div>
+      </div>  
+      <div class="row form-group">
+        <div class="col-md-2"><b>CNPJ:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.cnpj}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Razão Social:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.razaoSocial}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Fones:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.telefones}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Responsável:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.responsavel}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Email:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.email}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Site:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.site}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Empresa:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.empresa.razaoSocial}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Endereço:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.endereco.logradouro}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Número:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.endereco.numero}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Bairro:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.endereco.bairro}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Cidade:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.endereco.cidade}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Complemento:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.endereco.complemento}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Status:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.status}</div>
+      </div>
+      <a href="/sindquimica-1/empresaAssociada/lista.xhtml">Voltar</a>
+    </div>
+			
+</h:form>
+</ui:define>
+</ui:composition>

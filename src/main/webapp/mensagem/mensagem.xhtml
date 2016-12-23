@@ -1,0 +1,83 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+	
+	
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Mensagems</title>
+
+<head>
+
+<style type="text/css">
+   .ui-fieldset .ui-fieldset-legend {
+         padding: 3px 3px !important;
+         background: transparent;
+   }
+</style>
+
+</head>
+
+    <!-- Bootstrap -->
+<h:form id="form">	
+	<div class="container">
+	
+	<div class="row">
+	
+	<p:dataTable id="checkboxDTUsuarios" var="usuario" value="#{mensagemMB.usuarios}" selection="#{mensagemMB.selectedUsuarios}" 
+	rowKey="#{usuario.id}" style="margin-bottom:0;width:300px">
+        <f:facet name="header">
+            Usuários
+        </f:facet>
+        <p:column selectionMode="multiple" width="5%" style="text-align:center"/>
+        <p:column headerText="Nome" width="10%">
+            <h:outputText value="#{usuario.nome}" />
+        </p:column>
+    </p:dataTable>
+    
+    <br/><br/>
+    
+    <p:dataTable id="checkboxDTGrupos" var="grupo" value="#{mensagemMB.grupos}" selection="#{mensagemMB.selectedGrupos}" 
+	rowKey="#{grupo.id}" style="margin-bottom:0;width:300px">
+        <f:facet name="header">
+            Grupos
+        </f:facet>
+        <p:column selectionMode="multiple" width="5%" style="text-align:center"/>
+        <p:column headerText="Nome" width="10%">
+            <h:outputText value="#{grupo.nome}" />
+        </p:column>
+    </p:dataTable>
+	
+	
+	</div>
+	
+	
+      <div class="row" style="margin-bottom:0;margin-left:200px;margin-top:-250px">
+             
+        <h3 style="margin-top: 0;margin-left:450px;">Mensagem</h3>
+    	<p:inputTextarea rows="5" cols="100" value="#{mensagemMB.mensagem.conteudo}" style="margin-left:200px"
+    	 queryDelay="750" minQueryLength="4" />
+        
+        
+      </div>
+      <h:commandButton id="msgSubmit" class="btn btn-primary" value="Enviar" action="#{mensagemMB.postMessage}" 
+      style="margin-top: 0;margin-left:680px;" />
+      
+	  <div class="row" style="margin-top:120px">
+      
+      <p:panel binding="#{mensagemMB.panel}"/> 
+     
+      </div>
+      
+      <a href="../tipoDocumento/lista.xhtml">Voltar</a>
+    </div>
+			
+</h:form>
+</ui:define>
+</ui:composition>

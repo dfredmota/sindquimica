@@ -7,23 +7,28 @@
     <title>Menu</title>
     <script name="jquery/jquery.js" library="primefaces"></script>
     <link type="text/css" rel="stylesheet" href="/sind_quimica/faces/javax.faces.resource/theme.css?ln=primefaces-glass-x" />
+        <style>
+    .ui-menuitem-text{
+    	color:#FFFFFF;    
+    }
+    </style>
 </h:head>
 <h:form>
  
     <p:growl id="messages"/>
  
     <p:menubar styleClass="menu">
+    
+    		<p:submenu  label="Cadastros" style="font-weight:bold; color:#000000;">
             <p:menuitem value="Empresa"  url="/empresa/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Tipo de Documento" url="/tipoDocumento/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Empresa Associada" url="/empresaAssociada/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
-            <p:menuitem value="Usuários" url="/usuario/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" />
-            <p:menuitem value="Timeline" url="#" style="font-weight:bold; color:#FFFFFF;"/>
+            <p:menuitem value="Usuários" url="/usuario/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" />          
+            </p:submenu>
  
-        <p:menuitem value="Sair" url="http://www.primefaces.org" icon="ui-icon-close" style="font-weight:bold; color:#FFFFFF;" />
- 
-        <f:facet name="options">
-            <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
-        </f:facet>
+ 		<p:menuitem value="Grupos" url="/grupo/lista.xhtml" style="font-weight:bold; color:#FFFFFF;"/>
+ 		<p:menuitem value="TimeLine" url="/mensagem/mensagem.xhtml" style="font-weight:bold; color:#FFFFFF;"/>
+        <p:menuitem value="Sair" action="#{login.logout}" icon="ui-icon-close" style="font-weight:bold; color:#FFFFFF;" />
     </p:menubar>
 </h:form>
 </html>

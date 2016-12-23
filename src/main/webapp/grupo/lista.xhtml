@@ -1,0 +1,42 @@
+<ui:composition template="/template/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui">
+     <ui:define name="content">
+     <h:form id="form">   
+    <h2>Lista de Grupos</h2>
+    
+    <br/>   
+    
+    <h:commandButton value="Incluir" action="#{grupoMB.prepareInsert}" class="btn btn-primary"/>
+    
+    <br/>     
+    <br/>
+         
+
+    <p:dataTable var="grupo" value="#{grupoMB.lazyModel}" paginator="true" rows="10"
+    			 rowKey="#{grupo.id}" paginatorPosition="bottom"
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{grupoMB.grupo}" id="grupoTable" lazy="true">
+        <p:ajax event="rowSelect" listener="#{grupoMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />
+        <p:column headerText="Id" sortBy="#{grupo.id}" filterBy="#{grupo.id}">
+            <h:outputText value="#{grupo.id}" />
+        </p:column>
+        <p:column headerText="Nome" sortBy="#{grupo.nome}" filterBy="#{grupo.nome}">
+            <h:outputText value="#{grupo.nome}" />
+        </p:column>
+        <p:column headerText="Participantes" sortBy="#{grupo.participantes}" filterBy="#{grupo.participantes}">
+            <h:outputText value="#{grupo.participantes}" />
+        </p:column>
+
+    </p:dataTable>
+             
+        <h:commandButton ajax="false" title="Edit" action="/grupo/show.xhtml" id="btnOpenShow" style="display:none"
+            value="Show">    
+        <f:setPropertyActionListener target="#{grupoMB.grupo}" value="#{grupoMB.grupo}" />
+        </h:commandButton>
+    </h:form>
+</ui:define>
+</ui:composition>

@@ -5,20 +5,19 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:p="http://primefaces.org/ui">
      <ui:define name="content">
-    
+     <h:form id="form">   
     <h2>Lista de Tipo de Documento</h2>
     
     <br/>   
     
-    <p:commandButton value="Incluir" action="#{tipoDocumentoMB.prepareInsert}">
-    </p:commandButton>
+    <h:commandButton value="Incluir" action="#{tipoDocumentoMB.prepareInsert}" class="btn btn-primary" />
     
     <br/>     
     <br/>
          
-    <h:form id="form">
+
     <p:dataTable var="tipoDocumento" value="#{tipoDocumentoMB.lazyModel}" paginator="true" rows="10"
-    			 rowKey="#{tipoDocumento.id}"
+    			 rowKey="#{tipoDocumento.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{tipoDocumentoMB.tipoDocumento}" id="tipoDocumentoTable" lazy="true">
         <p:ajax event="rowSelect" listener="#{tipoDocumentoMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />

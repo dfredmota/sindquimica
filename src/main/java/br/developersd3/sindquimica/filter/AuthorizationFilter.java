@@ -34,7 +34,7 @@ public class AuthorizationFilter implements Filter {
 
 			String reqURI = reqt.getRequestURI();
 			if (reqURI.indexOf("login.xhtml") >= 0
-					|| (ses != null && ses.getAttribute("username") != null)
+					|| (ses != null && ses.getAttribute("userId") != null)
 					|| reqURI.indexOf("/public/") >= 0
 					|| reqURI.contains("javax.faces.resource"))
 				chain.doFilter(request, response);

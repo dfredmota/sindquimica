@@ -58,6 +58,10 @@ public class Usuario {
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+	
+	private String login;
+	
+	private String password;
 
 	@PrePersist
 	protected void onCreate() {
@@ -142,6 +146,30 @@ public class Usuario {
 
 	public void setEmpresa(EmpresaAssociada empresa) {
 		this.empresa = empresa;
+	}
+
+	public List<Documento> getListaDocumentos() {
+		return listaDocumentos;
+	}
+
+	public void setListaDocumentos(List<Documento> listaDocumentos) {
+		this.listaDocumentos = listaDocumentos;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

@@ -2,6 +2,7 @@ package br.developersd3.sindquimica.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
@@ -60,6 +63,14 @@ public class Empresa  implements Serializable{
 	@Column(name="created_at", nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+	
+	@OneToMany
+	@JoinTable(name="cnae_empresa",
+            joinColumns={@JoinColumn(name="empresa_id",  
+             referencedColumnName="id")},  
+            inverseJoinColumns={@JoinColumn(name="cnae_id",   
+             referencedColumnName="id")}) 
+	private List<Cnae> cnaes;
 
 	@PrePersist
 	protected void onCreate() {
@@ -69,6 +80,14 @@ public class Empresa  implements Serializable{
 	@Column(name="deleted_at", nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deletedAt;
+	
+	public List<Cnae> getCnaes() {
+		return cnaes;
+	}
+
+	public void setCnaes(List<Cnae> cnaes) {
+		this.cnaes = cnaes;
+	}
 
 	public Integer getId() {
 		return id;

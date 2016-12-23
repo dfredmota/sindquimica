@@ -47,86 +47,88 @@
       	<div class="col-md-12">
       	<h:form id="form" class="form-horizontal">
 			  <div class="form-group">
-			    <label for="1" class="col-sm-2 control-label">CNPJ</label>
+			    <label for="1" class="col-sm-1 control-label">CNPJ</label>
 			    <div class="col-sm-3">
-			      <p:inputMask value="#{empresaController.empresa.cnpj}" class="form-control" mask="99.999.999/9999-99" />
+			      <p:inputMask required="true" requiredMessage="Cnpj obrigatório" 
+			      value="#{empresaController.empresa.cnpj}" class="form-control" mask="99.999.999/9999-99" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="2" class="col-sm-2 control-label">Nome de Fantasia</label>
+			    <label for="2" class="col-sm-1 control-label">Fantasia</label>
 			    <div class="col-sm-8">
-			      <h:inputText value="#{empresaController.empresa.nomeFantasia}" class="form-control" />
+			      <h:inputText required="true" requiredMessage="Nome Fantasia obrigatório"  value="#{empresaController.empresa.nomeFantasia}" class="form-control" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="3" class="col-sm-2 control-label">Razão Social</label>
+			    <label for="3" class="col-sm-1 control-label">Razão Social</label>
 			    <div class="col-sm-8">
-			      <h:inputText value="#{empresaController.empresa.razaoSocial}" class="form-control" />
+			      <h:inputText value="#{empresaController.empresa.razaoSocial}" required="true" requiredMessage="Razão social obrigatório" 
+			       class="form-control" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="4" class="col-sm-2 control-label">Responsável</label>
+			    <label for="4" class="col-sm-1 control-label">Responsável</label>
 			    <div class="col-sm-8">
-			      <h:inputText value="#{empresaController.empresa.responsavel}" class="form-control" />
+			      <h:inputText required="true" requiredMessage="Responsável obrigatório"  value="#{empresaController.empresa.responsavel}" class="form-control" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="6" class="col-sm-2 control-label">Email</label>
+			    <label for="6" class="col-sm-1 control-label">Email</label>
 			    <div class="col-sm-4">
-			      <h:inputText value="#{empresaController.empresa.email}" class="form-control" />
+			      <h:inputText required="true" requiredMessage="Email obrigatório" value="#{empresaController.empresa.email}" class="form-control" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="7" class="col-sm-2 control-label">Site</label>
+			    <label for="7" class="col-sm-1 control-label">Site</label>
 			    <div class="col-sm-4">
 			      <h:inputText value="#{empresaController.empresa.site}" class="form-control" />
 			    </div>
 			  </div>
 			  
 			  <div class="form-group">
-			    <label for="8" class="col-sm-2 control-label">Endereço</label>
+			    <label for="8" class="col-sm-1 control-label">Endereço</label>
 			    <div class="col-sm-4">
 			      <h:inputText value="#{empresaController.empresa.endereco.logradouro}" class="form-control" />
 			    </div>
 			  </div>
 			  
 			  <div class="form-group">
-			    <label for="8" class="col-sm-2 control-label">Número</label>
+			    <label for="8" class="col-sm-1 control-label">Número</label>
 			    <div class="col-sm-4">
 			      <h:inputText value="#{empresaController.empresa.endereco.numero}" class="form-control" />
 			    </div>
 			  </div>
 			  
 			  <div class="form-group">
-			    <label for="8" class="col-sm-2 control-label">Bairro</label>
+			    <label for="8" class="col-sm-1 control-label">Bairro</label>
 			    <div class="col-sm-4">
 			      <h:inputText value="#{empresaController.empresa.endereco.bairro}" class="form-control" />
 			    </div>
 			  </div>
 			  
 			  <div class="form-group">
-			    <label for="8" class="col-sm-2 control-label">Cidade</label>
+			    <label for="8" class="col-sm-1 control-label">Cidade</label>
 			    <div class="col-sm-4">
 			      <h:inputText value="#{empresaController.empresa.endereco.cidade}" class="form-control" />
 			    </div>
 			  </div>
 			  
 			  <div class="form-group">
-			    <label for="8" class="col-sm-2 control-label">Complemento</label>
+			    <label for="8" class="col-sm-1 control-label">Complemento</label>
 			    <div class="col-sm-4">
 			      <h:inputText value="#{empresaController.empresa.endereco.complemento}" class="form-control" />
 			    </div>
 			  </div>
 			  
 			  <div class="form-group">
-			    <label for="8" class="col-sm-2 control-label">Cep</label>
+			    <label for="8" class="col-sm-1 control-label">Cep</label>
 			    <div class="col-sm-4">
 			      <p:inputMask value="#{empresaController.empresa.endereco.cep}" class="form-control" mask="99.999-999" />
 			    </div>
 			  </div>			  
 			  
 			  <div class="form-group">
-			    <label for="8" class="col-sm-2 control-label">Status</label>
+			    <label for="8" class="col-sm-1 control-label">Status</label>
 			    <div class="col-sm-4">
 			      <p:selectBooleanCheckbox value="#{empresaController.empresa.status}" /> Ativo
 			    </div>
@@ -136,7 +138,7 @@
 						<p:tab title="Telefones">
 						
 						<div class="form-group">
-					    <label for="4" class="col-sm-2 control-label">Telefones</label>
+					    <label for="4" class="col-sm-1 control-label">Telefones</label>
 					    <div class="col-sm-4">
 						  <p:inputMask id="phone" value="#{empresaController.telefone}" mask="(99) 999-999999" class="form-control"/>
 					    </div>
@@ -157,7 +159,43 @@
 								</p:column>
 							</p:dataTable>
 
-						</p:tab>					
+						</p:tab>	
+						
+						
+						<p:tab title="Cnaes">
+
+
+							<div class="form-group">
+								<label for="4" class="col-sm-2 control-label">Cnae</label>
+								<div class="col-sm-8">
+									<p:selectOneMenu value="#{empresaController.cnaeId}" id="cnaeId">
+										<f:selectItems value="#{empresaController.cnaes}"
+											var="cnae" itemLabel="#{cnae.descricao}" itemValue="#{cnae.id}" />
+									</p:selectOneMenu>
+								</div>
+								<h:commandButton ajax="false" title="Edit" action="#{empresaController.addCnae}" id="btnAddCnae" 
+	              			value="+"  class="btn btn-primary" />
+							</div>
+							
+							
+							<p:dataTable var="cnae" value="#{empresaController.empresa.cnaes}">
+								<p:column headerText="Código" width="10%">
+									<h:outputText value="#{cnae.codigo}" />
+								</p:column>
+								<p:column headerText="Descrição" width="50%">
+									<h:outputText value="#{cnae.descricao}" />
+								</p:column>
+								<p:column headerText="Ações" width="10%">
+								<h:commandButton ajax="false" title="Edit" action="#{empresaController.deleteCnae}" id="btnOpenDeleteDoc"
+              					value="Excluir"  class="btn btn-primary"> 
+              					<f:setPropertyActionListener value="#{telefone}" target="#{empresaController.telefone}">
+              					</f:setPropertyActionListener>
+              					</h:commandButton>
+								</p:column>
+							</p:dataTable>
+
+
+						</p:tab>				
 					
 					</p:tabView>
 			  
@@ -166,7 +204,7 @@
               <h:commandButton ajax="false" title="Edit" action="#{empresaController.create}" id="btnUpdate" 
 	              value="Salvar"  class="btn btn-primary" /> 
             <span class="pull-right"></span>
-              <h:commandButton ajax="false" title="Cancelar" action="/empresa/lista.xhtml" id="btnClearForm" 
+              <h:commandButton ajax="false" title="Cancelar" action="/empresa/lista.xhtml" immediate="true" id="btnClearForm" 
 	              value="Cancelar"  class="btn btn-primary"/>
          	 </div>
         	</div>

@@ -1,0 +1,50 @@
+<ui:composition template="/template/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui">
+     <ui:define name="content">
+       <h:form id="form"> 
+    <h2>Lista de Empresas</h2>
+    
+    <br/>   
+    
+    <h:commandButton value="Incluir" action="#{empresaController.prepareInsert}" class="btn btn-primary"/>
+    
+    <br/>     
+    <br/>
+         
+
+    <p:dataTable var="empresa" value="#{empresaController.lazyModel}" paginator="true" rows="10"
+    			 rowKey="#{empresa.id}"
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{empresaController.empresa}" id="empresaTable" lazy="true">
+        <p:ajax event="rowSelect" listener="#{empresaController.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />
+        <p:column headerText="Id" sortBy="#{empresa.id}" filterBy="#{empresa.id}">
+            <h:outputText value="#{empresa.id}" />
+        </p:column>
+        <p:column headerText="Razão Social" sortBy="#{empresa.razaoSocial}" filterBy="#{empresa.razaoSocial}">
+            <h:outputText value="#{empresa.razaoSocial}" />
+        </p:column>
+        <p:column headerText="Nome Fantasia" sortBy="#{empresa.nomeFantasia}" filterBy="#{empresa.nomeFantasia}">
+            <h:outputText value="#{empresa.nomeFantasia}" />
+        </p:column>
+        <p:column headerText="Responsável" sortBy="#{empresa.responsavel}" filterBy="#{empresa.responsavel}">
+            <h:outputText value="#{empresa.responsavel}" />
+        </p:column>
+        <p:column headerText="Telefones" sortBy="#{empresa.telefones}" filterBy="#{empresa.telefones}">
+            <h:outputText value="#{empresa.telefones}" />
+        </p:column>
+        <p:column headerText="Endereço" sortBy="#{empresa.endereco.logradouro}" filterBy="#{empresa.endereco.logradouro}">
+            <h:outputText value="#{empresa.endereco.logradouro}" />
+        </p:column>
+    </p:dataTable>
+             
+        <h:commandButton ajax="false" title="Edit" action="/empresa/show.xhtml" id="btnOpenShow" style="display:none"
+            value="Show">    
+        <f:setPropertyActionListener target="#{empresaController.empresa}" value="#{empresaController.empresa}" />
+        </h:commandButton>
+    </h:form>
+</ui:define>
+</ui:composition>

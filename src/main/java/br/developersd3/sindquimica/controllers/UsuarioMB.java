@@ -147,7 +147,7 @@ public class UsuarioMB implements Serializable {
 		
 		telefones = new ArrayList<String>();
 		
-		if(this.usuario.getTelefones() != null && this.usuario.getTelefones().isEmpty()){
+		if(this.usuario.getTelefones() != null && !this.usuario.getTelefones().isEmpty()){
 			
 			String[] telefonesArr = this.usuario.getTelefones().split(";");
 			
@@ -175,6 +175,8 @@ public class UsuarioMB implements Serializable {
 		
 		documento = new Documento();
 		documento.setTipo(new TipoDocumento());
+		
+		listaDeEmpresasAssociadas = empresaAssociadaService.all();
 
 		return "prepareInsert";
 	}
@@ -201,6 +203,13 @@ public class UsuarioMB implements Serializable {
 			}	
 			
 			usuario.setTelefones(telefonesUsuario);			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um telefone","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
 		}
 			
 		if(usuario.getStatus() == null)
@@ -263,6 +272,13 @@ public class UsuarioMB implements Serializable {
 			}	
 			
 			usuario.setTelefones(telefonesUsuario);			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um telefone","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
 		}
 
 		try {

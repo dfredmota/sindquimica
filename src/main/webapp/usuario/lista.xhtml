@@ -5,20 +5,19 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:p="http://primefaces.org/ui">
      <ui:define name="content">
-    
+    <h:form id="form">    
     <h2>Lista de Usuários</h2>
     
     <br/>   
     
-    <p:commandButton value="Incluir" action="#{usuarioMB.prepareInsert}">
-    </p:commandButton>
+    <h:commandButton value="Incluir" action="#{usuarioMB.prepareInsert}" class="btn btn-primary"/>
     
     <br/>     
     <br/>
          
-    <h:form id="form">
+
     <p:dataTable var="usuario" value="#{usuarioMB.lazyModel}" paginator="true" rows="10"
-    			 rowKey="#{usuario.id}"
+    			 rowKey="#{usuario.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{usuarioMB.usuario}" id="usuarioTable" lazy="true">
         <p:ajax event="rowSelect" listener="#{usuarioMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />

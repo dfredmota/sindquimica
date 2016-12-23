@@ -54,11 +54,11 @@ public class Login implements Serializable {
 	//validate login
 	public String validateUsernamePassword() {
 		
-		boolean valid = LoginDAO.validate(user, pwd);
+		Integer valid = LoginDAO.validate(user, pwd);
 		
-		if (valid) {
+		if (valid != 0) {
 			HttpSession session = SessionUtils.getSession();
-			session.setAttribute("username", user);
+			session.setAttribute("userId", valid);
 			return "admin";
 		} else {
 			FacesContext.getCurrentInstance().addMessage(

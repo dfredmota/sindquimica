@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Menu</title>
+    <script name="jquery/jquery.js" library="primefaces"></script>
+    <link type="text/css" rel="stylesheet" href="/sind_quimica/faces/javax.faces.resource/theme.css?ln=primefaces-glass-x" />
+</h:head>
+<h:form>
+ 
+    <p:growl id="messages"/>
+ 
+    <p:menubar styleClass="menu">
+            <p:menuitem value="Empresa"  url="/empresa/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Tipo de Documento" url="/tipoDocumento/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Empresa Associada" url="/empresaAssociada/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Usuários" url="/usuario/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Timeline" url="#" style="font-weight:bold; color:#FFFFFF;"/>
+ 
+        <p:menuitem value="Sair" url="http://www.primefaces.org" icon="ui-icon-close" style="font-weight:bold; color:#FFFFFF;" />
+ 
+        <f:facet name="options">
+            <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+        </f:facet>
+    </p:menubar>
+</h:form>
+</html>

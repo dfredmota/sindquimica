@@ -1,6 +1,7 @@
 package br.developersd3.sindquimica.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -58,6 +61,14 @@ public class EmpresaAssociada {
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+	
+	@OneToMany
+	@JoinTable(name="cnae_empresa_associada",
+            joinColumns={@JoinColumn(name="empresa_associada_id",  
+             referencedColumnName="id")},  
+            inverseJoinColumns={@JoinColumn(name="cnae_id",   
+             referencedColumnName="id")}) 
+	private List<Cnae> cnaes;
 
 	@PrePersist
 	protected void onCreate() {
@@ -158,6 +169,14 @@ public class EmpresaAssociada {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public List<Cnae> getCnaes() {
+		return cnaes;
+	}
+
+	public void setCnaes(List<Cnae> cnaes) {
+		this.cnaes = cnaes;
 	}
 
 }

@@ -5,20 +5,19 @@
      xmlns:ui="http://java.sun.com/jsf/facelets"
      xmlns:p="http://primefaces.org/ui">
      <ui:define name="content">
-    
+     <h:form id="form">   
     <h2>Lista de Empresa Associadas</h2>
     
     <br/>   
     
-    <p:commandButton value="Incluir" action="#{empresaAssociadaMB.prepareInsert}">
-    </p:commandButton>
+    <h:commandButton value="Incluir" action="#{empresaAssociadaMB.prepareInsert}" class="btn btn-primary"/>
     
     <br/>     
     <br/>
          
-    <h:form id="form">
+
     <p:dataTable var="empresaAssociada" value="#{empresaAssociadaMB.lazyModel}" paginator="true" rows="10"
-    			 rowKey="#{empresaAssociada.id}"
+    			 rowKey="#{empresaAssociada.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{empresaAssociadaMB.empresaAssociada}" id="empresaAssociadaTable" lazy="true">
         <p:ajax event="rowSelect" listener="#{empresaAssociadaMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />

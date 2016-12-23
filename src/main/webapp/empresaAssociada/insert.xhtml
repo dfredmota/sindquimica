@@ -46,6 +46,20 @@
       <div class="row">
       	<div class="col-md-12">
       	<h:form id="form" class="form-horizontal">
+      	
+      		<div class="form-group">
+			    <label for="4" class="col-sm-2 control-label">Empresa</label>
+			    <div class="col-sm-8">
+			<p:selectOneMenu value="#{empresaAssociadaMB.empresaId}" id="empresaId">
+			    <f:selectItems value="#{empresaAssociadaMB.empresas}" var="empresa" itemLabel="#{empresa.nomeFantasia}" 
+			    itemValue="#{empresa.id}" />
+			    <f:ajax event="change" render="@form" listener="#{empresaAssociadaMB.setListaCnaes}" />  
+			</p:selectOneMenu>				
+			    </div>
+			  </div>
+      	
+      	
+      	
 			  <div class="form-group">
 			    <label for="1" class="col-sm-2 control-label">CNPJ</label>
 			    <div class="col-sm-3">
@@ -71,15 +85,7 @@
 			    </div>
 			  </div>
 			  
-			  <div class="form-group">
-			    <label for="4" class="col-sm-2 control-label">Empresa</label>
-			    <div class="col-sm-8">
-			<p:selectOneMenu value="#{empresaAssociadaMB.empresaId}" id="empresaId">
-			    <f:selectItems value="#{empresaAssociadaMB.empresas}" var="empresa" itemLabel="#{empresa.nomeFantasia}" 
-			    itemValue="#{empresa.id}" />
-			</p:selectOneMenu>				
-			    </div>
-			  </div>		
+			  		
 			  <div class="form-group">
 			    <label for="6" class="col-sm-2 control-label">Email</label>
 			    <div class="col-sm-4">
@@ -167,7 +173,43 @@
 								</p:column>
 							</p:dataTable>
 
-						</p:tab>					
+						</p:tab>		
+						
+						
+						<p:tab title="Cnaes">
+
+
+							<div class="form-group">
+								<label for="4" class="col-sm-2 control-label">Cnae</label>
+								<div class="col-sm-8">
+									<p:selectOneMenu value="#{empresaAssociadaMB.cnaeId}" id="cnaeId">
+										<f:selectItems value="#{empresaAssociadaMB.cnaes}"
+											var="cnae" itemLabel="#{cnae.descricao}" itemValue="#{cnae.id}" />
+									</p:selectOneMenu>
+								</div>
+								<h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.addCnae}" id="btnAddCnae" 
+	              			value="+"  class="btn btn-primary" />
+							</div>
+							
+							
+							<p:dataTable var="cnae" value="#{empresaAssociadaMB.empresaAssociada.cnaes}">
+								<p:column headerText="Código" width="10%">
+									<h:outputText value="#{cnae.codigo}" />
+								</p:column>
+								<p:column headerText="Descrição" width="50%">
+									<h:outputText value="#{cnae.descricao}" />
+								</p:column>
+								<p:column headerText="Ações" width="10%">
+								<h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.deleteCnae}" id="btnOpenDeleteDoc"
+              					value="Excluir"  class="btn btn-primary"> 
+              					<f:setPropertyActionListener value="#{telefone}" target="#{empresaAssociadaMB.telefone}">
+              					</f:setPropertyActionListener>
+              					</h:commandButton>
+								</p:column>
+							</p:dataTable>
+
+
+						</p:tab>			
 					
 					</p:tabView>
 					
@@ -176,7 +218,7 @@
               <h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.create}" id="btnUpdate" 
 	              value="Salvar"  class="btn btn-primary" /> 
             <span class="pull-right"></span>
-              <h:commandButton ajax="false" title="Cancelar" action="/empresa/lista.xhtml" id="btnClearForm" 
+              <h:commandButton ajax="false" title="Cancelar" action="/empresaAssociada/lista.xhtml" immediate="true" id="btnClearForm" 
 	              value="Cancelar"  class="btn btn-primary"/>
          	 </div>
         	</div>

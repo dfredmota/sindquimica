@@ -1,0 +1,50 @@
+<ui:composition template="/template/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui">
+     <ui:define name="content">
+     <h:form id="form">   
+    <h2>Lista de Empresa Associadas</h2>
+    
+    <br/>   
+    
+    <h:commandButton value="Incluir" action="#{empresaAssociadaMB.prepareInsert}" class="btn btn-primary"/>
+    
+    <br/>     
+    <br/>
+         
+
+    <p:dataTable var="empresaAssociada" value="#{empresaAssociadaMB.lazyModel}" paginator="true" rows="10"
+    			 rowKey="#{empresaAssociada.id}"
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{empresaAssociadaMB.empresaAssociada}" id="empresaAssociadaTable" lazy="true">
+        <p:ajax event="rowSelect" listener="#{empresaAssociadaMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />
+        <p:column headerText="Id" sortBy="#{empresaAssociada.id}" filterBy="#{empresaAssociada.id}">
+            <h:outputText value="#{empresaAssociada.id}" />
+        </p:column>
+        <p:column headerText="Razão Social" sortBy="#{empresaAssociada.razaoSocial}" filterBy="#{empresaAssociada.razaoSocial}">
+            <h:outputText value="#{empresaAssociada.razaoSocial}" />
+        </p:column>
+        <p:column headerText="Nome Fantasia" sortBy="#{empresaAssociada.nomeFantasia}" filterBy="#{empresaAssociada.nomeFantasia}">
+            <h:outputText value="#{empresaAssociada.nomeFantasia}" />
+        </p:column>
+        <p:column headerText="Responsável" sortBy="#{empresaAssociada.responsavel}" filterBy="#{empresaAssociada.responsavel}">
+            <h:outputText value="#{empresaAssociada.responsavel}" />
+        </p:column>
+        <p:column headerText="Telefones" sortBy="#{empresaAssociada.telefones}" filterBy="#{empresaAssociada.telefones}">
+            <h:outputText value="#{empresaAssociada.telefones}" />
+        </p:column>
+        <p:column headerText="Endereço" sortBy="#{empresaAssociada.endereco.logradouro}" filterBy="#{empresaAssociada.endereco.logradouro}">
+            <h:outputText value="#{empresaAssociada.endereco.logradouro}" />
+        </p:column>
+    </p:dataTable>
+             
+        <h:commandButton ajax="false" title="Edit" action="/empresaAssociada/show.xhtml" id="btnOpenShow" style="display:none"
+            value="Show">    
+        <f:setPropertyActionListener target="#{empresaAssociadaMB.empresaAssociada}" value="#{empresaAssociadaMB.empresaAssociada}" />
+        </h:commandButton>
+    </h:form>
+</ui:define>
+</ui:composition>

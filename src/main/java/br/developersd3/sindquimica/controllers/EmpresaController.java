@@ -17,8 +17,10 @@ import org.primefaces.model.LazyDataModel;
 
 import br.developersd3.sindquimica.datatable.LazyEmpresaDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
+import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.Empresa;
 import br.developersd3.sindquimica.models.Endereco;
+import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaService;
 
 @ManagedBean(name = "empresaController")
@@ -38,12 +40,49 @@ public class EmpresaController implements Serializable {
 
 	@ManagedProperty(name = "empresaService", value = "#{empresaService}")
 	private EmpresaService empresaService;
+	
+	@ManagedProperty(name = "cnaeService", value = "#{cnaeService}")
+	private CnaeService cnaeService;
+	
+	private Cnae        cnae;
+	
+	private Integer     cnaeId;
+	
+	private List<Cnae>  cnaes;
 
 	@PostConstruct
 	public void init() {
 		lazyModel = new LazyEmpresaDataModel(empresaService.all());
 		telefones = new ArrayList<String>();
 
+	}
+	
+	public String addCnae(){
+		
+		Cnae cnae = cnaeService.getById(cnaeId);
+		
+		if(!this.empresa.getCnaes().contains(cnae)){
+			this.empresa.getCnaes().add(cnae);
+		}else{
+			FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Esse Cnae já existe na lista!", "Esse Cnae já existe na lista!"));
+		}
+		
+		return null;
+	}
+	
+	public String deleteCnae(){
+		
+		Cnae cnae = cnaeService.getById(cnaeId);
+		
+		for(Cnae cn : this.empresa.getCnaes()){
+			
+			if(cn.getId().equals(cnae.getId()));
+			this.empresa.getCnaes().remove(cn);
+			break;
+		}
+				
+		return null;
 	}
 	
 	public String addTelefone(){
@@ -75,11 +114,13 @@ public class EmpresaController implements Serializable {
 
 		this.empresa = empresaService.getById(Integer.parseInt(idEmpresa));
 		
+		cnaes = cnaeService.all();
+		
 		// setando telefones
 		
 		telefones = new ArrayList<String>();
 		
-		if(this.empresa.getTelefones() != null && this.empresa.getTelefones().isEmpty()){
+		if(this.empresa.getTelefones() != null && !this.empresa.getTelefones().isEmpty()){
 			
 			String[] telefonesArr = this.empresa.getTelefones().split(";");
 			
@@ -98,7 +139,11 @@ public class EmpresaController implements Serializable {
 		
 		this.empresa.setEndereco(new Endereco());
 		
+		this.empresa.setCnaes(new ArrayList<Cnae>());
+		
 		telefones = new ArrayList<String>();
+		
+		this.cnaes = cnaeService.all();
 
 		return "prepareInsert";
 	}
@@ -106,6 +151,8 @@ public class EmpresaController implements Serializable {
 	public String create() {
 
 		String str = "insert";
+		
+		cnaes = cnaeService.all();
 		
 		if(telefones != null && !telefones.isEmpty()){
 			
@@ -118,7 +165,15 @@ public class EmpresaController implements Serializable {
 				
 			}	
 			
-			empresa.setTelefones(telefonesUsuario);			
+			empresa.setTelefones(telefonesUsuario);	
+			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um telefone","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
 		}
 		
 		if(empresa.getStatus() == null)
@@ -130,7 +185,7 @@ public class EmpresaController implements Serializable {
 
 		}
 		
-		FacesMessage msg = new FacesMessage("Empresa Criado com sucesso!");
+		FacesMessage msg = new FacesMessage("Empresa Criada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
 		lazyModel = new LazyEmpresaDataModel(empresaService.all());
@@ -161,6 +216,13 @@ public class EmpresaController implements Serializable {
 			}	
 			
 			empresa.setTelefones(telefonesUsuario);			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um telefone","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
 		}
 
 		try {
@@ -253,6 +315,39 @@ public class EmpresaController implements Serializable {
 
 	public void setTelefones(List<String> telefones) {
 		this.telefones = telefones;
-	}	
+	}
+
+	public CnaeService getCnaeService() {
+		return cnaeService;
+	}
+
+	public void setCnaeService(CnaeService cnaeService) {
+		this.cnaeService = cnaeService;
+	}
+
+	public Cnae getCnae() {
+		return cnae;
+	}
+
+	public void setCnae(Cnae cnae) {
+		this.cnae = cnae;
+	}
+
+	public Integer getCnaeId() {
+		return cnaeId;
+	}
+
+	public void setCnaeId(Integer cnaeId) {
+		this.cnaeId = cnaeId;
+	}
+
+	public List<Cnae> getCnaes() {
+		return cnaes;
+	}
+
+	public void setCnaes(List<Cnae> cnaes) {
+		this.cnaes = cnaes;
+	}		
+	
 	
 }

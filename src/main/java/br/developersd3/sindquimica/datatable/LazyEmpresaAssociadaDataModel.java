@@ -9,7 +9,7 @@ import java.util.Map;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import br.developersd3.sindquimica.models.Empresa;
+
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 
  
