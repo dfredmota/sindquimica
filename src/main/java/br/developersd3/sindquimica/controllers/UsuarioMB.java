@@ -1,5 +1,10 @@
 package br.developersd3.sindquimica.controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +16,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 import br.developersd3.sindquimica.datatable.LazyUsuarioDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
@@ -65,6 +77,8 @@ public class UsuarioMB implements Serializable {
 
 	@ManagedProperty(name = "documentoService", value = "#{documentoService}")
 	private DocumentoService documentoService;
+	
+	private UploadedFile file;
 	
 	@PostConstruct
 	public void init() {
@@ -180,6 +194,63 @@ public class UsuarioMB implements Serializable {
 
 		return "prepareInsert";
 	}
+	
+	public void handleFileUpload(FileUploadEvent event) {
+
+        file = event.getFile();
+        
+        
+        HttpServletRequest request = (HttpServletRequest)FacesContext.
+		        getCurrentInstance().getExternalContext().getRequest();
+		String nomeUsuario = null;
+		    if(request!=null){
+
+		    	nomeUsuario = request.getParameter("form:nome_usuario");
+
+
+		    }
+        
+        if (file != null) {       	        	
+
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+	        String dir = servletContext.getRealPath("/");
+			
+			File file1 = new File(dir+"/images/", nomeUsuario + "_" + file.getFileName());
+			this.usuario.setImagemPath(nomeUsuario + "_" + file.getFileName());
+			try {
+				FileOutputStream fos = new FileOutputStream(file1);
+				fos.write(file.getContents());
+				fos.close();
+
+				FacesContext instance = FacesContext.getCurrentInstance();
+				instance.addMessage("mensagens", new FacesMessage(FacesMessage.SEVERITY_INFO,
+						file.getFileName() + " anexado com sucesso", null));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+    }
+	
+	
+	public StreamedContent getImage() throws IOException {
+	    FacesContext context = FacesContext.getCurrentInstance();
+
+	    if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+	        // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
+	        return new DefaultStreamedContent();
+	    }
+	    else {
+	        // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+	    	
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+	        String dir = servletContext.getRealPath("/")+"/images/";
+	    	
+	        return new DefaultStreamedContent(new FileInputStream(new File(dir, this.usuario.getImagemPath())));
+	    }
+	}
 
 	public String create() {
 
@@ -188,7 +259,8 @@ public class UsuarioMB implements Serializable {
 		EmpresaAssociada empresa = empresaAssociadaService.getById(empresaAssociadaId);
 		
 		usuario.setEmpresa(empresa);
-				
+		
+			
 		// recupera os documentos
 		
 		if(telefones != null && !telefones.isEmpty()){
@@ -459,6 +531,14 @@ public class UsuarioMB implements Serializable {
 
 	public void setDocumentoService(DocumentoService documentoService) {
 		this.documentoService = documentoService;
-	}	
-		
+	}
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+			
 }

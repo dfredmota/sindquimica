@@ -22,7 +22,8 @@
   <nodes xsi:type="pageflow:PFPage" name="grupo/insert.xhtml" x="338" y="4333" id="pf148246532365129" referenceLink="//@navigationRule.26/@navigationCase.1/@toViewId|" outlinks="pf148246532365125 pf148246532365130" inlinks="pf148246532365123 pf148246532365130" path="/grupo/insert.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="grupo/show.xhtml" x="122" y="4109" id="pf148246532365131" referenceLink="//@navigationRule.30/@fromViewId|" outlinks="pf148246532365132 pf148246532365127 pf148246532365128" inlinks="pf148246532365124" path="/grupo/show.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="grupo/edit.xhtml" x="338" y="3886" id="pf148246532365133" referenceLink="//@navigationRule.29/@navigationCase.1/@toViewId|" outlinks="pf148246532365126 pf148246532365134" inlinks="pf148246532365132 pf148246532365134" path="/grupo/edit.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="mensagem/mensagem.xhtml" x="122" y="4493" id="pf14824800351300" referenceLink="//@navigationRule.31/@navigationCase.1/@toViewId|" outlinks="pf14824800351301 pf14824800351302" inlinks="pf14824800351301 pf14824800351302" path="/mensagem/mensagem.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="mensagem/mensagem.xhtml" x="122" y="4493" id="pf14824800351300" referenceLink="//@navigationRule.32/@navigationCase.1/@toViewId|" outlinks="pf14824800351301 pf14824800351302" inlinks="pf14824800351301 pf14824800351302" path="/mensagem/mensagem.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="e/mensagem.xhtml" id="pf14825138522824" referenceLink="//@navigationRule.32/@navigationCase.1/@toViewId|" outlinks="pf14825140017207 pf14825140017208" inlinks="pf14825140017207 pf14825140017208" path="/evento/evento.xhtml"/>
   <links id="pf14810865857631" target="pf14810865857632" source="pf14810865857620" outcome="admin"/>
   <links id="pf14815207286649" target="pf148152072866410" source="pf14815207286648" outcome="show"/>
   <links id="pf14815524067610" target="pf148155240676112" source="pf14815207286648" outcome="prepareInsert"/>
@@ -115,4 +116,6 @@
     <bendPoints d1Width="-64" d2Width="-64"/>
   </links>
   <links id="pf14824800351302" target="pf14824800351300" source="pf14824800351300" outcome="sendMessageError"/>
+  <links id="pf14825140017207" target="pf14825138522824" source="pf14825138522824" outcome="eventoOK"/>
+  <links id="pf14825140017208" target="pf14825138522824" source="pf14825138522824" outcome="eventoError"/>
 </pageflow:Pageflow>

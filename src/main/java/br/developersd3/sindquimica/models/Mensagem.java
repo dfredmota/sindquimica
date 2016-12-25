@@ -64,13 +64,23 @@ public class Mensagem implements Serializable{
 	
 	@OneToOne
 	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;	
+	private Usuario usuario;
+	
+	@Column(name="file_name")
+	private String  fileName;
 	
 	@PrePersist
 	protected void onCreate() {
 	    createdAt = new Date();
 	}
 
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 	public Integer getId() {
 		return id;

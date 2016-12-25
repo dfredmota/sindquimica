@@ -45,11 +45,11 @@
       </div>
       <div class="row">
       	<div class="col-md-12">
-      	<h:form id="form" class="form-horizontal">
+      	<h:form id="form" class="form-horizontal" enctype="multipart/form-data">
 			  <div class="form-group">
 			    <label for="1" class="col-sm-2 control-label">Nome</label>
 			    <div class="col-sm-3">
-			      <h:inputText required="true" requiredMessage="Nome obrigatório" value="#{usuarioMB.usuario.nome}" class="form-control" />
+			      <h:inputText id="nome_usuario" required="true" requiredMessage="Nome obrigatório" value="#{usuarioMB.usuario.nome}" class="form-control" />
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -130,6 +130,14 @@
 			      <p:selectBooleanCheckbox value="#{usuarioMB.usuario.status}" /> Ativo
 			    </div>
 			  </div>
+			  
+			  <div class="form-group">
+			    <label for="8" class="col-sm-2 control-label">Foto</label>
+			    <div class="col-sm-4">
+			      <p:fileUpload fileUploadListener="#{usuarioMB.handleFileUpload}" mode="advanced" dragDropSupport="false"
+           			 sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+			    </div>
+			  </div>		  
 
 					<p:tabView scrollable="true">
 						<p:tab title="Telefones">
@@ -211,7 +219,7 @@
               <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.create}" id="btnUpdate" 
 	              value="Salvar"  class="btn btn-primary" /> 
             <span class="pull-right"></span>
-              <h:commandButton ajax="false" title="Cancelar" action="/usuario/lista.xhtml" id="btnClearForm" 
+              <h:commandButton ajax="false" title="Cancelar" action="/usuario/lista.xhtml" immediate="true" id="btnClearForm" 
 	              value="Cancelar"  class="btn btn-primary"/>
           </div>
         	</div>

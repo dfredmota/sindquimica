@@ -16,7 +16,15 @@
     <!-- Bootstrap -->
 <h:form id="form">	
 	<div class="container">
-      <div class="row">
+	
+	 <div class="row" style="border-bottom:0; margin-left:400px">
+      <p:graphicImage value="#{usuarioMB.image}" width="160">
+    	<f:param name="filename" value="usuarioMB.usuario.imagemPath" />
+	  </p:graphicImage> 
+	  </div> 
+		
+	
+      <div class="row" style="border-bottom:0; margin-top:-200px">
         <div class="col-md-12">
           <div class="page-header" style="border-bottom:0; margin-top:0">
               <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.prepareUpdate}" id="btnOpenEdit" 
@@ -32,6 +40,9 @@
           </div>
         </div>
       </div>
+      
+   
+      
       <div class="row form-group">
         <div class="col-md-2"><b>Código:</b></div>
         <div class="col-md-10">#{usuarioMB.usuario.id}</div>
@@ -94,7 +105,7 @@
       </div>
       <div class="row form-group">
         <div class="col-md-2"><b>Status:</b></div>
-        <div class="col-md-10">#{usuarioMB.usuario.status}</div>
+        <div class="col-md-10">#{usuarioMB.usuario.ativo}</div>
       </div>
       <a href="../usuario/lista.xhtml">Voltar</a>
     </div>

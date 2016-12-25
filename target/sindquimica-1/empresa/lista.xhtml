@@ -17,7 +17,7 @@
          
 
     <p:dataTable var="empresa" value="#{empresaController.lazyModel}" paginator="true" rows="10"
-    			 rowKey="#{empresa.id}"
+    			 rowKey="#{empresa.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{empresaController.empresa}" id="empresaTable" lazy="true">
         <p:ajax event="rowSelect" listener="#{empresaController.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />

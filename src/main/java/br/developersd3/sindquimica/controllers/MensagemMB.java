@@ -1,5 +1,10 @@
 package br.developersd3.sindquimica.controllers;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -8,20 +13,30 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIParameter;
 import javax.faces.component.html.HtmlOutputLabel;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.component.fieldset.Fieldset;
+import org.primefaces.component.graphicimage.GraphicImage;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
 
 import br.developersd3.sindquimica.datatable.LazyMensagemDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
@@ -67,17 +82,85 @@ public class MensagemMB implements Serializable {
     
     private Panel panel;
     
+    private UploadedFile file;
+    
     DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
 
 	@PostConstruct
 	public void init() {
 		lazyModel = new LazyMensagemDataModel(mensagemService.all());
 	     
-		montaTimeLine();
-	     
-	          
+		montaTimeLine();          
 
 	}
+	
+	public StreamedContent getImage() throws IOException {
+	    FacesContext context = FacesContext.getCurrentInstance();
+
+	    if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+	        // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
+	        return new DefaultStreamedContent();
+	    }
+	    
+	    else {
+	        // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+	    	
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+	        String dir = servletContext.getRealPath("/")+"/images/";
+	    	
+	        String filename = context.getExternalContext().getRequestParameterMap().get("filename");
+	        
+	        return new DefaultStreamedContent(new FileInputStream(new File(dir, filename)));
+	    }
+	}
+	
+//	public void handleFileUpload(FileUploadEvent event) {
+//
+//        file = event.getFile();
+//        
+//        
+//        // nome do arquivo de imagem da mensagem e : os 10 primeiros caracters + usuarioId
+//        
+//        HttpServletRequest request = (HttpServletRequest)FacesContext.
+//		        getCurrentInstance().getExternalContext().getRequest();
+//		String msg = null;
+//		
+//		if(request!=null){
+//
+//		    	msg = request.getParameter("form:msg");
+//		    	
+//		    	msg = msg.substring(0, 10);
+//		    	
+//				HttpSession session = SessionUtils.getSession();
+//				Integer userId = (Integer)session.getAttribute("userId");
+//				
+//				msg = msg + userId;
+//
+//		    }
+//        
+//        if (file != null) {       	        	
+//
+//			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+//	        String dir = servletContext.getRealPath("/");
+//			
+//			File file1 = new File(dir+"/images/", msg + "_" + file.getFileName());
+//			this.mensagem.setFileName(msg + "_" + file.getFileName());
+//			try {
+//				FileOutputStream fos = new FileOutputStream(file1);
+//				fos.write(file.getContents());
+//				fos.close();
+//
+//				FacesContext instance = FacesContext.getCurrentInstance();
+//				instance.addMessage("mensagens", new FacesMessage(FacesMessage.SEVERITY_INFO,
+//						file.getFileName() + " anexado com sucesso", null));
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//
+//		}
+//    }
 	
 	public void montaTimeLine(){
 		
@@ -115,8 +198,29 @@ public class MensagemMB implements Serializable {
 	    	     labelMsg.setStyle("border:0px");
 	    	     
 	    	     grid.getChildren().add(labelMsg);
+	    	     	    	     
+	    	     
+//	    	     // verifica se a mensagem possui imagem
+//	    	     if(msg.getFileName() != null){
+//	    	    	 
+//	    	      GraphicImage image = new GraphicImage(); 
+//	    	    	 
+//	    	      image.setWidth("160px");
+//	    	      
+//	    	      image.setValueExpression("value", createValueExpression("#{mensagemMB.image}", String.class));
+//	    	      
+//	    	      
+//	    	      UIParameter param = new UIParameter();
+//	    	      param.setName("filename");
+//	    	      param.setValue(msg.getFileName());
+//	    	      image.getChildren().add(param);
+//	    	      
+//	    	      grid.getChildren().add(image);
+//	    	    	 	    	    	 
+//	    	     }
 	    	     
 	    	     field.getChildren().add(grid);
+	    	     
 	    	     
 	    	     panel.getChildren().add(field);  		 
 	    		 
@@ -132,6 +236,30 @@ public class MensagemMB implements Serializable {
 	    	 
 	     }
 		
+	}
+	
+	
+	public void upload(FileUploadEvent event) {
+		file = event.getFile();
+
+		if (file != null) {
+
+			File file1 = new File("/images", file.getFileName());
+			try {
+				FileOutputStream fos = new FileOutputStream(file1);
+				fos.write(event.getFile().getContents());
+				fos.close();
+
+				FacesContext instance = FacesContext.getCurrentInstance();
+				instance.addMessage("mensagens", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						file.getFileName() + " anexado com sucesso", null));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 	}
 	
 	public void onSelect(SelectEvent event) {
@@ -248,6 +376,12 @@ public class MensagemMB implements Serializable {
 		}
 
 		return str;
+	}
+	
+	private static ValueExpression createValueExpression(String valueExpression, Class<?> valueType) {
+	    FacesContext context = FacesContext.getCurrentInstance();
+	    return context.getApplication().getExpressionFactory()
+	        .createValueExpression(context.getELContext(), valueExpression, valueType);
 	}
 	
 		

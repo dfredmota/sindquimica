@@ -40,17 +40,17 @@ width: 100%;
 .ui-menuitem-text{
 float: none!important;
 }
+
 </style>
 </h:head>
 <h:body>
 	<p:layout fullPage="true">
-		<p:layoutUnit position="north" size="80" resizable="false"	closable="false" collapsible="false">
+		<p:layoutUnit position="center">
 			<h:form>
 				<ui:include src="../template/menu.xhtml" />
 			</h:form>
-		</p:layoutUnit>
-
-		<p:layoutUnit position="center">
+			<br/>
+			<br/>
 			<ui:insert name="content"></ui:insert>
 		</p:layoutUnit>
 	</p:layout>

@@ -17,7 +17,7 @@
          
 
     <p:dataTable var="tipoDocumento" value="#{tipoDocumentoMB.lazyModel}" paginator="true" rows="10"
-    			 rowKey="#{tipoDocumento.id}"
+    			 rowKey="#{tipoDocumento.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{tipoDocumentoMB.tipoDocumento}" id="tipoDocumentoTable" lazy="true">
         <p:ajax event="rowSelect" listener="#{tipoDocumentoMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />

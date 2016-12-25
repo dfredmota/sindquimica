@@ -62,6 +62,25 @@ public class Usuario {
 	private String login;
 	
 	private String password;
+	
+	@Column(name="imagem_path")
+	private String imagemPath;
+
+	
+	public String getImagemPath() {
+		return imagemPath;
+	}
+
+	public void setImagemPath(String imagemPath) {
+		this.imagemPath = imagemPath;
+	}
+	
+	public String getAtivo(){
+		if(this.status)
+			return "Liberado";
+		else
+			return "Bloqueado";
+	}
 
 	@PrePersist
 	protected void onCreate() {

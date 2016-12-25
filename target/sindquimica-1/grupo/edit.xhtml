@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Sindiquimica</title>
+<link href="../css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Bootstrap -->
+    <style type="text/css">
+      a {
+        cursor: pointer;
+      }
+      .form-horizontal .control-label{
+		text-align:left;
+	  }
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>  
+
+<div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="page-header" style="border-bottom:0; margin-top:0">
+            <h2>Edição de Grupos</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+      	<div class="col-md-12">
+      	<h:form id="form" class="form-horizontal">
+			  
+      	
+			  <div class="form-group">
+			    <label for="1" class="col-sm-2 control-label">Nome</label>
+			    <div class="col-sm-3">
+			      <h:inputText value="#{grupoMB.grupo.nome}" class="form-control" />
+			    </div>
+			  </div>
+			  
+			  
+			  <p:tabView scrollable="true">
+						
+						<p:tab title="Usuários">
+
+
+							<div class="form-group">
+								<label for="4" class="col-sm-2 control-label">Usuário</label>
+								<div class="col-sm-8">
+									<p:selectOneMenu value="#{grupoMB.usuarioId}" id="usuarioId">
+										<f:selectItems value="#{grupoMB.usuarios}"
+											var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario.id}" />
+									</p:selectOneMenu>
+								</div>
+								<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addUsuario}" id="btnAddUser" 
+	              			value="+"  class="btn btn-primary" />
+							</div>
+							
+							
+							<p:dataTable var="usuario" value="#{grupoMB.grupo.usuarios}">
+								<p:column headerText="Código" width="10%">
+									<h:outputText value="#{usuario.id}" />
+								</p:column>
+								<p:column headerText="Nome" width="50%">
+									<h:outputText value="#{usuario.nome}" />
+								</p:column>
+								<p:column headerText="Ações" width="10%">
+								<h:commandButton ajax="false" title="Edit" action="#{grupoMB.deleteUsuario}" id="btnOpenDeleteUser"
+              					value="Excluir"  class="btn btn-primary"> 
+              					<f:setPropertyActionListener value="#{usuario}" target="#{grupoMB.usuario}">
+              					</f:setPropertyActionListener>
+              					</h:commandButton>
+								</p:column>
+							</p:dataTable>
+
+
+						</p:tab>			
+					
+					</p:tabView>
+												
+						<div class="col-md-12">
+						<div class="page-header" style="border-bottom: 0; margin-top: 0">
+			      <h:commandButton ajax="false" title="Edit" action="#{grupoMB.update}" id="btnUpdate" 
+	              value="Salvar"  class="btn btn-primary" /> 
+							<span class="pull-right"></span>
+			      <h:commandButton ajax="false" title="Cancelar" action="/grupo/lista.xhtml" id="btnClearForm" 
+	              value="Cancelar"  class="btn btn-primary"/> 
+						</div>
+					</div>
+			  
+			  </h:form>
+      	</div>
+      </div>
+    </div>
+
+  </body>
+ </html>   
+ </ui:define>
+ </ui:composition>               
