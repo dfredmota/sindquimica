@@ -71,7 +71,7 @@ public class Empresa  implements Serializable{
             inverseJoinColumns={@JoinColumn(name="cnae_id",   
              referencedColumnName="id")}) 
 	private List<Cnae> cnaes;
-
+	
 	@PrePersist
 	protected void onCreate() {
 	    createdAt = new Date();
@@ -80,7 +80,7 @@ public class Empresa  implements Serializable{
 	@Column(name="deleted_at", nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deletedAt;
-	
+
 	public List<Cnae> getCnaes() {
 		return cnaes;
 	}

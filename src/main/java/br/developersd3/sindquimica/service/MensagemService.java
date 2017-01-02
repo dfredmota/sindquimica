@@ -17,17 +17,18 @@ public class MensagemService implements GenericService<Mensagem> {
 	private MensagemDao dao;
 
 	@Override
-	public List<Mensagem> all() {
-		return dao.findAll();
+	public List<Mensagem> all(Integer empresaSistema) {
+		return dao.findAll(empresaSistema);
 	}
 
 	@Override
-	public Mensagem getById(Integer id) {
-		return dao.getById(Mensagem.class,id);
+	public Mensagem getById(Integer id,Integer empresaSistema) {
+		return dao.getById(Mensagem.class,id,empresaSistema);
 	}
 
 	@Override
-	public Mensagem create(Mensagem entity) throws GenericException {
+	public Mensagem create(Mensagem entity,Integer empresaSistema) throws GenericException {
+		entity.setEmpresaSistema(empresaSistema);
 		return dao.save(entity);
 	}
 

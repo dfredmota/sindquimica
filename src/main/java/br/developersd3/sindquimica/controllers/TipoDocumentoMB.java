@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -17,6 +18,7 @@ import br.developersd3.sindquimica.datatable.LazyTipoDocumentoDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.TipoDocumento;
 import br.developersd3.sindquimica.service.TipoDocumentoService;
+import br.developersd3.sindquimica.util.SessionUtils;
 
 @ManagedBean(name = "tipoDocumentoMB")
 @SessionScoped
@@ -35,7 +37,10 @@ public class TipoDocumentoMB implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all());
+		
+
+			
+		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all(getEmpresaSistema()));
 
 	}
 
@@ -44,7 +49,7 @@ public class TipoDocumentoMB implements Serializable {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String idSindicato = params.get("idTipoDocumento");
 
-		this.tipoDocumento = tipoDocumentoService.getById(Integer.parseInt(idSindicato));
+		this.tipoDocumento = tipoDocumentoService.getById(Integer.parseInt(idSindicato),getEmpresaSistema());
 
 		return "prepareUpdate";
 	}
@@ -61,7 +66,7 @@ public class TipoDocumentoMB implements Serializable {
 		String str = "insert";
 		
 		try {
-			tipoDocumentoService.create(tipoDocumento);
+			tipoDocumentoService.create(tipoDocumento,getEmpresaSistema());
 		} catch (GenericException e1) {
 
 		}
@@ -69,7 +74,7 @@ public class TipoDocumentoMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Tipo de Documento Criado com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all());
+		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all(getEmpresaSistema()));
 
 		try {
 
@@ -92,7 +97,7 @@ public class TipoDocumentoMB implements Serializable {
 			FacesMessage msg = new FacesMessage("Tipo de Documento Atualizado com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all());
+			lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -112,7 +117,7 @@ public class TipoDocumentoMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Tipo de Documento excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all());
+		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -154,6 +159,13 @@ public class TipoDocumentoMB implements Serializable {
 
 	public void setTipoDocumentoService(TipoDocumentoService tipoDocumentoService) {
 		this.tipoDocumentoService = tipoDocumentoService;
+	}
+	
+	private Integer getEmpresaSistema(){
+		HttpSession session = SessionUtils.getSession();
+		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
+		
+		return empresaSistemaId;
 	}
 	
 }

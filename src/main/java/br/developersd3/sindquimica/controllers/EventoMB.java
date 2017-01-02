@@ -25,16 +25,12 @@ import org.primefaces.model.ScheduleModel;
 public class EventoMB implements Serializable {
 
 	private static final long serialVersionUID = 1094801825228386363L;
-
-
-	 
+ 
     private ScheduleModel lazyEventModel;
  
     private ScheduleEvent event = new DefaultScheduleEvent();
     
     private ScheduleModel eventModel;
-    
-
  
     @PostConstruct
     public void init() {

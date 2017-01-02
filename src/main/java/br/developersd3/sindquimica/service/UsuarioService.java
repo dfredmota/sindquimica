@@ -17,17 +17,22 @@ public class UsuarioService implements GenericService<Usuario> {
 	private UsuarioDao dao;
 
 	@Override
-	public List<Usuario> all() {
-		return dao.findAll();
+	public List<Usuario> all(Integer empresaSistema) {
+		return dao.findAll(empresaSistema);
 	}
 
 	@Override
-	public Usuario getById(Integer id) {
-		return dao.getById(Usuario.class,id);
+	public Usuario getById(Integer id,Integer empresaSistema) {
+		return dao.getById(Usuario.class,id,empresaSistema);
+	}
+
+	public Usuario getByEmail(String email) {
+		return dao.getByEmail(Usuario.class,email);
 	}
 
 	@Override
-	public Usuario create(Usuario entity) throws GenericException {
+	public Usuario create(Usuario entity,Integer empresaSistema) throws GenericException {
+		entity.setEmpresaSistema(empresaSistema);
 		return dao.save(entity);
 	}
 

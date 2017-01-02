@@ -69,6 +69,24 @@ public class EmpresaAssociada {
             inverseJoinColumns={@JoinColumn(name="cnae_id",   
              referencedColumnName="id")}) 
 	private List<Cnae> cnaes;
+	
+	@Column(name = "empresa_sistema_id")
+	private Integer empresaSistema;
+	
+	public Integer getEmpresaSistema() {
+		return empresaSistema;
+	}
+
+	public void setEmpresaSistema(Integer empresaSistema) {
+		this.empresaSistema = empresaSistema;
+	}
+	
+	public String getAtivo(){
+		if(this.status)
+			return "Ativa";
+		else
+			return "Inativa";
+	}
 
 	@PrePersist
 	protected void onCreate() {

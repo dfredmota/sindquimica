@@ -34,9 +34,19 @@
             <span class="pull-right"></span>
               <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.delete}" id="btnOpenDelete"
               value="Deletar"  class="btn btn-primary">    
+        	 
         	 <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuarioMB.usuario}" />   
+             
              </h:commandButton>
-            <h2>Informações da usuario</h2>
+             
+             <h:commandButton value="Liberar" action="#{usuarioMB.liberarUsuario}" class="btn btn-primary" 
+   			 rendered="#{usuarioMB.btnLiberado}" style="margin-left:20px;">
+   			 
+   			 <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuarioMB.usuario}" />  
+   			 
+   			 </h:commandButton>
+   			 
+            <h2>Informações do Usuário</h2>
           </div>
         </div>
       </div>

@@ -39,6 +39,17 @@ public class TipoDocumento implements Serializable{
 	@Column(name = "created_at", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+	
+	@Column(name = "empresa_sistema_id")
+	private Integer empresaSistema;
+
+	public Integer getEmpresaSistema() {
+		return empresaSistema;
+	}
+
+	public void setEmpresaSistema(Integer empresaSistema) {
+		this.empresaSistema = empresaSistema;
+	}
 
 	@PrePersist
 	protected void onCreate() {

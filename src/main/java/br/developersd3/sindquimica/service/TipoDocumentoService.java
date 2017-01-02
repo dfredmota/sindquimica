@@ -17,17 +17,18 @@ public class TipoDocumentoService implements GenericService<TipoDocumento> {
 	private TipoDocumentoDao dao;
 
 	@Override
-	public List<TipoDocumento> all() {
-		return dao.findAll();
+	public List<TipoDocumento> all(Integer empresaSistema) {
+		return dao.findAll(empresaSistema);
 	}
 
 	@Override
-	public TipoDocumento getById(Integer id) {
-		return dao.getById(TipoDocumento.class,id);
+	public TipoDocumento getById(Integer id,Integer empresaSistema) {
+		return dao.getById(TipoDocumento.class,id,empresaSistema);
 	}
 
 	@Override
-	public TipoDocumento create(TipoDocumento entity) throws GenericException {
+	public TipoDocumento create(TipoDocumento entity,Integer empresaSistema) throws GenericException {
+		entity.setEmpresaSistema(empresaSistema);
 		return dao.save(entity);
 	}
 

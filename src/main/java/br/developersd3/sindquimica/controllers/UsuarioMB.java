@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
@@ -32,12 +33,14 @@ import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Documento;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
+import br.developersd3.sindquimica.models.Perfil;
 import br.developersd3.sindquimica.models.TipoDocumento;
 import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.DocumentoService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
 import br.developersd3.sindquimica.service.TipoDocumentoService;
 import br.developersd3.sindquimica.service.UsuarioService;
+import br.developersd3.sindquimica.util.SessionUtils;
 
 @ManagedBean(name = "usuarioMB")
 @SessionScoped
@@ -57,6 +60,8 @@ public class UsuarioMB implements Serializable {
 	private String  telefone;
 	
 	private List<String> telefones;
+	
+	private Boolean  isAdm;
 
 	@ManagedProperty(name = "usuarioService", value = "#{usuarioService}")
 	private UsuarioService usuarioService;
@@ -82,8 +87,8 @@ public class UsuarioMB implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyUsuarioDataModel(usuarioService.all());
-		listaDeEmpresasAssociadas = empresaAssociadaService.all();
+		lazyModel = new LazyUsuarioDataModel(usuarioService.all(getEmpresaSistema()));
+		listaDeEmpresasAssociadas = empresaAssociadaService.all(getEmpresaSistema());
 		telefones = new ArrayList<String>();
 	}
 	
@@ -97,7 +102,7 @@ public class UsuarioMB implements Serializable {
 	
 	public String addDocumento(){
 		
-		TipoDocumento tipo = tipoDocumentoService.getById(documento.getTipo().getId());
+		TipoDocumento tipo = tipoDocumentoService.getById(documento.getTipo().getId(),getEmpresaSistema());
 		
 		documento.setTipo(tipo);
 		
@@ -150,14 +155,14 @@ public class UsuarioMB implements Serializable {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String idUsuario = params.get("idUsuario");
 
-		this.usuario = usuarioService.getById(Integer.parseInt(idUsuario));
+		this.usuario = usuarioService.getById(Integer.parseInt(idUsuario),getEmpresaSistema());
 		
 		listDeDocumentos = documentoService.findAllByUsuario(this.usuario.getId());
 		
 		documento = new Documento();
 		documento.setTipo(new TipoDocumento());
 		
-		listaTipoDeDocumentos = tipoDocumentoService.all();
+		listaTipoDeDocumentos = tipoDocumentoService.all(getEmpresaSistema());
 		
 		telefones = new ArrayList<String>();
 		
@@ -181,7 +186,7 @@ public class UsuarioMB implements Serializable {
 		this.usuario.setEmpresa(new EmpresaAssociada());
 		this.usuario.setEndereco(new Endereco());
 		
-		listaTipoDeDocumentos = tipoDocumentoService.all();
+		listaTipoDeDocumentos = tipoDocumentoService.all(getEmpresaSistema());
 		
 		listDeDocumentos = new ArrayList<Documento>();
 		
@@ -190,7 +195,7 @@ public class UsuarioMB implements Serializable {
 		documento = new Documento();
 		documento.setTipo(new TipoDocumento());
 		
-		listaDeEmpresasAssociadas = empresaAssociadaService.all();
+		listaDeEmpresasAssociadas = empresaAssociadaService.all(getEmpresaSistema());
 
 		return "prepareInsert";
 	}
@@ -234,6 +239,51 @@ public class UsuarioMB implements Serializable {
 		}
     }
 	
+	public String liberarUsuario(){
+		
+		this.usuario.setStatus(true);
+		
+		try {
+			usuarioService.update(this.usuario);
+			FacesMessage msg = new FacesMessage("Usuário Liberado com sucesso!");
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} catch (GenericException e) {
+			e.printStackTrace();
+		}	
+		
+		return null;
+	}
+	
+	public boolean getPerfilAdm(){
+		
+	if(getPerfilUsuario() != null){	
+	 if(getPerfilUsuario().equalsIgnoreCase("ADM"))
+		 return true;
+	 else
+		 return false;
+	}
+	
+	return false;
+		
+	}
+	
+	public boolean getPerfilSindicato(){
+		
+		 if(getPerfilUsuario().equalsIgnoreCase("ADMSINDICATO"))
+			 return true;
+		 else
+			 return false;	
+	}	
+	
+	
+	public boolean getBtnLiberado(){
+		
+		 if(getPerfilUsuario().equalsIgnoreCase("ADMSINDICATO") && (this.usuario.getStatus() == null || 
+				 this.usuario.getStatus() == false))
+			 return true;
+		 else
+			 return false;	
+	}
 	
 	public StreamedContent getImage() throws IOException {
 	    FacesContext context = FacesContext.getCurrentInstance();
@@ -256,7 +306,7 @@ public class UsuarioMB implements Serializable {
 
 		String str = "insert";
 		
-		EmpresaAssociada empresa = empresaAssociadaService.getById(empresaAssociadaId);
+		EmpresaAssociada empresa = empresaAssociadaService.getById(empresaAssociadaId,getEmpresaSistema());
 		
 		usuario.setEmpresa(empresa);
 		
@@ -289,7 +339,7 @@ public class UsuarioMB implements Serializable {
 		
 		try {
 		
-		usuario = usuarioService.create(usuario);
+		usuario = usuarioService.create(usuario,getEmpresaSistema());
 		
 		// gravar lista de documentos
 		if(listDeDocumentos != null && !listDeDocumentos.isEmpty()){
@@ -298,7 +348,7 @@ public class UsuarioMB implements Serializable {
 				
 				doc.setUsuario(usuario);
 				
-				documentoService.create(doc);
+				documentoService.create(doc,getEmpresaSistema());
 								
 			}
 				
@@ -312,7 +362,7 @@ public class UsuarioMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Usuário Criado com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyUsuarioDataModel(usuarioService.all());
+		lazyModel = new LazyUsuarioDataModel(usuarioService.all(getEmpresaSistema()));
 
 		try {
 
@@ -328,7 +378,7 @@ public class UsuarioMB implements Serializable {
 
 		String str = "update";
 		
-		EmpresaAssociada empresa = empresaAssociadaService.getById(empresaAssociadaId);
+		EmpresaAssociada empresa = empresaAssociadaService.getById(empresaAssociadaId,getEmpresaSistema());
 		
 		usuario.setEmpresa(empresa);
 		
@@ -366,7 +416,7 @@ public class UsuarioMB implements Serializable {
 				doc.setUsuario(usuario);
 				
 				if(doc.getId() == null)
-				documentoService.create(doc);
+				documentoService.create(doc,getEmpresaSistema());
 								
 			}
 				
@@ -375,7 +425,7 @@ public class UsuarioMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Usuário Atualizado com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-		lazyModel = new LazyUsuarioDataModel(usuarioService.all());
+		lazyModel = new LazyUsuarioDataModel(usuarioService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -395,7 +445,7 @@ public class UsuarioMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Usuario excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyUsuarioDataModel(usuarioService.all());
+		lazyModel = new LazyUsuarioDataModel(usuarioService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -540,5 +590,34 @@ public class UsuarioMB implements Serializable {
 	public void setFile(UploadedFile file) {
 		this.file = file;
 	}
-			
+
+	private Integer getEmpresaSistema(){
+		HttpSession session = SessionUtils.getSession();
+		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
+		
+		return empresaSistemaId;
+	}
+	
+	public Boolean getIsAdm() {
+		return isAdm;
+	}
+
+	public void setIsAdm(Boolean isAdm) {
+		this.isAdm = isAdm;
+	}
+
+	private Integer getUsuarioSistema(){
+		HttpSession session = SessionUtils.getSession();
+		Integer empresaSistemaId = (Integer)session.getAttribute("userId");
+		
+		return empresaSistemaId;
+	}
+	
+	private String getPerfilUsuario(){
+		HttpSession session = SessionUtils.getSession();
+		String perfil = (String)session.getAttribute("perfil");
+		
+		return perfil;
+	}
+	
 }

@@ -46,6 +46,11 @@
       </div>
       
       <p:dataTable var="usuario" value="#{grupoMB.grupo.usuarios}">
+      
+      							<f:facet name="header">
+								        Usuários
+								</f:facet>
+      
 								<p:column headerText="Código" width="10%">
 									<h:outputText value="#{usuario.id}" />
 								</p:column>
@@ -53,11 +58,26 @@
 									<h:outputText value="#{usuario.nome}" />
 								</p:column>
 	</p:dataTable>
-      
-      
-      
+	
+	<br/>
+	<br/>
+	
+	<p:dataTable var="emp" value="#{grupoMB.grupo.empresaAssociada}">
+	
+								<f:facet name="header">
+								        Empresas Associadas
+								</f:facet>	
+	
+								<p:column headerText="Código" width="10%">
+									<h:outputText value="#{emp.id}" />
+								</p:column>
+								<p:column headerText="Nome Fantasia" width="50%">
+									<h:outputText value="#{emp.nomeFantasia}" />
+								</p:column>
+	</p:dataTable>
       
       <a href="../grupo/lista.xhtml">Voltar</a>
+    
     </div>
 			
 </h:form>

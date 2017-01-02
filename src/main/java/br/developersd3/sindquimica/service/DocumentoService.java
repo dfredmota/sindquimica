@@ -17,8 +17,8 @@ public class DocumentoService implements GenericService<Documento> {
 	private DocumentoDao dao;
 
 	@Override
-	public List<Documento> all() {
-		return dao.findAll();
+	public List<Documento> all(Integer empresaSistema) {
+		return dao.findAll(empresaSistema);
 	}
 	
 	public List<Documento> findAllByUsuario(Integer usuario) {
@@ -26,12 +26,13 @@ public class DocumentoService implements GenericService<Documento> {
 	}
 
 	@Override
-	public Documento getById(Integer id) {
-		return dao.getById(Documento.class,id);
+	public Documento getById(Integer id,Integer empresaSistema) {
+		return dao.getById(Documento.class,id,empresaSistema);
 	}
 
 	@Override
-	public Documento create(Documento entity) throws GenericException {
+	public Documento create(Documento entity,Integer empresaSistema) throws GenericException {
+		entity.setEmpresaSistema(empresaSistema);
 		return dao.save(entity);
 	}
 

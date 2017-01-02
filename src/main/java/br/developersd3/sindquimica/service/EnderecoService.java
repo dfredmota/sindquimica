@@ -17,17 +17,18 @@ public class EnderecoService implements GenericService<Endereco> {
 	private EnderecoDao dao;
 
 	@Override
-	public List<Endereco> all() {
-		return dao.findAll();
+	public List<Endereco> all(Integer empresaSistema) {
+		return dao.findAll(empresaSistema);
 	}
 
 	@Override
-	public Endereco getById(Integer id) {
-		return dao.getById(Endereco.class,id);
+	public Endereco getById(Integer id,Integer empresaSistema) {
+		return dao.getById(Endereco.class,id,empresaSistema);
 	}
 
 	@Override
-	public Endereco create(Endereco entity) throws GenericException {
+	public Endereco create(Endereco entity,Integer empresaSistema) throws GenericException {
+		entity.setEmpresaSistema(empresaSistema);
 		return dao.save(entity);
 	}
 

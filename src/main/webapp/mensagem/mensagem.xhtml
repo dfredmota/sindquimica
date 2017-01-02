@@ -17,7 +17,7 @@
 
 <style type="text/css">
    .ui-fieldset .ui-fieldset-legend {
-         padding: 3px 3px !important;
+         padding: 1px 1px !important;
          background: transparent;
    }
 </style>
@@ -25,13 +25,16 @@
 </head>
 
     <!-- Bootstrap -->
-<h:form id="form">	
-	<div class="container">
+<h:form id="form" enctype="multipart/form-data">	
+	<div class="container">	
 	
 	<div class="row">
 	
+	<h3 style="margin-left:50px;">Participantes</h3>
+	
 	<p:dataTable id="checkboxDTUsuarios" var="usuario" value="#{mensagemMB.usuarios}" selection="#{mensagemMB.selectedUsuarios}" 
-	rowKey="#{usuario.id}" style="margin-bottom:0;width:300px">
+	rowKey="#{usuario.id}" style="margin-bottom:0;width:300px" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5" paginator="true" rows="4" paginatorPosition="bottom">
         <f:facet name="header">
             Usuários
         </f:facet>
@@ -44,7 +47,8 @@
     <br/><br/>
     
     <p:dataTable id="checkboxDTGrupos" var="grupo" value="#{mensagemMB.grupos}" selection="#{mensagemMB.selectedGrupos}" 
-	rowKey="#{grupo.id}" style="margin-bottom:0;width:300px">
+	rowKey="#{grupo.id}" style="margin-bottom:0;width:300px" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5" paginator="true" rows="4" paginatorPosition="bottom">
         <f:facet name="header">
             Grupos
         </f:facet>
@@ -53,21 +57,26 @@
             <h:outputText value="#{grupo.nome}" />
         </p:column>
     </p:dataTable>
+    
+    <br/>
+    
+    <p:fileUpload value="#{mensagemMB.file}" label="Selecione a Imagem" mode="simple" skinSimple="true" style="width:100px;" />
 	
 	
 	</div>
 	
       <div class="row" style="margin-bottom:0;margin-left:200px;margin-top:-250px">
              
-        <h3 style="margin-top: 0;margin-left:450px;">Mensagem</h3>
+        <h3 style="margin-top: -180px;margin-left:450px;">Mensagem</h3>
     	<p:inputTextarea rows="5" cols="100" id="msg" value="#{mensagemMB.mensagem.conteudo}" style="margin-left:200px"
     	 queryDelay="750" minQueryLength="4" />
-    	         
+   	         
       </div>
-      <h:commandButton id="msgSubmit" class="btn btn-primary" value="Enviar" action="#{mensagemMB.postMessage}" 
-      style="margin-top: 0;margin-left:680px;" />
+            
+      <h:commandButton id="msgSubmit" class="btn btn-primary" value="Enviar"  
+      style="margin-top: 0;margin-left:680px;" action="#{mensagemMB.postMessage}" />
       
-	  <div class="row" style="margin-top:120px">
+	  <div class="row" style="margin-top:220px">
       
       <p:panel binding="#{mensagemMB.panel}"/> 
      

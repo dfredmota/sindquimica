@@ -20,7 +20,7 @@
     <p:menubar styleClass="menu">
     
     		<p:submenu  label="Cadastros" style="font-weight:bold; color:#000000;">
-            <p:menuitem value="Empresa"  url="/empresa/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
+            <p:menuitem value="Empresa Gestora" rendered="#{usuarioMB.perfilAdm}"  url="/empresa/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Tipo de Documento" url="/tipoDocumento/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Empresa Associada" url="/empresaAssociada/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Usuários" url="/usuario/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" />          

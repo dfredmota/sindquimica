@@ -18,17 +18,18 @@ public class EmpresaAssociadaService implements GenericService<EmpresaAssociada>
 	private EmpresaAssociadaDao dao;
 
 	@Override
-	public List<EmpresaAssociada> all() {
-		return dao.findAll();
+	public List<EmpresaAssociada> all(Integer empresaSistema) {
+		return dao.findAll(empresaSistema);
 	}
 
 	@Override
-	public EmpresaAssociada getById(Integer id) {
-		return dao.getById(EmpresaAssociada.class,id);
+	public EmpresaAssociada getById(Integer id,Integer empresaSistema) {
+		return dao.getById(EmpresaAssociada.class,id,empresaSistema);
 	}
 
 	@Override
-	public EmpresaAssociada create(EmpresaAssociada entity) throws GenericException {
+	public EmpresaAssociada create(EmpresaAssociada entity,Integer empresaSistema) throws GenericException {
+		entity.setEmpresaSistema(empresaSistema);
 		return dao.save(entity);
 	}
 

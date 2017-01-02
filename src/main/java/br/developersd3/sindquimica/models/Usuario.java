@@ -65,8 +65,41 @@ public class Usuario {
 	
 	@Column(name="imagem_path")
 	private String imagemPath;
-
 	
+	@Column(name="cadastro_app")
+	private Boolean cadastroApp;
+	
+	@Column(name = "empresa_sistema_id")
+	private Integer empresaSistema;
+	
+	@OneToOne
+	@JoinColumn(name = "perfil_id")
+	private Perfil perfil;
+	
+	public Perfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
+	}
+
+	public Integer getEmpresaSistema() {
+		return empresaSistema;
+	}
+
+	public void setEmpresaSistema(Integer empresaSistema) {
+		this.empresaSistema = empresaSistema;
+	}
+
+	public Boolean getCadastroApp() {
+		return cadastroApp;
+	}
+
+	public void setCadastroApp(Boolean cadastroApp) {
+		this.cadastroApp = cadastroApp;
+	}
+
 	public String getImagemPath() {
 		return imagemPath;
 	}

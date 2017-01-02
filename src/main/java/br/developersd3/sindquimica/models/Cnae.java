@@ -2,6 +2,7 @@ package br.developersd3.sindquimica.models;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +27,17 @@ public class Cnae implements Serializable{
 	private String codigo;
 	
 	private String descricao;
+	
+	@Column(name = "empresa_sistema_id")
+	private Integer empresaSistema;
+
+	public Integer getEmpresaSistema() {
+		return empresaSistema;
+	}
+
+	public void setEmpresaSistema(Integer empresaSistema) {
+		this.empresaSistema = empresaSistema;
+	}
 
 	public Integer getId() {
 		return id;

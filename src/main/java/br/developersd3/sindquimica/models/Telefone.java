@@ -1,5 +1,7 @@
 package br.developersd3.sindquimica.models;
 
+import javax.persistence.Column;
+
 public class Telefone {
 	
 	private Integer id;
@@ -7,6 +9,17 @@ public class Telefone {
 	private String  ddd;
 	
 	private String  numero;
+	
+	@Column(name = "empresa_sistema_id")
+	private Integer empresaSistema;
+
+	public Integer getEmpresaSistema() {
+		return empresaSistema;
+	}
+
+	public void setEmpresaSistema(Integer empresaSistema) {
+		this.empresaSistema = empresaSistema;
+	}
 
 	public Integer getId() {
 		return id;

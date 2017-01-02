@@ -17,17 +17,18 @@ public class CnaeService implements GenericService<Cnae> {
 	private CnaeDao dao;
 
 	@Override
-	public List<Cnae> all() {
-		return dao.findAll();
+	public List<Cnae> all(Integer empresaSistema) {
+		return dao.findAll(empresaSistema);
 	}
 
 	@Override
-	public Cnae getById(Integer id) {
-		return dao.getById(Cnae.class,id);
+	public Cnae getById(Integer id,Integer empresaSistema) {
+		return dao.getById(Cnae.class,id,empresaSistema);
 	}
 
 	@Override
-	public Cnae create(Cnae entity) throws GenericException {
+	public Cnae create(Cnae entity,Integer empresaSistema) throws GenericException {
+		entity.setEmpresaSistema(empresaSistema);
 		return dao.save(entity);
 	}
 

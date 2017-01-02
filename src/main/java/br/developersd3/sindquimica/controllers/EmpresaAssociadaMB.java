@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -24,6 +25,7 @@ import br.developersd3.sindquimica.models.Endereco;
 import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
 import br.developersd3.sindquimica.service.EmpresaService;
+import br.developersd3.sindquimica.util.SessionUtils;
 
 @ManagedBean(name = "empresaAssociadaMB")
 @SessionScoped
@@ -59,14 +61,14 @@ public class EmpresaAssociadaMB implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all());
-		empresas = empresaService.all();
+		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
+		empresas = empresaService.all(getEmpresaSistema());
 		telefones = new ArrayList<String>();
 	}
 	
 	public void setListaCnaes(){
 		
-		Empresa empresa = empresaService.getById(empresaId);
+		Empresa empresa = empresaService.getById(empresaId,getEmpresaSistema());
 		
 		this.cnaes = empresa.getCnaes();	
 		
@@ -80,7 +82,7 @@ public class EmpresaAssociadaMB implements Serializable {
 	
 	public String addCnae(){
 		
-		Cnae cnae = cnaeService.getById(cnaeId);
+		Cnae cnae = cnaeService.getById(cnaeId,getEmpresaSistema());
 		
 		if(!this.empresaAssociada.getCnaes().contains(cnae)){
 			this.empresaAssociada.getCnaes().add(cnae);
@@ -94,7 +96,7 @@ public class EmpresaAssociadaMB implements Serializable {
 	
 	public String deleteCnae(){
 		
-		Cnae cnae = cnaeService.getById(cnaeId);
+		Cnae cnae = cnaeService.getById(cnaeId,getEmpresaSistema());
 		
 		for(Cnae cn : this.empresaAssociada.getCnaes()){
 			
@@ -133,7 +135,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String idEmpresaAssociada = params.get("idEmpresaAssociada");
 
-		this.empresaAssociada = empresaAssociadaService.getById(Integer.parseInt(idEmpresaAssociada));
+		this.empresaAssociada = empresaAssociadaService.getById(Integer.parseInt(idEmpresaAssociada),getEmpresaSistema());
 		
 		telefones = new ArrayList<String>();
 		
@@ -161,7 +163,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		
 		telefones = new ArrayList<String>();
 		
-		empresas = empresaService.all();
+		empresas = empresaService.all(getEmpresaSistema());
 		
 		System.out.println("EMPRESA:"+empresas.size());
 
@@ -172,7 +174,7 @@ public class EmpresaAssociadaMB implements Serializable {
 
 		String str = "insert";
 		
-		Empresa empresa = empresaService.getById(empresaId);
+		Empresa empresa = empresaService.getById(empresaId,getEmpresaSistema());
 		
 		empresaAssociada.setEmpresa(empresa);
 		
@@ -199,7 +201,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		}
 		
 		try {
-			empresaAssociadaService.create(empresaAssociada);
+			empresaAssociadaService.create(empresaAssociada,getEmpresaSistema());
 		} catch (GenericException e1) {
 
 		}
@@ -207,7 +209,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		FacesMessage msg = new FacesMessage("EmpresaAssociada Criado com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all());
+		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
 
 		try {
 
@@ -251,7 +253,7 @@ public class EmpresaAssociadaMB implements Serializable {
 			FacesMessage msg = new FacesMessage("EmpresaAssociada Atualizado com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all());
+			lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -271,7 +273,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		FacesMessage msg = new FacesMessage("EmpresaAssociada excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all());
+		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -383,5 +385,12 @@ public class EmpresaAssociadaMB implements Serializable {
 	public void setCnaeService(CnaeService cnaeService) {
 		this.cnaeService = cnaeService;
 	}		
+	
+	private Integer getEmpresaSistema(){
+		HttpSession session = SessionUtils.getSession();
+		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
+		
+		return empresaSistemaId;
+	}
 	
 }

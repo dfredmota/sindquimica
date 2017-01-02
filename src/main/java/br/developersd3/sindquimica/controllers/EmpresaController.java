@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
@@ -22,6 +23,7 @@ import br.developersd3.sindquimica.models.Empresa;
 import br.developersd3.sindquimica.models.Endereco;
 import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaService;
+import br.developersd3.sindquimica.util.SessionUtils;
 
 @ManagedBean(name = "empresaController")
 @SessionScoped
@@ -52,14 +54,14 @@ public class EmpresaController implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyEmpresaDataModel(empresaService.all());
+		lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
 		telefones = new ArrayList<String>();
 
 	}
 	
 	public String addCnae(){
 		
-		Cnae cnae = cnaeService.getById(cnaeId);
+		Cnae cnae = cnaeService.getById(cnaeId,getEmpresaSistema());
 		
 		if(!this.empresa.getCnaes().contains(cnae)){
 			this.empresa.getCnaes().add(cnae);
@@ -73,7 +75,7 @@ public class EmpresaController implements Serializable {
 	
 	public String deleteCnae(){
 		
-		Cnae cnae = cnaeService.getById(cnaeId);
+		Cnae cnae = cnaeService.getById(cnaeId,getEmpresaSistema());
 		
 		for(Cnae cn : this.empresa.getCnaes()){
 			
@@ -112,9 +114,9 @@ public class EmpresaController implements Serializable {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String idEmpresa = params.get("idEmpresa");
 
-		this.empresa = empresaService.getById(Integer.parseInt(idEmpresa));
+		this.empresa = empresaService.getById(Integer.parseInt(idEmpresa),getEmpresaSistema());
 		
-		cnaes = cnaeService.all();
+		cnaes = cnaeService.all(getEmpresaSistema());
 		
 		// setando telefones
 		
@@ -143,7 +145,7 @@ public class EmpresaController implements Serializable {
 		
 		telefones = new ArrayList<String>();
 		
-		this.cnaes = cnaeService.all();
+		this.cnaes = cnaeService.all(getEmpresaSistema());
 
 		return "prepareInsert";
 	}
@@ -152,7 +154,7 @@ public class EmpresaController implements Serializable {
 
 		String str = "insert";
 		
-		cnaes = cnaeService.all();
+		cnaes = cnaeService.all(getEmpresaSistema());
 		
 		if(telefones != null && !telefones.isEmpty()){
 			
@@ -180,7 +182,7 @@ public class EmpresaController implements Serializable {
 			empresa.setStatus(false);
 		
 		try {
-			empresaService.create(empresa);
+			empresaService.create(empresa,getEmpresaSistema());
 		} catch (GenericException e1) {
 
 		}
@@ -188,7 +190,7 @@ public class EmpresaController implements Serializable {
 		FacesMessage msg = new FacesMessage("Empresa Criada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyEmpresaDataModel(empresaService.all());
+		lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
 
 		try {
 
@@ -232,7 +234,7 @@ public class EmpresaController implements Serializable {
 			FacesMessage msg = new FacesMessage("Empresa Atualizado com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyEmpresaDataModel(empresaService.all());
+			lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -252,7 +254,7 @@ public class EmpresaController implements Serializable {
 		FacesMessage msg = new FacesMessage("Empresa excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyEmpresaDataModel(empresaService.all());
+		lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -348,6 +350,13 @@ public class EmpresaController implements Serializable {
 	public void setCnaes(List<Cnae> cnaes) {
 		this.cnaes = cnaes;
 	}		
+	
+	private Integer getEmpresaSistema(){
+		HttpSession session = SessionUtils.getSession();
+		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
+		
+		return empresaSistemaId;
+	}
 	
 	
 }

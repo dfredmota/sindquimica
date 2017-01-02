@@ -8,34 +8,33 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.component.html.HtmlOutputLabel;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.component.fieldset.Fieldset;
 import org.primefaces.component.graphicimage.GraphicImage;
 import org.primefaces.component.panel.Panel;
 import org.primefaces.component.panelgrid.PanelGrid;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import br.developersd3.sindquimica.datatable.LazyMensagemDataModel;
@@ -49,7 +48,7 @@ import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
 
 @ManagedBean(name = "mensagemMB")
-@SessionScoped
+@RequestScoped
 public class MensagemMB implements Serializable {
 
 	private static final long serialVersionUID = 1094801825228386363L;
@@ -84,89 +83,60 @@ public class MensagemMB implements Serializable {
     
     private UploadedFile file;
     
-    DateFormat df = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
-
+    DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault());
+    
+    private DefaultStreamedContent imagem;
+    
+    private Map<String,DefaultStreamedContent> mapImages;
+    
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyMensagemDataModel(mensagemService.all());
-	     
-		montaTimeLine();          
+		lazyModel = new LazyMensagemDataModel(mensagemService.all(getEmpresaSistema()));
+		
+		mapImages = new HashMap<String,DefaultStreamedContent>();
+				
+		montaImagens();
+		
+		montaTimeLine();    
 
 	}
 	
-	public StreamedContent getImage() throws IOException {
-	    FacesContext context = FacesContext.getCurrentInstance();
-
-	    if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-	        // So, we're rendering the view. Return a stub StreamedContent so that it will generate right URL.
-	        return new DefaultStreamedContent();
-	    }
-	    
-	    else {
-	        // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
-	    	
-			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-	        String dir = servletContext.getRealPath("/")+"/images/";
-	    	
-	        String filename = context.getExternalContext().getRequestParameterMap().get("filename");
-	        
-	        return new DefaultStreamedContent(new FileInputStream(new File(dir, filename)));
-	    }
+	private void montaImagens(){
+		
+		List<Mensagem> lista = mensagemService.all(getEmpresaSistema());
+		
+		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String dir = servletContext.getRealPath("/")+"/images/";
+		
+		if(lista != null && !lista.isEmpty()){
+			
+		for(Mensagem m : lista){	
+			
+		DefaultStreamedContent	imagem = null;	
+			
+		if(m.getFileName() != null && !m.getFileName().isEmpty()){
+		try {
+		imagem = new DefaultStreamedContent(new FileInputStream(new File(dir, m.getFileName())));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}	
+			
+		}	
+		
+		mapImages.put(m.getId().toString(), imagem);
+				
+		}
+			
+		}
+		
+		
 	}
-	
-//	public void handleFileUpload(FileUploadEvent event) {
-//
-//        file = event.getFile();
-//        
-//        
-//        // nome do arquivo de imagem da mensagem e : os 10 primeiros caracters + usuarioId
-//        
-//        HttpServletRequest request = (HttpServletRequest)FacesContext.
-//		        getCurrentInstance().getExternalContext().getRequest();
-//		String msg = null;
-//		
-//		if(request!=null){
-//
-//		    	msg = request.getParameter("form:msg");
-//		    	
-//		    	msg = msg.substring(0, 10);
-//		    	
-//				HttpSession session = SessionUtils.getSession();
-//				Integer userId = (Integer)session.getAttribute("userId");
-//				
-//				msg = msg + userId;
-//
-//		    }
-//        
-//        if (file != null) {       	        	
-//
-//			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-//	        String dir = servletContext.getRealPath("/");
-//			
-//			File file1 = new File(dir+"/images/", msg + "_" + file.getFileName());
-//			this.mensagem.setFileName(msg + "_" + file.getFileName());
-//			try {
-//				FileOutputStream fos = new FileOutputStream(file1);
-//				fos.write(file.getContents());
-//				fos.close();
-//
-//				FacesContext instance = FacesContext.getCurrentInstance();
-//				instance.addMessage("mensagens", new FacesMessage(FacesMessage.SEVERITY_INFO,
-//						file.getFileName() + " anexado com sucesso", null));
-//			} catch (FileNotFoundException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//
-//		}
-//    }
 	
 	public void montaTimeLine(){
 		
-		usuarios = usuarioService.all();
+		 usuarios = usuarioService.all(getEmpresaSistema());
 	     
-	     grupos   = grupoService.all();
+	     grupos   = grupoService.all(getEmpresaSistema());
 	     
 	     this.mensagem = new Mensagem();
 	     
@@ -174,8 +144,9 @@ public class MensagemMB implements Serializable {
 	     
 	     panel.setStyle("border:0px");
 	     
-	     this.mensagens = mensagemService.all();	     
+	     this.mensagens = mensagemService.all(getEmpresaSistema());	     
 	     
+	     Application app = FacesContext.getCurrentInstance().getApplication();
 	     
 	     if(mensagens != null && !mensagens.isEmpty()){
 	    	 
@@ -195,30 +166,32 @@ public class MensagemMB implements Serializable {
 	    	     HtmlOutputLabel labelMsg = new HtmlOutputLabel();
 	    	     labelMsg.setValue(msg.getConteudo());
 	    	     
-	    	     labelMsg.setStyle("border:0px");
+	    	     labelMsg.setStyle("border:0px");	    	    
+	    	     	    	     
+	    	     // verifica se a mensagem possui imagem
+	    	     if(msg.getFileName() != null && !msg.getFileName().isEmpty()){
+	    	    	 
+	    	      GraphicImage image = new GraphicImage(); 
+	    	    	 
+	    	      image.setWidth("160px");
+	    	      
+	    	      //image.setValueExpression("value", createValueExpression("#{mensagemMB.image('"+msg.getFileName()+"')}", String.class));  
+	    	      
+	    	      image.setValueBinding("value",app.createValueBinding("#{mensagemMB.mapImages['"+msg.getId().toString()+"']}"));
+	    	      
+	    	      image.setCache(false);
+	    	      
+	    	      UIParameter param = new UIParameter();
+	    	      param.setName("filename");
+	    	      param.setValue(msg.getFileName());
+	    	      image.getChildren().add(param);
+	    	      
+	    	      grid.getChildren().add(image);
+	    	    	 	    	    	 
+	    	     }	    
 	    	     
 	    	     grid.getChildren().add(labelMsg);
 	    	     	    	     
-	    	     
-//	    	     // verifica se a mensagem possui imagem
-//	    	     if(msg.getFileName() != null){
-//	    	    	 
-//	    	      GraphicImage image = new GraphicImage(); 
-//	    	    	 
-//	    	      image.setWidth("160px");
-//	    	      
-//	    	      image.setValueExpression("value", createValueExpression("#{mensagemMB.image}", String.class));
-//	    	      
-//	    	      
-//	    	      UIParameter param = new UIParameter();
-//	    	      param.setName("filename");
-//	    	      param.setValue(msg.getFileName());
-//	    	      image.getChildren().add(param);
-//	    	      
-//	    	      grid.getChildren().add(image);
-//	    	    	 	    	    	 
-//	    	     }
-	    	     
 	    	     field.getChildren().add(grid);
 	    	     
 	    	     
@@ -238,29 +211,6 @@ public class MensagemMB implements Serializable {
 		
 	}
 	
-	
-	public void upload(FileUploadEvent event) {
-		file = event.getFile();
-
-		if (file != null) {
-
-			File file1 = new File("/images", file.getFileName());
-			try {
-				FileOutputStream fos = new FileOutputStream(file1);
-				fos.write(event.getFile().getContents());
-				fos.close();
-
-				FacesContext instance = FacesContext.getCurrentInstance();
-				instance.addMessage("mensagens", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						file.getFileName() + " anexado com sucesso", null));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-	}
 	
 	public void onSelect(SelectEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -282,7 +232,7 @@ public class MensagemMB implements Serializable {
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		String idSindicato = params.get("idMensagem");
 
-		this.mensagem = mensagemService.getById(Integer.parseInt(idSindicato));
+		this.mensagem = mensagemService.getById(Integer.parseInt(idSindicato),getEmpresaSistema());
 
 		return "prepareUpdate";
 	}
@@ -298,17 +248,45 @@ public class MensagemMB implements Serializable {
 		if(getSelectedUsuarios() !=null)
 		mensagem.setUsuarios(getSelectedUsuarios());
 		
+		if (file != null && !file.getFileName().isEmpty()) {       	        	
+
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+	        
+			String dir = servletContext.getRealPath("/")+"/images/";
+			
+			// /appservers/images/
+			// /home/fred/images/
+			File file1 = new File(dir, this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
+				
+			this.mensagem.setFileName(this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
+			
+			try {
+				FileOutputStream fos = new FileOutputStream(file1);
+				fos.write(file.getContents());
+				fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+		
+		
+		
 		// recupera usuario logado
 		
 		HttpSession session = SessionUtils.getSession();
 		Integer userId = (Integer)session.getAttribute("userId");
 		
-		Usuario usuarioSessao = usuarioService.getById(userId);
+		Usuario usuarioSessao = usuarioService.getById(userId,getEmpresaSistema());
 		
 		mensagem.setUsuario(usuarioSessao);
+		
+		mensagem.setEmpresaSistema(getEmpresaSistema());
 			
 		try {
-			mensagemService.create(mensagem);
+			mensagemService.create(mensagem,getEmpresaSistema());
 		} catch (GenericException e1) {
 
 		}
@@ -316,9 +294,9 @@ public class MensagemMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Mensagem Criada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyMensagemDataModel(mensagemService.all());
+		lazyModel = new LazyMensagemDataModel(mensagemService.all(getEmpresaSistema()));
 		
-		mensagens = mensagemService.all();
+		mensagens = mensagemService.all(getEmpresaSistema());
 		
 		setSelectedUsuarios(new ArrayList<Usuario>());
 		setSelectedGrupos(new ArrayList<Grupo>());
@@ -331,6 +309,8 @@ public class MensagemMB implements Serializable {
 			str = "sendMessageError";
 
 		}
+		
+		montaImagens();
 		
 		montaTimeLine();
 
@@ -348,7 +328,7 @@ public class MensagemMB implements Serializable {
 			FacesMessage msg = new FacesMessage("Mensagem Atualizada com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyMensagemDataModel(mensagemService.all());
+			lazyModel = new LazyMensagemDataModel(mensagemService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -368,7 +348,7 @@ public class MensagemMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Mensagem excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyMensagemDataModel(mensagemService.all());
+		lazyModel = new LazyMensagemDataModel(mensagemService.all(getEmpresaSistema()));
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -488,5 +468,36 @@ public class MensagemMB implements Serializable {
 	public void setMensagens(List<Mensagem> mensagens) {
 		this.mensagens = mensagens;
 	}
+	
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	private Integer getEmpresaSistema(){
+		HttpSession session = SessionUtils.getSession();
+		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
+		
+		return empresaSistemaId;
+	}
+
+	public DefaultStreamedContent getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(DefaultStreamedContent imagem) {
+		this.imagem = imagem;
+	}
+
+	public Map<String, DefaultStreamedContent> getMapImages() {
+		return mapImages;
+	}
+
+	public void setMapImages(Map<String, DefaultStreamedContent> mapImages) {
+		this.mapImages = mapImages;
+	}	
 
 }

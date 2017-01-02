@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,6 +23,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @SQLDelete(sql="UPDATE mensagem set deleted_at = now() WHERE id = ?")
 @Where(clause="deleted_at is null")
+//ORDER BY created_at USING >
 public class Mensagem implements Serializable{
 
 	/**
@@ -68,6 +67,17 @@ public class Mensagem implements Serializable{
 	
 	@Column(name="file_name")
 	private String  fileName;
+	
+	@Column(name = "empresa_sistema_id")
+	private Integer empresaSistema;
+
+	public Integer getEmpresaSistema() {
+		return empresaSistema;
+	}
+
+	public void setEmpresaSistema(Integer empresaSistema) {
+		this.empresaSistema = empresaSistema;
+	}
 	
 	@PrePersist
 	protected void onCreate() {

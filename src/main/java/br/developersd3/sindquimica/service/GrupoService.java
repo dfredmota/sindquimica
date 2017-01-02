@@ -17,17 +17,18 @@ public class GrupoService implements GenericService<Grupo> {
 	private GrupoDao dao;
 
 	@Override
-	public List<Grupo> all() {
-		return dao.findAll();
+	public List<Grupo> all(Integer empresaSistema) {
+		return dao.findAll(empresaSistema);
 	}
 
 	@Override
-	public Grupo getById(Integer id) {
-		return dao.getById(Grupo.class,id);
+	public Grupo getById(Integer id,Integer empresaSistema) {
+		return dao.getById(Grupo.class,id,empresaSistema);
 	}
 
 	@Override
-	public Grupo create(Grupo entity) throws GenericException {
+	public Grupo create(Grupo entity,Integer empresaSistema) throws GenericException {
+		entity.setEmpresaSistema(empresaSistema);		
 		return dao.save(entity);
 	}
 

@@ -90,7 +90,44 @@
 							</p:dataTable>
 
 
-						</p:tab>			
+						</p:tab>		
+						
+						
+						<p:tab title="Empresas Associadas">
+
+
+							<div class="form-group">
+								<label for="4" class="col-sm-2 control-label">Empresa Associada</label>
+								<div class="col-sm-8">
+									<p:selectOneMenu value="#{grupoMB.empresaAssociadaId}" id="empresaAssociadaId">
+										<f:selectItems value="#{grupoMB.empresasAssociadas}"
+											var="empresa" itemLabel="#{empresa.razaoSocial}" itemValue="#{empresa.id}" />
+									</p:selectOneMenu>
+								</div>
+								<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addEmpresaAssociada}" id="btnAddEmpresa" 
+	              			value="+"  class="btn btn-primary" />
+							</div>
+							
+							
+							<p:dataTable var="empresaAssociada" value="#{grupoMB.grupo.empresaAssociada}">
+								<p:column headerText="Código" width="10%">
+									<h:outputText value="#{empresaAssociada.id}" />
+								</p:column>
+								<p:column headerText="Nome" width="50%">
+									<h:outputText value="#{empresaAssociada.nomeFantasia}" />
+								</p:column>
+								<p:column headerText="Ações" width="10%">
+								<h:commandButton ajax="false" title="Edit" action="#{grupoMB.deleteEmpresaAssociada}" 
+								id="btnOpenDeleteEmpresa"
+              					value="Excluir"  class="btn btn-primary"> 
+              					<f:setPropertyActionListener value="#{empresaAssociada}" target="#{grupoMB.empresaAssociada}">
+              					</f:setPropertyActionListener>
+              					</h:commandButton>
+								</p:column>
+							</p:dataTable>
+
+
+						</p:tab>	
 					
 					</p:tabView>
 					

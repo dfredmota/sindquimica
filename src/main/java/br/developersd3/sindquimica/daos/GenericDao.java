@@ -8,8 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 
 public class GenericDao<T, PK extends Serializable> {
@@ -53,10 +55,31 @@ public class GenericDao<T, PK extends Serializable> {
 	}
 
 	@Transactional
-	public T getById(Class classe,final PK id) {
+	public T getById(Class classe,final PK id,Integer empresaSistema) {
 		entityManager=entityManagerF.createEntityManager();
 		Session session = (Session) entityManager.unwrap(Session.class);
-		return (T) session.get(classe, id);
+		Criteria criteria = session.createCriteria(classe);  
+	    criteria.add(Restrictions.eq("id",id));
+	    criteria.add(Restrictions.eq("empresaSistema",empresaSistema));
+		return (T) criteria.uniqueResult();
+	}
+	
+	@Transactional
+	public T getByEmail(Class classe,String email) {
+		entityManager=entityManagerF.createEntityManager();
+		Session session = (Session) entityManager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(classe);  
+	    criteria.add(Restrictions.eq("email",email));
+		return (T) criteria.uniqueResult();
+	}
+	
+	@Transactional
+	public T getByIdEmpresa(Class classe,final PK id) {
+		entityManager=entityManagerF.createEntityManager();
+		Session session = (Session) entityManager.unwrap(Session.class);
+		Criteria criteria = session.createCriteria(classe);  
+	    criteria.add(Restrictions.eq("id",id));
+		return (T) criteria.uniqueResult();
 	}
 
 	public T update(T entity) {
@@ -65,6 +88,7 @@ public class GenericDao<T, PK extends Serializable> {
 		
 		Transaction tx = null;
 		
+	
 		try{
 			
 		tx = session.beginTransaction();
@@ -116,7 +140,13 @@ public class GenericDao<T, PK extends Serializable> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<T> findAll() {
+	public List<T> findAll(Integer empresaSistema) {
+		entityManager=entityManagerF.createEntityManager();
+		return entityManager.createQuery(("FROM " + getTypeClass().getName()+" where empresaSistema = "+empresaSistema)).getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<T> findAllEmpresa() {
 		entityManager=entityManagerF.createEntityManager();
 		return entityManager.createQuery(("FROM " + getTypeClass().getName())).getResultList();
 	}

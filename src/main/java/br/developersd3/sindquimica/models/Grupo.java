@@ -53,8 +53,35 @@ public class Grupo implements Serializable{
              referencedColumnName="id")}) 
 	private List<Usuario> usuarios;
 	
+	@OneToMany
+	@JoinTable(name="grupo_empresa_associadas",
+            joinColumns={@JoinColumn(name="grupo_id",  
+             referencedColumnName="id")},  
+            inverseJoinColumns={@JoinColumn(name="empresa_associada_id",   
+             referencedColumnName="id")}) 
+	private List<EmpresaAssociada> empresaAssociada;
+	
 	@Transient
 	private Integer participantes;
+	
+	@Column(name = "empresa_sistema_id")
+	private Integer empresaSistema;
+	
+	public List<EmpresaAssociada> getEmpresaAssociada() {
+		return empresaAssociada;
+	}
+
+	public void setEmpresaAssociada(List<EmpresaAssociada> empresaAssociada) {
+		this.empresaAssociada = empresaAssociada;
+	}
+
+	public Integer getEmpresaSistema() {
+		return empresaSistema;
+	}
+
+	public void setEmpresaSistema(Integer empresaSistema) {
+		this.empresaSistema = empresaSistema;
+	}
 
 	@PrePersist
 	protected void onCreate() {

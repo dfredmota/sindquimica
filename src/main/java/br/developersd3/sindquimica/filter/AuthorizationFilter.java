@@ -38,6 +38,9 @@ public class AuthorizationFilter implements Filter {
 					|| reqURI.indexOf("/public/") >= 0
 					|| reqURI.contains("javax.faces.resource"))
 				chain.doFilter(request, response);
+			else if(reqURI.indexOf("esqueciSenha.xhtml") >= 0){
+				chain.doFilter(request, response);
+			}
 			else
 				resp.sendRedirect(reqt.getContextPath() + "/login.xhtml");
 		} catch (Exception e) {
