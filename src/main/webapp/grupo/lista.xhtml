@@ -14,14 +14,31 @@
     
     <br/>     
     <br/>
-         
+    <br/>     
 
-    <p:dataTable var="grupo" value="#{grupoMB.lazyModel}" paginator="true" rows="10"
+			<div class="form-group">
+				<label for="4" class="col-sm-1 control-label">Cnae</label>
+				<div class="col-sm-5" style="margin-left:-40px">
+					<p:selectOneMenu value="#{grupoMB.cnaeId}" id="cnaeId">
+						<f:selectItems value="#{grupoMB.cnaes}" var="cnae"
+							itemLabel="#{cnae.descricao}" itemValue="#{cnae.id}" />
+					</p:selectOneMenu>
+				</div>
+				<h:commandButton ajax="false" title="Search"
+					action="#{grupoMB.search}" id="btnAddCnae" value="Pesquisar"
+					class="btn btn-primary" style="margin-left:10px" />
+			</div>
+			
+			<br/>     
+    		<br/>
+
+
+			<p:dataTable var="grupo" value="#{grupoMB.lazyModel}" paginator="true" rows="10"
     			 rowKey="#{grupo.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{grupoMB.grupo}" id="grupoTable" lazy="true">
         <p:ajax event="rowSelect" listener="#{grupoMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />
-        <p:column headerText="Id" sortBy="#{grupo.id}" filterBy="#{grupo.id}">
+        <p:column headerText="Id"  width="5%">
             <h:outputText value="#{grupo.id}" />
         </p:column>
         <p:column headerText="Nome" sortBy="#{grupo.nome}" filterBy="#{grupo.nome}">

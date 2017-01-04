@@ -3,9 +3,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
-	<ui:define name="content">
-	
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<ui:define name="content">	
 	
 	<meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -92,6 +92,47 @@
         <div class="col-md-2"><b>Status:</b></div>
         <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.status}</div>
       </div>
+      
+      <c:if test="#{not empty empresaAssociadaMB.empresaAssociada.telefones}">
+		<p:dataTable var="telefone" value="#{empresaAssociadaMB.empresaAssociada.telefones}">
+								
+								<f:facet name="header">
+								        Telefones
+								</f:facet>
+								
+								<p:column>
+									<h:outputText value="#{telefone}" />
+								</p:column>								
+																              
+		</p:dataTable>
+		</c:if> 
+		
+		<br/>
+      
+      <c:if test="#{not empty empresaAssociadaMB.empresaAssociada.cnaes}">
+		<p:dataTable var="cnae" value="#{empresaAssociadaMB.empresaAssociada.cnaes}">
+								
+								<f:facet name="header">
+								        Cnaes
+								</f:facet>
+								
+								<p:column headerText="Código">
+									<h:outputText value="#{cnae.codigo}" />
+								</p:column>
+								
+								<p:column headerText="Descrição">
+									<h:outputText value="#{cnae.descricao}" />
+								</p:column>
+																              
+		</p:dataTable>
+		</c:if>  
+		
+		<br/> 
+      
+      
+      
+      
+      
       <a href="../empresaAssociada/lista.xhtml">Voltar</a>
     </div>
 			

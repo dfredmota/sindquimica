@@ -1,15 +1,20 @@
 package br.developersd3.sindquimica.controllers;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
@@ -19,6 +24,17 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+
+import br.developersd3.sindquimica.exception.GenericException;
+import br.developersd3.sindquimica.models.Evento;
+import br.developersd3.sindquimica.models.Grupo;
+import br.developersd3.sindquimica.models.ParticipanteEvento;
+import br.developersd3.sindquimica.models.Usuario;
+import br.developersd3.sindquimica.service.EventoService;
+import br.developersd3.sindquimica.service.GrupoService;
+import br.developersd3.sindquimica.service.ParticipanteEventoService;
+import br.developersd3.sindquimica.service.UsuarioService;
+import br.developersd3.sindquimica.util.SessionUtils;
 
 @ManagedBean(name = "eventoMB")
 @SessionScoped
@@ -31,14 +47,58 @@ public class EventoMB implements Serializable {
     private ScheduleEvent event = new DefaultScheduleEvent();
     
     private ScheduleModel eventModel;
+    
+    private Evento evento;
+    
+    @ManagedProperty(name = "eventoService", value = "#{eventoService}")
+    private EventoService eventoService;
+    
+	@ManagedProperty(name = "usuarioService", value = "#{usuarioService}")
+	private UsuarioService usuarioService;
+	
+	@ManagedProperty(name = "grupoService", value = "#{grupoService}")
+	private GrupoService grupoService;
+	
+	@ManagedProperty(name = "participanteEventoService", value = "#{participanteEventoService}")
+	private ParticipanteEventoService participanteEventoService;
+	
+	private List<Usuario> usuarios;
+		
+    private Usuario selectedUsuario;
+    
+    private List<Usuario> selectedUsuarios;
+    
+	private List<Grupo> grupos;
+	
+    private Grupo selectedGrupo;
+    private List<Grupo> selectedGrupos;
+    
+    private List<ParticipanteEvento> participantes;
+    
+    private ParticipanteEvento participante;
+    
+    private List<Evento> eventos;
  
     @PostConstruct
     public void init() {
         eventModel = new DefaultScheduleModel();
-        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
-        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
+        
+        this.eventos = eventoService.all(getEmpresaSistema());
+        
+        if(this.eventos != null){
+        	
+        for(Evento ev : this.eventos){
+        	
+        eventModel.addEvent(new DefaultScheduleEvent(ev.getDescricao(), ev.getInicio(), ev.getFim()));	        	
+        	
+        }
+        	
+        }
+        
+//        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
+//        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
+//        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
+//        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
          
         lazyEventModel = new LazyScheduleModel() {
              
@@ -51,6 +111,26 @@ public class EventoMB implements Serializable {
                 addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
             }   
         };
+        
+		 usuarios = usuarioService.all(getEmpresaSistema());
+	     
+	     grupos   = grupoService.all(getEmpresaSistema());
+	     
+	     this.participante = new ParticipanteEvento();
+	     
+	     this.evento = new Evento();
+	     
+	     this.evento.setParticipantes(new ArrayList<ParticipanteEvento>());
+	     
+	     this.participantes = new ArrayList<ParticipanteEvento>();
+    }
+    
+    
+    public String addParticipante(){
+    	
+    	this.getParticipantes().add(participante);  	
+    	
+    	return null;
     }
      
     public Date getRandomDate(Date base) {
@@ -162,12 +242,60 @@ public class EventoMB implements Serializable {
     }
      
     public void addEvent(ActionEvent actionEvent) {
-        if(event.getId() == null)
+      
+    	try{
+    	
+    	if(event.getId() == null){
+        	       	
+        	event = new DefaultScheduleEvent(this.evento.getDescricao(), this.evento.getInicio(), this.evento.getFim());
+        	
             eventModel.addEvent(event);
-        else
+            
+            // cadastrar evento na base de dados
+            
+            this.evento.setUsuarios(getSelectedUsuarios());
+            
+            this.evento.setGrupo(getSelectedGrupos());
+            
+                        
+            // persisti os usuarios externos antes de salvar o evento
+            if(this.participantes != null){
+            	
+            	for(ParticipanteEvento par: this.participantes){
+            		
+            		par = participanteEventoService.create(par, getEmpresaSistema());
+            		
+            		this.evento.getParticipantes().add(par);            		
+            	}
+            	
+            }
+            
+            
+            
+            try {
+				eventoService.create(evento, getEmpresaSistema());
+				FacesMessage msg = new FacesMessage("Evento Criado com sucesso!");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			} catch (GenericException e) {
+				e.printStackTrace();
+			}
+            
+        }
+        else{
             eventModel.updateEvent(event);
+        }
          
         event = new DefaultScheduleEvent();
+        
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	
+    	try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/evento.xhtml?redirect=true");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
      
     public void onEventSelect(SelectEvent selectEvent) {
@@ -176,6 +304,12 @@ public class EventoMB implements Serializable {
      
     public void onDateSelect(SelectEvent selectEvent) {
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+        
+        try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/insert.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
      
     public void onEventMove(ScheduleEntryMoveEvent event) {
@@ -193,4 +327,134 @@ public class EventoMB implements Serializable {
     private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+	public Evento getEvento() {
+		return evento;
+	}
+
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+
+	public EventoService getEventoService() {
+		return eventoService;
+	}
+
+	public void setEventoService(EventoService eventoService) {
+		this.eventoService = eventoService;
+	}
+
+	public UsuarioService getUsuarioService() {
+		return usuarioService;
+	}
+
+	public void setUsuarioService(UsuarioService usuarioService) {
+		this.usuarioService = usuarioService;
+	}
+
+	public GrupoService getGrupoService() {
+		return grupoService;
+	}
+
+	public void setGrupoService(GrupoService grupoService) {
+		this.grupoService = grupoService;
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+
+	public Usuario getSelectedUsuario() {
+		return selectedUsuario;
+	}
+
+	public void setSelectedUsuario(Usuario selectedUsuario) {
+		this.selectedUsuario = selectedUsuario;
+	}
+
+	public List<Usuario> getSelectedUsuarios() {
+		return selectedUsuarios;
+	}
+
+	public void setSelectedUsuarios(List<Usuario> selectedUsuarios) {
+		this.selectedUsuarios = selectedUsuarios;
+	}
+
+	public List<Grupo> getGrupos() {
+		return grupos;
+	}
+
+	public void setGrupos(List<Grupo> grupos) {
+		this.grupos = grupos;
+	}
+
+	public Grupo getSelectedGrupo() {
+		return selectedGrupo;
+	}
+
+	public void setSelectedGrupo(Grupo selectedGrupo) {
+		this.selectedGrupo = selectedGrupo;
+	}
+
+	public List<Grupo> getSelectedGrupos() {
+		return selectedGrupos;
+	}
+
+	public void setSelectedGrupos(List<Grupo> selectedGrupos) {
+		this.selectedGrupos = selectedGrupos;
+	}
+
+	public void setLazyEventModel(ScheduleModel lazyEventModel) {
+		this.lazyEventModel = lazyEventModel;
+	}
+
+	public void setEventModel(ScheduleModel eventModel) {
+		this.eventModel = eventModel;
+	}
+
+	public List<ParticipanteEvento> getParticipantes() {
+		return participantes;
+	}
+
+	public void setParticipantes(List<ParticipanteEvento> participantes) {
+		this.participantes = participantes;
+	}
+
+	public ParticipanteEvento getParticipante() {
+		return participante;
+	}
+
+	public void setParticipante(ParticipanteEvento participante) {
+		this.participante = participante;
+	}	
+	
+	public ParticipanteEventoService getParticipanteEventoService() {
+		return participanteEventoService;
+	}
+
+	public void setParticipanteEventoService(ParticipanteEventoService participanteEventoService) {
+		this.participanteEventoService = participanteEventoService;
+	}
+
+	public List<Evento> getEventos() {
+		return eventos;
+	}
+
+	public void setEventos(List<Evento> eventos) {
+		this.eventos = eventos;
+	}
+
+
+	private Integer getEmpresaSistema(){
+		HttpSession session = SessionUtils.getSession();
+		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
+		
+		return empresaSistemaId;
+	}
+    
+    
 }

@@ -186,6 +186,8 @@ public class UsuarioMB implements Serializable {
 		this.usuario.setEmpresa(new EmpresaAssociada());
 		this.usuario.setEndereco(new Endereco());
 		
+		this.usuario.getEndereco().setEmpresaSistema(getEmpresaSistema());
+		
 		listaTipoDeDocumentos = tipoDocumentoService.all(getEmpresaSistema());
 		
 		listDeDocumentos = new ArrayList<Documento>();
@@ -309,7 +311,6 @@ public class UsuarioMB implements Serializable {
 		EmpresaAssociada empresa = empresaAssociadaService.getById(empresaAssociadaId,getEmpresaSistema());
 		
 		usuario.setEmpresa(empresa);
-		
 			
 		// recupera os documentos
 		

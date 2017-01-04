@@ -41,5 +41,10 @@ public class GrupoService implements GenericService<Grupo> {
 	public void delete(Grupo entity) throws GenericException {
 		dao.delete(entity);
 	}
+	
+	public List<Grupo> findAllByEmpresaAssociada(Integer idsEmpresaAssociada) {
+		
+		return dao.findAllByEmpresaAssociada(idsEmpresaAssociada);
+	}
 
 }

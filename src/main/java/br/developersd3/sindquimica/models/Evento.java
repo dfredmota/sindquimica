@@ -2,12 +2,16 @@ package br.developersd3.sindquimica.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -46,6 +50,54 @@ public class Evento implements Serializable{
 	
 	@Column(name = "empresa_sistema_id")
 	private Integer empresaSistema;
+	
+	@OneToMany
+	@JoinTable(name="evento_usuario",
+            joinColumns={@JoinColumn(name="evento_id",  
+             referencedColumnName="id")},  
+            inverseJoinColumns={@JoinColumn(name="usuario_id",   
+             referencedColumnName="id")}) 
+	private List<Usuario> usuarios;
+	
+	@OneToMany
+	@JoinTable(name="evento_grupo",
+            joinColumns={@JoinColumn(name="evento_id",  
+             referencedColumnName="id")},  
+            inverseJoinColumns={@JoinColumn(name="grupo_id",   
+             referencedColumnName="id")}) 
+	private List<Grupo> grupo;
+	
+	@OneToMany
+	@JoinTable(name="evento_participantes",
+            joinColumns={@JoinColumn(name="evento_id",  
+             referencedColumnName="id")},  
+            inverseJoinColumns={@JoinColumn(name="participante_id",   
+             referencedColumnName="id")}) 
+	private List<ParticipanteEvento> participantes;
+	
+	public List<ParticipanteEvento> getParticipantes() {
+		return participantes;
+	}
+
+	public void setParticipantes(List<ParticipanteEvento> participantes) {
+		this.participantes = participantes;
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
+	}
+
+	public List<Grupo> getGrupo() {
+		return grupo;
+	}
+
+	public void setGrupo(List<Grupo> grupo) {
+		this.grupo = grupo;
+	}
 
 	public Integer getEmpresaSistema() {
 		return empresaSistema;

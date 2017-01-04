@@ -8,7 +8,7 @@ xmlns="http://www.w3.org/1999/xhtml"
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Sindiquimica</title>
+    <title>Sindiquimica - Esqueci a Senha</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
@@ -47,29 +47,21 @@ xmlns="http://www.w3.org/1999/xhtml"
       <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
           <div class="well">
-            <h2 style="text-align:center">Sindiquimica</h2>
+            <h2 style="text-align:center">Digite Seu Email</h2>
             <br/>
               <div class="row">
                 <div class="col-md-12">
-                  <p:inputText id="nome" label="Nome" placeholder="Usuario" class="form-control" value="#{login.user}"  required="true" />
+                  <p:inputText id="nome" label="Nome" placeholder="Email" class="form-control" value="#{login.email}"  required="true" />
                 </div>
               </div>
+              <br/>
               <br/>
               <div class="row">
                 <div class="col-md-12">
-                  <p:password id="senha" label="Senha" placeholder="Senha" class="form-control" value="#{login.pwd}" required="true"/>
+                   <h:commandButton action="#{login.sendPasswordToEmail}" class="btn btn-primary col-md-12" value="Entrar" />
                 </div>
               </div>
               <br/>
-              <div class="row">
-                <div class="col-md-12">
-                   <h:commandButton action="#{login.validateUsernamePassword}" class="btn btn-primary col-md-12" value="Entrar" />
-                </div>
-              </div>
-              <br/>
-          </div>
-          <div class="col-md-12" style="text-align:center">
-            <a href="#">Criar um conta</a>
           </div>
         </div>
       </div>  

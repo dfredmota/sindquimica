@@ -42,5 +42,9 @@ public class EmpresaAssociadaService implements GenericService<EmpresaAssociada>
 	public void delete(EmpresaAssociada entity) throws GenericException {
 		dao.delete(entity);
 	}
+	
+	public List<EmpresaAssociada> findAllByCnae(Integer idCnae) {
+		return dao.findAllByCnae(idCnae);		
+	}
 
 }

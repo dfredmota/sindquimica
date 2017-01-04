@@ -21,7 +21,7 @@
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{tipoDocumentoMB.tipoDocumento}" id="tipoDocumentoTable" lazy="true">
         <p:ajax event="rowSelect" listener="#{tipoDocumentoMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />
-        <p:column headerText="Id" sortBy="#{tipoDocumento.id}" filterBy="#{tipoDocumento.id}">
+        <p:column headerText="Id"  width="5%">
             <h:outputText value="#{tipoDocumento.id}" />
         </p:column>
         <p:column headerText="Descrição" sortBy="#{tipoDocumento.descricao}" filterBy="#{tipoDocumento.descricao}">

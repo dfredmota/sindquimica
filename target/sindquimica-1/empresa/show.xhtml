@@ -3,7 +3,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 	<ui:define name="content">
 	
 	
@@ -28,7 +29,7 @@
               value="Deletar"  class="btn btn-primary">    
         	 <f:setPropertyActionListener target="#{empresaController.empresa}" value="#{empresaController.empresa}" />   
              </h:commandButton>
-            <h2>Informações da Empresas Gestoras</h2>
+            <h2>Informações da Empresas Gestora</h2>
           </div>
         </div>
       </div>
@@ -64,6 +65,45 @@
         <div class="col-md-2"><b>Status:</b></div>
         <div class="col-md-10">#{empresaController.empresa.status}</div>
       </div>
+      
+      <br/>
+      
+      <c:if test="#{not empty empresaController.empresa.telefones}">
+		<p:dataTable var="telefone" value="#{empresaController.empresa.telefones}">
+								
+								<f:facet name="header">
+								        Telefones
+								</f:facet>
+								
+								<p:column>
+									<h:outputText value="#{telefone}" />
+								</p:column>								
+																              
+		</p:dataTable>
+		</c:if> 
+		
+		<br/>
+      
+      <c:if test="#{not empty empresaController.empresa.cnaes}">
+		<p:dataTable var="cnae" value="#{empresaController.empresa.cnaes}">
+								
+								<f:facet name="header">
+								        Cnaes
+								</f:facet>
+								
+								<p:column headerText="Código">
+									<h:outputText value="#{cnae.codigo}" />
+								</p:column>
+								
+								<p:column headerText="Descrição">
+									<h:outputText value="#{cnae.descricao}" />
+								</p:column>
+																              
+		</p:dataTable>
+		</c:if>  
+		
+		<br/>    
+      
       <a href="../empresa/lista.xhtml">Voltar</a>
     </div>
 			

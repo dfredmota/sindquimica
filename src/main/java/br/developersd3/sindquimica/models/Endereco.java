@@ -1,10 +1,15 @@
 package br.developersd3.sindquimica.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -27,6 +32,15 @@ public class Endereco {
 	
 	@Column(name = "empresa_sistema_id")
 	private Integer empresaSistema;
+	
+	@Column(name = "created_at", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
+	
+	@PrePersist
+	protected void onCreate() {
+		createdAt = new Date();
+	}
 
 	public Integer getEmpresaSistema() {
 		return empresaSistema;

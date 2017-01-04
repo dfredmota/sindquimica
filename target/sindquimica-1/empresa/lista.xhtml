@@ -21,7 +21,7 @@
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{empresaController.empresa}" id="empresaTable" lazy="true">
         <p:ajax event="rowSelect" listener="#{empresaController.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();" />
-        <p:column headerText="Id" sortBy="#{empresa.id}" filterBy="#{empresa.id}">
+        <p:column headerText="Id"  width="5%">
             <h:outputText value="#{empresa.id}" />
         </p:column>
         <p:column headerText="Razão Social" sortBy="#{empresa.razaoSocial}" filterBy="#{empresa.razaoSocial}">

@@ -18,9 +18,11 @@ import org.primefaces.model.LazyDataModel;
 
 import br.developersd3.sindquimica.datatable.LazyGrupoDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
+import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Grupo;
 import br.developersd3.sindquimica.models.Usuario;
+import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
 import br.developersd3.sindquimica.service.GrupoService;
 import br.developersd3.sindquimica.service.UsuarioService;
@@ -58,10 +60,55 @@ public class GrupoMB implements Serializable {
 	
 	private List<Usuario> usuarios;
 	
+	private Integer     cnaeId;
+	
+	private List<Cnae>  cnaes;
+	
+	@ManagedProperty(name = "cnaeService", value = "#{cnaeService}")
+	private CnaeService cnaeService;
+	
 	@PostConstruct
 	public void init() {
 		lazyModel = new LazyGrupoDataModel(grupoService.all(getEmpresaSistema()));
+		this.cnaes = cnaeService.all(getEmpresaSistema());
 
+	}
+	
+	public String search(){
+		
+		if(this.cnaeId != null){
+			
+		List<EmpresaAssociada> listaEmpresa = empresaAssociadaService.findAllByCnae(cnaeId);	
+			
+		List<Integer> idsEmpresaCnaes = new ArrayList<Integer>();	
+			
+		List<Grupo> gruposCnaes = new ArrayList<Grupo>();
+		
+		if(listaEmpresa != null){
+			
+		for(EmpresaAssociada emp : listaEmpresa)
+			idsEmpresaCnaes.add(emp.getId());
+			
+		
+		for(Integer id : idsEmpresaCnaes){
+			
+			List<Grupo> lista = grupoService.findAllByEmpresaAssociada(id);
+			
+			if(lista != null && !lista.isEmpty()){
+				
+				for(Grupo gr : lista)				
+				gruposCnaes.add(gr);
+			}
+			
+		}
+		
+		lazyModel = new LazyGrupoDataModel(gruposCnaes);
+			
+		}
+			
+		}
+			
+		return null;
 	}
 	
 	public String addUsuario(){
@@ -316,6 +363,30 @@ public class GrupoMB implements Serializable {
 
 	public void setEmpresasAssociadas(List<EmpresaAssociada> empresasAssociadas) {
 		this.empresasAssociadas = empresasAssociadas;
+	}
+
+	public Integer getCnaeId() {
+		return cnaeId;
+	}
+
+	public void setCnaeId(Integer cnaeId) {
+		this.cnaeId = cnaeId;
+	}
+
+	public List<Cnae> getCnaes() {
+		return cnaes;
+	}
+
+	public void setCnaes(List<Cnae> cnaes) {
+		this.cnaes = cnaes;
+	}
+
+	public CnaeService getCnaeService() {
+		return cnaeService;
+	}
+
+	public void setCnaeService(CnaeService cnaeService) {
+		this.cnaeService = cnaeService;
 	}
 
 	private Integer getEmpresaSistema(){

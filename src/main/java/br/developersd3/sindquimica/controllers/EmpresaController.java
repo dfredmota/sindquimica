@@ -146,6 +146,8 @@ public class EmpresaController implements Serializable {
 		telefones = new ArrayList<String>();
 		
 		this.cnaes = cnaeService.all(getEmpresaSistema());
+		
+		this.empresa.getEndereco().setEmpresaSistema(getEmpresaSistema());
 
 		return "prepareInsert";
 	}

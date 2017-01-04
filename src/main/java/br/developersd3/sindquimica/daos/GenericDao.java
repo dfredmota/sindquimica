@@ -81,6 +81,11 @@ public class GenericDao<T, PK extends Serializable> {
 	    criteria.add(Restrictions.eq("id",id));
 		return (T) criteria.uniqueResult();
 	}
+	
+	public EntityManager getEntityManagerFactory() {
+		entityManager=entityManagerF.createEntityManager();
+		return entityManager;
+	}
 
 	public T update(T entity) {
 		entityManager=entityManagerF.createEntityManager();

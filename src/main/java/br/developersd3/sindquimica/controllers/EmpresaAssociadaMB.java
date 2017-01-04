@@ -149,6 +149,13 @@ public class EmpresaAssociadaMB implements Serializable {
 						
 		}
 		
+		if(this.empresas != null && !empresas.isEmpty()){
+			
+		Empresa emp = empresaService.getById(this.empresas.get(0).getId(), getEmpresaSistema());	
+			
+		this.cnaes	= emp.getCnaes();		
+			
+		}		
 
 		return "prepareUpdate";
 	}
@@ -160,12 +167,22 @@ public class EmpresaAssociadaMB implements Serializable {
 		this.empresaAssociada.setEndereco(new Endereco());
 		
 		this.empresaAssociada.setCnaes(new ArrayList<Cnae>());
-		
+				
 		telefones = new ArrayList<String>();
 		
 		empresas = empresaService.all(getEmpresaSistema());
 		
 		System.out.println("EMPRESA:"+empresas.size());
+		
+		this.empresaAssociada.getEndereco().setEmpresaSistema(getEmpresaSistema());
+		
+		if(this.empresas != null && !empresas.isEmpty()){
+			
+		Empresa emp = empresaService.getById(this.empresas.get(0).getId(), getEmpresaSistema());	
+			
+		this.cnaes	= emp.getCnaes();		
+			
+		}
 
 		return "prepareInsert";
 	}
@@ -206,7 +223,7 @@ public class EmpresaAssociadaMB implements Serializable {
 
 		}
 		
-		FacesMessage msg = new FacesMessage("EmpresaAssociada Criado com sucesso!");
+		FacesMessage msg = new FacesMessage("Empresa Associada Criada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
 		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
@@ -250,7 +267,7 @@ public class EmpresaAssociadaMB implements Serializable {
 
 			empresaAssociadaService.update(empresaAssociada);
 			
-			FacesMessage msg = new FacesMessage("EmpresaAssociada Atualizado com sucesso!");
+			FacesMessage msg = new FacesMessage("Empresa Associada Atualizada com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
 			lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
