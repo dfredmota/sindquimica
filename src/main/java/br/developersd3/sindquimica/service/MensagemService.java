@@ -7,6 +7,7 @@ import javax.inject.Named;
 
 import br.developersd3.sindquimica.daos.MensagemDao;
 import br.developersd3.sindquimica.exception.GenericException;
+import br.developersd3.sindquimica.models.Grupo;
 import br.developersd3.sindquimica.models.Mensagem;
 
 @Named("mensagemService")
@@ -40,6 +41,14 @@ public class MensagemService implements GenericService<Mensagem> {
 	@Override
 	public void delete(Mensagem entity) throws GenericException {
 		dao.delete(entity);
+	}
+
+	public List<Mensagem> findAllByUsuario(Integer idEmpresaSistema,Integer idUsuario) throws GenericException {
+		return dao.findAllByUsuario(idEmpresaSistema,idUsuario);
+	}
+	
+	public List<Mensagem> findAllByGrupo(Integer idEmpresaSistema,Integer grupoId) {
+		return dao.findAllByGrupo(idEmpresaSistema,grupoId);		
 	}
 
 }

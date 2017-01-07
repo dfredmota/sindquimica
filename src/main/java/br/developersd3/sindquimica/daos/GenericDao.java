@@ -151,7 +151,7 @@ public class GenericDao<T, PK extends Serializable> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<T> findAllEmpresa() {
+	public List<T> findAllSemEmpresa() {
 		entityManager=entityManagerF.createEntityManager();
 		return entityManager.createQuery(("FROM " + getTypeClass().getName())).getResultList();
 	}

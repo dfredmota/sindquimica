@@ -21,5 +21,16 @@ public class GrupoDao extends GenericDao<Grupo, Integer> {
 	      
 	      return lista;
 	}
+	
+	public List<Grupo> findAllByUsuario(Integer usuarioId) {
+		
+	      String sql = "select grupo from Grupo grupo join grupo.usuarios user where user.id = "+usuarioId;
+	      
+	      Query q = getEntityManagerFactory().createQuery(sql);
+
+	      List<Grupo> lista = getSession().createQuery(sql).list();
+	      
+	      return lista;
+	}
 
 }

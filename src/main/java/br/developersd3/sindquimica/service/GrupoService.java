@@ -46,5 +46,9 @@ public class GrupoService implements GenericService<Grupo> {
 		
 		return dao.findAllByEmpresaAssociada(idsEmpresaAssociada);
 	}
+	
+	public List<Grupo> findAllByUsuario(Integer usuarioId) {
+		return dao.findAllByUsuario(usuarioId);
+	}
 
 }

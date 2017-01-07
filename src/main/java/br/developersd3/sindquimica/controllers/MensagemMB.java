@@ -20,7 +20,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIParameter;
 import javax.faces.component.html.HtmlOutputLabel;
 import javax.faces.context.FacesContext;
@@ -89,21 +88,100 @@ public class MensagemMB implements Serializable {
     
     private Map<String,DefaultStreamedContent> mapImages;
     
+    List<Mensagem> lista;
+    
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyMensagemDataModel(mensagemService.all(getEmpresaSistema()));
+		
+		try{
+			
+		lista = new ArrayList<Mensagem>();	
+		
+		pesquisaMensagens();
+		
+		// lista de mensagem pra esse usuario logado
+		lazyModel = new LazyMensagemDataModel(this.lista);	
 		
 		mapImages = new HashMap<String,DefaultStreamedContent>();
 				
 		montaImagens();
 		
-		montaTimeLine();    
+		montaTimeLine(); 
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 
+	}
+	
+	public void pesquisaMensagens(){
+		
+		try{
+		
+		lista = new ArrayList<Mensagem>();
+		
+		// lista de mensagem pra esse usuario logado	
+		List<Mensagem> listaMensagemUserLogado = mensagemService.findAllByUsuario(getEmpresaSistema(), getUsuarioLogado());
+		
+		List<Grupo> listaGrupos = grupoService.findAllByUsuario(getUsuarioLogado());
+		
+		List<Mensagem> listaMsgGrupos = new ArrayList<Mensagem>();		
+		
+		// Recupera as mensagems de grupos a que esse usuario pertence
+		if(listaGrupos != null && !listaGrupos.isEmpty()){
+			
+		for(Grupo grupo : listaGrupos){
+			
+		List<Mensagem> list = mensagemService.findAllByGrupo(getEmpresaSistema(), grupo.getId());
+			
+		if(list != null && !list.isEmpty()){
+			
+		for(Mensagem msg : list){
+			
+		if(!listaMsgGrupos.contains(msg)){
+			listaMsgGrupos.add(msg);
+		}			
+			
+		}
+	
+		}	
+			
+		}
+			
+		}
+		
+		if(listaMensagemUserLogado != null && !listaMensagemUserLogado.isEmpty()){
+			
+			for(Mensagem msg : listaMensagemUserLogado){
+				
+				if(!this.lista.contains(msg))
+					this.lista.add(msg);
+				
+			}
+					
+		}
+		
+		if(listaMsgGrupos != null && !listaMsgGrupos.isEmpty()){
+			
+			for(Mensagem msg : listaMsgGrupos){
+				
+				if(!this.lista.contains(msg))
+					this.lista.add(msg);
+				
+			}
+					
+		}
+		
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 	
 	private void montaImagens(){
 		
-		List<Mensagem> lista = mensagemService.all(getEmpresaSistema());
+		try{
 		
 		ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String dir = servletContext.getRealPath("/")+"/images/";
@@ -128,11 +206,16 @@ public class MensagemMB implements Serializable {
 		}
 			
 		}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		
 	}
 	
 	public void montaTimeLine(){
+		
+		try{
 		
 		 usuarios = usuarioService.all(getEmpresaSistema());
 	     
@@ -144,7 +227,7 @@ public class MensagemMB implements Serializable {
 	     
 	     panel.setStyle("border:0px");
 	     
-	     this.mensagens = mensagemService.all(getEmpresaSistema());	     
+	     this.mensagens = this.lista; 
 	     
 	     Application app = FacesContext.getCurrentInstance().getApplication();
 	     
@@ -208,6 +291,10 @@ public class MensagemMB implements Serializable {
 	    	     	 
 	    	 
 	     }
+	     
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -241,6 +328,8 @@ public class MensagemMB implements Serializable {
 	public String postMessage() {
 
 		String str = "sendMessageOK";
+		
+		try {
 		
 		if(getSelectedGrupos() !=null)		
 		mensagem.setGrupos(getSelectedGrupos());
@@ -285,18 +374,18 @@ public class MensagemMB implements Serializable {
 		
 		mensagem.setEmpresaSistema(getEmpresaSistema());
 			
-		try {
+		
 			mensagemService.create(mensagem,getEmpresaSistema());
-		} catch (GenericException e1) {
-
-		}
+		
 		
 		FacesMessage msg = new FacesMessage("Mensagem Criada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyMensagemDataModel(mensagemService.all(getEmpresaSistema()));
+		pesquisaMensagens();
 		
-		mensagens = mensagemService.all(getEmpresaSistema());
+		lazyModel = new LazyMensagemDataModel(this.lista);
+		
+		mensagens = this.lista;
 		
 		setSelectedUsuarios(new ArrayList<Usuario>());
 		setSelectedGrupos(new ArrayList<Grupo>());
@@ -313,6 +402,10 @@ public class MensagemMB implements Serializable {
 		montaImagens();
 		
 		montaTimeLine();
+		
+		} catch (GenericException e1) {
+			e1.printStackTrace();
+		}
 
 		return str;
 	}
@@ -328,7 +421,7 @@ public class MensagemMB implements Serializable {
 			FacesMessage msg = new FacesMessage("Mensagem Atualizada com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyMensagemDataModel(mensagemService.all(getEmpresaSistema()));
+			lazyModel = new LazyMensagemDataModel(mensagemService.findAllByUsuario(getEmpresaSistema(), getUsuarioLogado()));
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -348,7 +441,7 @@ public class MensagemMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Mensagem excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyMensagemDataModel(mensagemService.all(getEmpresaSistema()));
+		lazyModel = new LazyMensagemDataModel(mensagemService.findAllByUsuario(getEmpresaSistema(), getUsuarioLogado()));
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -482,6 +575,13 @@ public class MensagemMB implements Serializable {
 		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
 		
 		return empresaSistemaId;
+	}
+	
+	private Integer getUsuarioLogado(){
+		HttpSession session = SessionUtils.getSession();
+		Integer user = (Integer)session.getAttribute("userId");
+		
+		return user;
 	}
 
 	public DefaultStreamedContent getImagem() {

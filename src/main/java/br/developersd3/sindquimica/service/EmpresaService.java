@@ -19,7 +19,7 @@ public class EmpresaService implements GenericService<Empresa> {
 
 	@Override
 	public List<Empresa> all(Integer empresaSistema) {
-		return dao.findAllEmpresa();
+		return dao.findAllSemEmpresa();
 	}
 
 	@Override

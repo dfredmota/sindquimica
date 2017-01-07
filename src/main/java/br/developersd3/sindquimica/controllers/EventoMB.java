@@ -2,10 +2,13 @@ package br.developersd3.sindquimica.controllers;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -14,6 +17,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.ScheduleEntryMoveEvent;
@@ -78,6 +87,8 @@ public class EventoMB implements Serializable {
     private ParticipanteEvento participante;
     
     private List<Evento> eventos;
+    
+    DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault());
  
     @PostConstruct
     public void init() {
@@ -257,7 +268,6 @@ public class EventoMB implements Serializable {
             
             this.evento.setGrupo(getSelectedGrupos());
             
-                        
             // persisti os usuarios externos antes de salvar o evento
             if(this.participantes != null){
             	
@@ -265,13 +275,13 @@ public class EventoMB implements Serializable {
             		
             		par = participanteEventoService.create(par, getEmpresaSistema());
             		
-            		this.evento.getParticipantes().add(par);            		
+            		this.evento.getParticipantes().add(par);  
+            		
+            		sendEmailParticipantes(par.getEmail(),par.getNome(),this.evento.getDescricao(),this.evento.getInicio(),this.evento.getFim());
             	}
             	
             }
-            
-            
-            
+                        
             try {
 				eventoService.create(evento, getEmpresaSistema());
 				FacesMessage msg = new FacesMessage("Evento Criado com sucesso!");
@@ -298,6 +308,52 @@ public class EventoMB implements Serializable {
 		}
     }
      
+	public void sendEmailParticipantes(String email,String nomeUsuario,String evento,Date dataInicio,Date dataFim){
+		
+		try{
+		
+		final String username = "dfredmota@gmail.com";
+		final String password = "Scorge@3873";
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		
+		Session session = Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+
+		Message message = new MimeMessage(session);
+
+		message.setFrom(new InternetAddress("dfredmota@gmail.com"));
+
+		message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(email));
+
+		message.setSubject("Notificação de Evento - Sindquimica");
+
+		message.setText("Caro ,"+nomeUsuario
+					+ "\n\n Segue os dados do Evento:"+
+						"\n\n Evento: "+evento+" \n\n\n"
+								+ "Data de Ínicio:"+df.format(dataInicio)+" \n\n"
+								+ "Data de Fim:"+df.format(dataFim)+" \n\n "
+										+ "Atenciosamente, \n\n "
+										+ "Equipe Sindquimica.");
+
+		Transport.send(message);
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	
+	}
+	
+    
     public void onEventSelect(SelectEvent selectEvent) {
         event = (ScheduleEvent) selectEvent.getObject();
     }

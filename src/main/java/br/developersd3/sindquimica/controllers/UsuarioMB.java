@@ -18,10 +18,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
@@ -38,6 +36,7 @@ import br.developersd3.sindquimica.models.TipoDocumento;
 import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.DocumentoService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
+import br.developersd3.sindquimica.service.PerfilService;
 import br.developersd3.sindquimica.service.TipoDocumentoService;
 import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
@@ -69,6 +68,9 @@ public class UsuarioMB implements Serializable {
 	@ManagedProperty(name = "empresaAssociadaService", value = "#{empresaAssociadaService}")
 	private EmpresaAssociadaService empresaAssociadaService;
 	
+	@ManagedProperty(name = "perfilService", value = "#{perfilService}")
+	private PerfilService perfilService;
+	
 	private List<EmpresaAssociada> listaDeEmpresasAssociadas;
 	
 	private List<Documento> listDeDocumentos;
@@ -84,6 +86,8 @@ public class UsuarioMB implements Serializable {
 	private DocumentoService documentoService;
 	
 	private UploadedFile file;
+	
+	private List<Perfil> listaPerfil;
 	
 	@PostConstruct
 	public void init() {
@@ -175,6 +179,8 @@ public class UsuarioMB implements Serializable {
 			}
 						
 		}
+		
+		this.listaPerfil = perfilService.all(getEmpresaSistema());
 
 		return "prepareUpdate";
 	}
@@ -198,48 +204,14 @@ public class UsuarioMB implements Serializable {
 		documento.setTipo(new TipoDocumento());
 		
 		listaDeEmpresasAssociadas = empresaAssociadaService.all(getEmpresaSistema());
+		
+		this.usuario.setPerfil(new Perfil());
+		
+		this.listaPerfil = perfilService.all(getEmpresaSistema());
 
 		return "prepareInsert";
 	}
 	
-	public void handleFileUpload(FileUploadEvent event) {
-
-        file = event.getFile();
-        
-        
-        HttpServletRequest request = (HttpServletRequest)FacesContext.
-		        getCurrentInstance().getExternalContext().getRequest();
-		String nomeUsuario = null;
-		    if(request!=null){
-
-		    	nomeUsuario = request.getParameter("form:nome_usuario");
-
-
-		    }
-        
-        if (file != null) {       	        	
-
-			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-	        String dir = servletContext.getRealPath("/");
-			
-			File file1 = new File(dir+"/images/", nomeUsuario + "_" + file.getFileName());
-			this.usuario.setImagemPath(nomeUsuario + "_" + file.getFileName());
-			try {
-				FileOutputStream fos = new FileOutputStream(file1);
-				fos.write(file.getContents());
-				fos.close();
-
-				FacesContext instance = FacesContext.getCurrentInstance();
-				instance.addMessage("mensagens", new FacesMessage(FacesMessage.SEVERITY_INFO,
-						file.getFileName() + " anexado com sucesso", null));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-    }
 	
 	public String liberarUsuario(){
 		
@@ -337,6 +309,30 @@ public class UsuarioMB implements Serializable {
 			
 		if(usuario.getStatus() == null)
 			usuario.setStatus(false);
+		
+		
+		if (file != null && !file.getFileName().isEmpty()) {       	        	
+
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+	        String dir = servletContext.getRealPath("/");
+			
+			File file1 = new File(dir+"/images/", usuario.getNome() + "_" + file.getFileName());
+			this.usuario.setImagemPath(usuario.getNome() + "_" + file.getFileName());
+			try {
+				FileOutputStream fos = new FileOutputStream(file1);
+				fos.write(file.getContents());
+				fos.close();
+
+				FacesContext instance = FacesContext.getCurrentInstance();
+				instance.addMessage("mensagens", new FacesMessage(FacesMessage.SEVERITY_INFO,
+						file.getFileName() + " anexado com sucesso", null));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 		
 		try {
 		
@@ -607,6 +603,22 @@ public class UsuarioMB implements Serializable {
 		this.isAdm = isAdm;
 	}
 
+	public List<Perfil> getListaPerfil() {
+		return listaPerfil;
+	}
+
+	public void setListaPerfil(List<Perfil> listaPerfil) {
+		this.listaPerfil = listaPerfil;
+	}
+
+	public PerfilService getPerfilService() {
+		return perfilService;
+	}
+
+	public void setPerfilService(PerfilService perfilService) {
+		this.perfilService = perfilService;
+	}
+
 	private Integer getUsuarioSistema(){
 		HttpSession session = SessionUtils.getSession();
 		Integer empresaSistemaId = (Integer)session.getAttribute("userId");
@@ -620,5 +632,7 @@ public class UsuarioMB implements Serializable {
 		
 		return perfil;
 	}
+
+	
 	
 }

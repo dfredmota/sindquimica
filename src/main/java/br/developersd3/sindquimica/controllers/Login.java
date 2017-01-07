@@ -38,6 +38,7 @@ public class Login implements Serializable {
 	private String user;	
 	
 	private String email;
+	private String usuario;
 	
 	@ManagedProperty(name = "usuarioService", value = "#{usuarioService}")
 	private UsuarioService usuarioService; 
@@ -133,6 +134,8 @@ public class Login implements Serializable {
 				
 				 if(usuario != null){
 					 
+					 this.usuario = usuario.getNome();
+					 
 					 Perfil perfil = usuario.getPerfil();
 					 
 					 if(perfil.getDescricao().equalsIgnoreCase("ADM")){
@@ -198,5 +201,13 @@ public class Login implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
 }
