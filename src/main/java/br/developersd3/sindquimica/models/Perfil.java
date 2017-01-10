@@ -1,5 +1,7 @@
 package br.developersd3.sindquimica.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,9 +15,15 @@ import org.hibernate.annotations.Where;
 @Table(name="perfil")
 @SQLDelete(sql = "UPDATE perfil set deleted_at = now() WHERE id = ?")
 @Where(clause = "deleted_at is null")
-public class Perfil {
+public class Perfil implements Serializable{
 	
-    @Id
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2018604330153180240L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	

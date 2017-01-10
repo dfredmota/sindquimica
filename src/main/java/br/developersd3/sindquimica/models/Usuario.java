@@ -1,5 +1,6 @@
 package br.developersd3.sindquimica.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +26,17 @@ import org.hibernate.annotations.Where;
 @Table(name="usuario")
 @SQLDelete(sql = "UPDATE usuario set deleted_at = now() WHERE id = ?")
 @Where(clause = "deleted_at is null")
-public class Usuario {
+public class Usuario implements Serializable{
 
-    @Id
+	
+	
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3990221567540470465L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
     

@@ -1,5 +1,6 @@
 package br.developersd3.sindquimica.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,8 +18,13 @@ import org.hibernate.annotations.Where;
 @Entity
 @SQLDelete(sql="UPDATE endereco set deleted_at = now() WHERE id = ?")
 @Where(clause="deleted_at is null")
-public class Endereco {
+public class Endereco implements Serializable{
 	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4063030152030750542L;
 	@Id
 	@GeneratedValue(generator = "endereco_id_seq")
 	@SequenceGenerator(name = "endereco_id_seq", sequenceName = "endereco_id_seq", allocationSize = 1)

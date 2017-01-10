@@ -61,15 +61,15 @@
 
 
 							<div class="form-group">
-								<label for="4" class="col-sm-2 control-label">Usuário</label>
-								<div class="col-sm-8">
+								<label for="4" class="col-sm-1 control-label">Usuário</label>
+								<div class="col-sm-4">
 									<p:selectOneMenu value="#{grupoMB.usuarioId}" id="usuarioId">
 										<f:selectItems value="#{grupoMB.usuarios}"
 											var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario.id}" />
 									</p:selectOneMenu>
-								</div>
-								<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addUsuario}" id="btnAddUser" 
-	              			value="+"  class="btn btn-primary" />
+									<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addUsuario}" id="btnAddUser" 
+	              			value="+"  class="btn btn-primary" style="margin-top:-25px;margin-left:50px" />
+								</div>								
 							</div>
 							
 							
@@ -98,15 +98,18 @@
 
 							<div class="form-group">
 								<label for="4" class="col-sm-2 control-label">Empresa Associada</label>
-								<div class="col-sm-8">
+								<div class="col-sm-4">
 									<p:selectOneMenu value="#{grupoMB.empresaAssociadaId}" id="empresaAssociadaId">
 										<f:selectItems value="#{grupoMB.empresasAssociadas}"
 											var="empresa" itemLabel="#{empresa.razaoSocial}" itemValue="#{empresa.id}" />
 									</p:selectOneMenu>
+									<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addEmpresaAssociada}" id="btnAddEmpresa" 
+	              			value="+"  class="btn btn-primary" style="margin-top:-25px;margin-left:50px" />
 								</div>
-								<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addEmpresaAssociada}" id="btnAddEmpresa" 
-	              			value="+"  class="btn btn-primary" />
+
 							</div>
+							
+						
 							
 							
 							<p:dataTable var="empresaAssociada" value="#{grupoMB.grupo.empresaAssociada}">

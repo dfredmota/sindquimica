@@ -39,6 +39,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+            <groupId>br.com.martinlabs</groupId>
+            <artifactId>martinlabs-commons</artifactId>
+            <version>3.4</version>
+            <type>jar</type>
+        </dependency>
+		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4</version>

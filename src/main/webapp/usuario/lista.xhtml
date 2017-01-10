@@ -27,11 +27,6 @@
         <p:column headerText="Nome" sortBy="#{usuario.nome}" filterBy="#{usuario.nome}">
             <h:outputText value="#{usuario.nome}" />
         </p:column>
-        <p:column headerText="Data de Nascimento" sortBy="#{usuario.dtNascimento}" filterBy="#{usuario.dtNascimento}">
-          <h:outputText value="#{usuarioMB.usuario.dtNascimento}">
-                <f:convertDateTime pattern="dd/MM/yyyy" />
-          </h:outputText>
-        </p:column>
         <p:column headerText="Email" sortBy="#{usuario.email}" filterBy="#{usuario.email}">
             <h:outputText value="#{usuario.email}" />
         </p:column>

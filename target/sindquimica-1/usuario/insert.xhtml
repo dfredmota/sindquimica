@@ -73,6 +73,16 @@
 			  </div>
 			  
 			  <div class="form-group">
+			    <label for="4" class="col-sm-2 control-label">Perfil</label>
+			    <div class="col-sm-8">
+			<p:selectOneMenu value="#{usuarioMB.usuario.perfil.id}" id="perfilId">
+			    <f:selectItems value="#{usuarioMB.listaPerfil}" var="perfil" itemLabel="#{perfil.descricao}" 
+			    itemValue="#{perfil.id}" />
+			</p:selectOneMenu>				
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
 			    <label for="4" class="col-sm-2 control-label">Empresa Associada</label>
 			    <div class="col-sm-8">
 			<p:selectOneMenu required="true" requiredMessage="Empresa Associada obrigatória" value="#{usuarioMB.empresaAssociadaId}" id="empresaId">
@@ -131,13 +141,7 @@
 			    </div>
 			  </div> -->
 			  
-			  <div class="form-group">
-			    <label for="8" class="col-sm-2 control-label">Foto</label>
-			    <div class="col-sm-4">
-			      <p:fileUpload fileUploadListener="#{usuarioMB.handleFileUpload}" mode="advanced" dragDropSupport="false"
-           			 sizeLimit="100000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-			    </div>
-			  </div>		  
+			  	  
 
 					<p:tabView scrollable="true">
 						<p:tab title="Telefones">
@@ -145,7 +149,7 @@
 						<div class="form-group">
 					    <label for="4" class="col-sm-2 control-label">Telefones</label>
 					    <div class="col-sm-4">
-						  <p:inputMask id="phone" value="#{usuarioMB.telefone}" mask="(99) 999-999999" class="form-control"/>
+						  <p:inputMask id="phone" value="#{usuarioMB.telefone}" mask="(99)99999-9999" class="form-control"/>
 					    </div>
 					      <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.addTelefone}" id="btnAddTel" 
 	              			value="+"  class="btn btn-primary" /> 
@@ -210,7 +214,20 @@
 					</p:dataTable>
 					
 					
-					</p:tab>						
+					</p:tab>	
+					
+					<p:tab title="Foto do Usuário">
+
+							<div class="form-group">
+								<label for="8" class="col-sm-2 control-label">Foto</label>
+								<div class="col-sm-4">
+									<p:fileUpload value="#{usuarioMB.file}"
+										label="Selecione a Imagem" mode="simple" skinSimple="true"
+										style="width:100px;" />
+								</div>
+							</div>
+
+						</p:tab>					
 					
 					</p:tabView>
 					

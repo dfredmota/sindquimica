@@ -1,9 +1,18 @@
 package br.developersd3.sindquimica.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 
-public class Telefone {
+public class Telefone implements Serializable{
 	
+	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1826242546085256943L;
+
 	private Integer id;
 	
 	private String  ddd;
