@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-
 import br.com.martinlabs.commons.OpResponse;
 import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.util.DataConnect;
@@ -224,7 +220,7 @@ public class WsDao {
 
 			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
+			while(rs.next()) {
 								
 				EmpresaAssociada emp = new br.developersd3.sindquimica.ws.EmpresaAssociada();
 				
@@ -261,7 +257,7 @@ public class WsDao {
 
 			ResultSet rs = ps.executeQuery();
 
-			if (rs.next()) {
+			while(rs.next()) {
 								
 				Mensagem msg = new br.developersd3.sindquimica.ws.Mensagem();
 				
