@@ -252,7 +252,7 @@ public class WsDao {
 			con = DataConnect.getConnection();
 			ps = con.prepareStatement(" select msg.usuario_id as usuario_send_id, msg.conteudo,msg.id,msg.created_at "+
 						" from mensagem msg,mensagem_usuario msg_user where msg_user.usuario_id ="+usuario.getId()+
-						" and msg.empresa_sistema_id="+usuario.getEmpresaSistema()+
+						" and msg.id = msg_user.mensagem_id and msg.empresa_sistema_id="+usuario.getEmpresaSistema()+
 						" ORDER BY created_at USING >");
 
 			ResultSet rs = ps.executeQuery();
