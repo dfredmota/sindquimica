@@ -62,6 +62,7 @@ public class WsDao {
 				usuario.setStatus(rs.getBoolean("status"));
 				usuario.getPerfil().setId(rs.getInt("perfil_id"));
 				usuario.setEmpresaSistema(rs.getInt("empresa_sistema_id"));
+				usuario.setImagemPath(rs.getString("imagem_path"));
 
 			}
 			
