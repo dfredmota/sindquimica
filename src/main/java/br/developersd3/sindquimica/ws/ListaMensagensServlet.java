@@ -29,7 +29,8 @@ public class ListaMensagensServlet extends ServletWrapper {
 	@Override
     protected Object process(ServletContent content) throws RespException {
 		RequestBody reqBody = content.getBody(RequestBody.class);
-    	return new WsDao().listaMensagensUsuario(reqBody.usuario);
+		String dir = content.request.getSession().getServletContext().getRealPath("/");
+    	return new WsDao().listaMensagensUsuario(dir,reqBody.usuario);
     }
 
 	private class RequestBody {

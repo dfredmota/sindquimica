@@ -246,7 +246,7 @@ public class WsDao {
 	
 	
 	public static OpResponse<List<br.developersd3.sindquimica.ws.Mensagem>> 
-	listaMensagensUsuario(br.developersd3.sindquimica.ws.Usuario usuario) {
+	listaMensagensUsuario(String diretorio,br.developersd3.sindquimica.ws.Usuario usuario) {
 		
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -254,8 +254,10 @@ public class WsDao {
 
 		try {
 			con = DataConnect.getConnection();
-			ps = con.prepareStatement("select * from mensagem where usuario_id = "+usuario.getId()+
-					" and empresa_sistema_id= "+usuario.getEmpresaSistema()+" ORDER BY created_at USING >");
+			ps = con.prepareStatement(" select msg.usuario_id as usuario_send_id, msg.conteudo,msg.id,msg.created_at "+
+						" from mensagem msg,mensagem_usuario msg_user where msg_user.usuario_id ="+usuario.getId()+
+						" and msg.empresa_sistema_id="+usuario.getEmpresaSistema()+
+						" ORDER BY created_at USING >");
 
 			ResultSet rs = ps.executeQuery();
 
@@ -266,6 +268,13 @@ public class WsDao {
 				msg.setId(rs.getInt("id"));
 				msg.setConteudo(rs.getString("conteudo"));
 				msg.setCreatedAt(rs.getDate("created_at"));
+				
+				br.developersd3.sindquimica.ws.Usuario user = getUsuario(diretorio,rs.getInt("usuario_send_id"));
+				
+				if(user != null){
+					
+					msg.setUsuario(user);
+				}
 				
 				lista.add(msg);
 
@@ -571,6 +580,62 @@ public class WsDao {
 			        }
 		
 		return fileContent;
+	}
+	
+	private static br.developersd3.sindquimica.ws.Usuario getUsuario(String dir,Integer id) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		br.developersd3.sindquimica.ws.Usuario usuario = null;
+
+		try {
+			con = DataConnect.getConnection();
+			ps = con.prepareStatement("Select * from usuario where id = ?");
+			ps.setInt(1, id);
+
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+								
+				usuario = new br.developersd3.sindquimica.ws.Usuario();
+				
+				usuario.setEndereco(new Endereco());
+				usuario.setEmpresa(new EmpresaAssociada());
+				usuario.setPerfil(new Perfil());				
+				
+				usuario.setId(rs.getInt("id"));
+				usuario.setNome(rs.getString("nome"));
+				usuario.setDtNascimento(rs.getDate("data_nascimento"));
+				usuario.setEmail(rs.getString("email"));
+				usuario.setTelefones(rs.getString("telefones"));
+				usuario.setSite(rs.getString("site"));
+				usuario.getEndereco().setId(rs.getInt("endereco_id"));
+				usuario.getEmpresa().setId(rs.getInt("empresa_associada_id"));
+				usuario.setStatus(rs.getBoolean("status"));
+				usuario.getPerfil().setId(rs.getInt("perfil_id"));
+				usuario.setEmpresaSistema(rs.getInt("empresa_sistema_id"));
+				usuario.setImagemPath(rs.getString("imagem_path"));
+
+			}
+			
+			// caso haja recupera imagem
+			
+			if(usuario.getImagemPath() != null && !usuario.getImagemPath().isEmpty()){
+				
+				byte[] photo = readImage(dir, usuario);
+				
+				if(photo != null)
+					usuario.setImagem(photo);
+				
+			}
+			
+			
+		} catch (SQLException ex) {
+			System.out.println("Login error -->" + ex.getMessage());
+			return usuario;
+		} finally {
+			DataConnect.close(con);
+		}
+		return usuario;
 	}
 	
 }
