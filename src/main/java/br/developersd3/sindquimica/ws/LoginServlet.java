@@ -28,10 +28,8 @@ public class LoginServlet extends ServletWrapper {
 	@Override
     protected Object process(ServletContent content) throws RespException {
     	LoginRequest reqBody = content.getBody(LoginRequest.class);
-    	content.request.getParameter("Account");
-    	content.request.getAttributeNames();
-    	content.request.getParameterNames();
-    	return new WsDao().loginApp(reqBody.account, reqBody.password);
+		String dir = content.request.getSession().getServletContext().getRealPath("/");
+    	return new WsDao().loginApp(dir,reqBody.account, reqBody.password);
     }
 
     private class LoginRequest {

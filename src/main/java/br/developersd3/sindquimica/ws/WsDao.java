@@ -1,5 +1,10 @@
 package br.developersd3.sindquimica.ws;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 import br.com.martinlabs.commons.OpResponse;
 import br.developersd3.sindquimica.models.Usuario;
@@ -21,7 +30,7 @@ public class WsDao {
 	 
 
 	
-	public static OpResponse<Usuario> loginApp(String user, String password) {
+	public static OpResponse<Usuario> loginApp(String dir,String user, String password) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		br.developersd3.sindquimica.ws.Usuario usuario = null;
@@ -55,6 +64,19 @@ public class WsDao {
 				usuario.setEmpresaSistema(rs.getInt("empresa_sistema_id"));
 
 			}
+			
+			// caso haja recupera imagem
+			
+			if(usuario.getImagemPath() != null && !usuario.getImagemPath().isEmpty()){
+				
+				byte[] photo = readImage(dir, usuario);
+				
+				if(photo != null)
+					usuario.setImagem(photo);
+				
+			}
+			
+			
 		} catch (SQLException ex) {
 			System.out.println("Login error -->" + ex.getMessage());
 			return new OpResponse(usuario);
@@ -64,7 +86,7 @@ public class WsDao {
 		return new OpResponse(usuario);
 	}
 	
-	public static OpResponse<Usuario> insertUsuario(br.developersd3.sindquimica.ws.Usuario usuario) {
+	public static OpResponse<Usuario> insertUsuario(String dir,br.developersd3.sindquimica.ws.Usuario usuario) {
 		
 		 Integer idUsuario = null;
 		 PreparedStatement ps = null;
@@ -75,7 +97,7 @@ public class WsDao {
 
 	            String sql = "insert into usuario(nome,data_nascimento,endereco_id,email,"
 	            		+ "telefones,site,empresa_associada_id,created_at,status,login,password,perfil_id,"
-	            		+ "empresa_sistema_id) values(?,?,?,?,?,?,?,?,?,?,?,?,?) returning id;";
+	            		+ "empresa_sistema_id,imagem_path) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?) returning id;";
 
 	            con = DataConnect.getConnection();
 
@@ -93,9 +115,14 @@ public class WsDao {
 	            ps.setString(10, usuario.getLogin());
 	            ps.setString(11, usuario.getPassword());
 	            ps.setInt(12, usuario.getPerfil().getId());
-	            ps.setInt(13, usuario.getEmpresa().getEmpresaSistema());
-
-
+	            ps.setInt(13, usuario.getEmpresa().getEmpresaSistema());	
+	            
+	            String pathImagem = saveImage(dir,usuario);	   
+	            
+	            usuario.setImagemPath(pathImagem);
+	            
+	            ps.setString(14, usuario.getImagemPath());           
+	            
 	            rs = ps.executeQuery();
 
 	            if (rs.next())
@@ -450,6 +477,99 @@ public class WsDao {
 			DataConnect.close(con);
 		}
 		return new OpResponse(lista);
+	}
+	
+	private static String saveImage(String dir,br.developersd3.sindquimica.ws.Usuario usuario){
+		
+		if (usuario.getImagem() != null) {       	        	
+		
+			File file1 = new File(dir+"/images/",usuario.getNome()+"_app");
+			usuario.setImagemPath(file1.getName());
+			try {
+				FileOutputStream fos = new FileOutputStream(file1);
+				fos.write(usuario.getImagem());
+				fos.close();
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}else{
+			usuario.setImagemPath("");
+		}
+		
+		return usuario.getImagemPath();
+		
+	}
+	
+	private static byte[] readImage(String dir,br.developersd3.sindquimica.ws.Usuario usuario){
+		
+		byte fileContent[]=null;
+		  	        	
+		
+		File file = new File(dir+"/images/", usuario.getImagemPath());
+		
+		FileInputStream fin = null;
+
+			
+		try {
+			
+			            // create FileInputStream object
+			
+			            fin = new FileInputStream(file);
+			 
+			
+			            fileContent = new byte[(int)file.length()];
+						             
+			
+			            // Reads up to certain bytes of data from this input stream into an array of bytes.
+			
+			            fin.read(fileContent);
+			
+			            //create string from byte array
+			
+			            String s = new String(fileContent);
+			
+			            System.out.println("File content: " + s);
+						        }
+			
+			        catch (FileNotFoundException e) {
+			
+			            System.out.println("File not found" + e);
+			
+			        }
+			
+			        catch (IOException ioe) {
+			
+			            System.out.println("Exception while reading file " + ioe);
+			
+			        }
+			
+			        finally {
+			
+			            // close the streams using close method
+			
+			            try {
+			
+			                if (fin != null) {
+			
+			                    fin.close();
+			
+			                }
+			
+			            }
+			
+			            catch (IOException ioe) {
+			
+			                System.out.println("Error while closing stream: " + ioe);
+			
+			            }
+			
+			        }
+		
+		return fileContent;
 	}
 	
 }
