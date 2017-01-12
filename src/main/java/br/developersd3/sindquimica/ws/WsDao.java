@@ -26,7 +26,7 @@ public class WsDao {
 	 
 
 	
-	public static OpResponse<Usuario> loginApp(String dir,String user, String password) {
+	public static OpResponse<Usuario> loginApp(String dir,String user, String password,String token) {
 		Connection con = null;
 		PreparedStatement ps = null;
 		br.developersd3.sindquimica.ws.Usuario usuario = null;
@@ -73,6 +73,9 @@ public class WsDao {
 				
 			}
 			
+			if(usuario.getId() != null)
+				atualizaTokenDeUsuario(usuario.getId(),token);
+			
 			
 		} catch (SQLException ex) {
 			System.out.println("Login error -->" + ex.getMessage());
@@ -81,6 +84,44 @@ public class WsDao {
 			DataConnect.close(con);
 		}
 		return new OpResponse(usuario);
+	}
+	
+	private static void atualizaTokenDeUsuario(Integer idUsuario,String token){
+		
+		 PreparedStatement ps = null;
+		 Connection con = null;
+		 ResultSet rs = null;
+		 
+		 try {
+		 
+         String sql = "update usuario set token_app='"+token+"' where id="+idUsuario;
+		
+         con = DataConnect.getConnection();
+
+         ps = con.prepareStatement(sql);
+         
+         ps.executeUpdate();
+         
+         
+		} catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null)
+	                rs.close();
+	            if (ps != null)
+	                ps.close();
+	            if (con != null)
+	                con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	
+	    }
+		
+		
 	}
 	
 	public static OpResponse<Usuario> insertUsuario(String dir,br.developersd3.sindquimica.ws.Usuario usuario) {

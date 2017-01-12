@@ -85,6 +85,17 @@ public class Usuario implements Serializable{
 	@JoinColumn(name = "perfil_id")
 	private Perfil perfil;
 	
+	@Column(name = "token_app")
+	private String token;
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
 	public Perfil getPerfil() {
 		return perfil;
 	}

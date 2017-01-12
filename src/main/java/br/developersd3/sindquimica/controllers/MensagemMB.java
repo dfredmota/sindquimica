@@ -52,6 +52,7 @@ import de.bytefish.fcmjava.client.FcmClient;
 import de.bytefish.fcmjava.model.options.FcmMessageOptions;
 import de.bytefish.fcmjava.model.topics.Topic;
 import de.bytefish.fcmjava.requests.FcmMessage;
+import de.bytefish.fcmjava.requests.groups.AddDeviceGroupMessage;
 import de.bytefish.fcmjava.requests.topic.TopicUnicastMessage;
 
 @ManagedBean(name = "mensagemMB")
@@ -338,96 +339,119 @@ public class MensagemMB implements Serializable {
 
 		String str = "sendMessageOK";
 		
-//		try {
-//		
-//		if(getSelectedGrupos() !=null)		
-//		mensagem.setGrupos(getSelectedGrupos());
-//		
-//		if(getSelectedUsuarios() !=null)
-//		mensagem.setUsuarios(getSelectedUsuarios());
-//		
-//		if (file != null && !file.getFileName().isEmpty()) {       	        	
-//
-//			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-//	        
-//			String dir = servletContext.getRealPath("/")+"/images/";
-//			
-//			// /appservers/images/
-//			// /home/fred/images/
-//			File file1 = new File(dir, this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
-//				
-//			this.mensagem.setFileName(this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
-//			
-//			try {
-//				FileOutputStream fos = new FileOutputStream(file1);
-//				fos.write(file.getContents());
-//				fos.close();
-//			} catch (FileNotFoundException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//
-//		}
-//		
-//		
-//		
-//		// recupera usuario logado
-//		
-//		HttpSession session = SessionUtils.getSession();
-//		Integer userId = (Integer)session.getAttribute("userId");
-//		
-//		Usuario usuarioSessao = usuarioService.getById(userId,getEmpresaSistema());
-//		
-//		mensagem.setUsuario(usuarioSessao);
-//		
-//		mensagem.setEmpresaSistema(getEmpresaSistema());
-//			
-//		
-//			mensagemService.create(mensagem,getEmpresaSistema());
-//		
-//		
-//		FacesMessage msg = new FacesMessage("Mensagem Criada com sucesso!");
-//		FacesContext.getCurrentInstance().addMessage(null, msg);
-//		
-//		pesquisaMensagens();
-//		
-//		lazyModel = new LazyMensagemDataModel(this.lista);
-//		
-//		mensagens = this.lista;
-//		
-//		setSelectedUsuarios(new ArrayList<Usuario>());
-//		setSelectedGrupos(new ArrayList<Grupo>());
-//		
-//		this.mensagem = new Mensagem();
-//
-//		try {
-//
-//		} catch (Exception e) {
-//			str = "sendMessageError";
-//
-//		}
-//		
-//		montaImagens();
-//		
-//		montaTimeLine();
-//		
-//		} catch (GenericException e1) {
-//			e1.printStackTrace();
-//		}
+		try {
 		
+		if(getSelectedGrupos() !=null)		
+		mensagem.setGrupos(getSelectedGrupos());
+		
+		if(getSelectedUsuarios() !=null)
+		mensagem.setUsuarios(getSelectedUsuarios());
+		
+		if (file != null && !file.getFileName().isEmpty()) {       	        	
+
+			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+	        
+			String dir = servletContext.getRealPath("/")+"/images/";
+			
+			// /appservers/images/
+			// /home/fred/images/
+			File file1 = new File(dir, this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
+				
+			this.mensagem.setFileName(this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
+			
+			try {
+				FileOutputStream fos = new FileOutputStream(file1);
+				fos.write(file.getContents());
+				fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+		
+		
+		
+		// recupera usuario logado
+		
+		HttpSession session = SessionUtils.getSession();
+		Integer userId = (Integer)session.getAttribute("userId");
+		
+		Usuario usuarioSessao = usuarioService.getById(userId,getEmpresaSistema());
+		
+		mensagem.setUsuario(usuarioSessao);
+		
+		mensagem.setEmpresaSistema(getEmpresaSistema());
+			
+		
+			mensagemService.create(mensagem,getEmpresaSistema());
+		
+		
+		FacesMessage msg = new FacesMessage("Mensagem Criada com sucesso!");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		
+		pesquisaMensagens();
+		
+		lazyModel = new LazyMensagemDataModel(this.lista);
+		
+		mensagens = this.lista;
+		
+
+		
+		this.mensagem = new Mensagem();
+
+		try {
+
+		} catch (Exception e) {
+			str = "sendMessageError";
+
+		}
+		
+		montaImagens();
+		
+		montaTimeLine();
+		
+		} catch (GenericException e1) {
+			e1.printStackTrace();
+		}
+		
+		// envia as push notifications pros usuarios selecionas que tenha token de app
+		
+		List<String> tokensUsuarios = new ArrayList<String>();
+		
+		if(getSelectedUsuarios() != null){
+			
+		for(Usuario user : getSelectedUsuarios()){
+			
+			tokensUsuarios.add(user.getToken());
+			
+		}
+			
+		}
+		
+		if(tokensUsuarios != null && !tokensUsuarios.isEmpty()){
 		
 		// Create the Client using system-properties-based settings:
         FcmClient client = new FcmClient();
 
         // Message Options:
         FcmMessageOptions options = FcmMessageOptions.builder()
-                .setTimeToLive(Duration.ofMinutes(2))
+                .setTimeToLive(Duration.ofMinutes(1))
                 .build();
 
+        AddDeviceGroupMessage usuariosPush = new AddDeviceGroupMessage(options, tokensUsuarios, "Mensagem-Sindquimica", "Sindquimica");
+        
+        client.send(usuariosPush);
+        
+		}
+        
         // Send a Message:
-        client.send(new TopicUnicastMessage(options, new Topic("news"), new PersonData("Philipp", "Wagner")));
-
+        //client.send(new TopicUnicastMessage(options, new Topic("news"), new PersonData("Philipp", "Wagner")));
+        
+		setSelectedUsuarios(new ArrayList<Usuario>());
+		setSelectedGrupos(new ArrayList<Grupo>());       
+        
 		return str;
 	}
 

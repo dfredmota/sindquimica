@@ -29,12 +29,13 @@ public class LoginServlet extends ServletWrapper {
     protected Object process(ServletContent content) throws RespException {
     	LoginRequest reqBody = content.getBody(LoginRequest.class);
 		String dir = content.request.getSession().getServletContext().getRealPath("/");
-    	return new WsDao().loginApp(dir,reqBody.account, reqBody.password);
+    	return new WsDao().loginApp(dir,reqBody.account, reqBody.password,reqBody.token);
     }
 
     private class LoginRequest {
         String account;
         String password;
+        String token;
     }
     
 }
