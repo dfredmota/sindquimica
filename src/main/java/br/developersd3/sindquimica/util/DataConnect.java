@@ -3,7 +3,7 @@ package br.developersd3.sindquimica.util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-//"jdbc:postgresql://localhost:5432/fabricam_quimica", "fabricam_developer", "Valente@3873"
+//"jdbc:postgresql://localhost:5432/fabricam_sindquimica", "fabricam_developer", "Valente@3873"
 //"jdbc:postgresql://localhost:5432/sindquimica", "postgres", "123456");
 public class DataConnect {
 

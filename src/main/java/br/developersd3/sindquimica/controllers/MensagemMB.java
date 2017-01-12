@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,8 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.UploadedFile;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import br.developersd3.sindquimica.datatable.LazyMensagemDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Grupo;
@@ -45,6 +48,11 @@ import br.developersd3.sindquimica.service.GrupoService;
 import br.developersd3.sindquimica.service.MensagemService;
 import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
+import de.bytefish.fcmjava.client.FcmClient;
+import de.bytefish.fcmjava.model.options.FcmMessageOptions;
+import de.bytefish.fcmjava.model.topics.Topic;
+import de.bytefish.fcmjava.requests.FcmMessage;
+import de.bytefish.fcmjava.requests.topic.TopicUnicastMessage;
 
 @ManagedBean(name = "mensagemMB")
 @RequestScoped
@@ -89,6 +97,7 @@ public class MensagemMB implements Serializable {
     private Map<String,DefaultStreamedContent> mapImages;
     
     List<Mensagem> lista;
+        
     
 	@PostConstruct
 	public void init() {
@@ -329,83 +338,95 @@ public class MensagemMB implements Serializable {
 
 		String str = "sendMessageOK";
 		
-		try {
+//		try {
+//		
+//		if(getSelectedGrupos() !=null)		
+//		mensagem.setGrupos(getSelectedGrupos());
+//		
+//		if(getSelectedUsuarios() !=null)
+//		mensagem.setUsuarios(getSelectedUsuarios());
+//		
+//		if (file != null && !file.getFileName().isEmpty()) {       	        	
+//
+//			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+//	        
+//			String dir = servletContext.getRealPath("/")+"/images/";
+//			
+//			// /appservers/images/
+//			// /home/fred/images/
+//			File file1 = new File(dir, this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
+//				
+//			this.mensagem.setFileName(this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
+//			
+//			try {
+//				FileOutputStream fos = new FileOutputStream(file1);
+//				fos.write(file.getContents());
+//				fos.close();
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//
+//		}
+//		
+//		
+//		
+//		// recupera usuario logado
+//		
+//		HttpSession session = SessionUtils.getSession();
+//		Integer userId = (Integer)session.getAttribute("userId");
+//		
+//		Usuario usuarioSessao = usuarioService.getById(userId,getEmpresaSistema());
+//		
+//		mensagem.setUsuario(usuarioSessao);
+//		
+//		mensagem.setEmpresaSistema(getEmpresaSistema());
+//			
+//		
+//			mensagemService.create(mensagem,getEmpresaSistema());
+//		
+//		
+//		FacesMessage msg = new FacesMessage("Mensagem Criada com sucesso!");
+//		FacesContext.getCurrentInstance().addMessage(null, msg);
+//		
+//		pesquisaMensagens();
+//		
+//		lazyModel = new LazyMensagemDataModel(this.lista);
+//		
+//		mensagens = this.lista;
+//		
+//		setSelectedUsuarios(new ArrayList<Usuario>());
+//		setSelectedGrupos(new ArrayList<Grupo>());
+//		
+//		this.mensagem = new Mensagem();
+//
+//		try {
+//
+//		} catch (Exception e) {
+//			str = "sendMessageError";
+//
+//		}
+//		
+//		montaImagens();
+//		
+//		montaTimeLine();
+//		
+//		} catch (GenericException e1) {
+//			e1.printStackTrace();
+//		}
 		
-		if(getSelectedGrupos() !=null)		
-		mensagem.setGrupos(getSelectedGrupos());
 		
-		if(getSelectedUsuarios() !=null)
-		mensagem.setUsuarios(getSelectedUsuarios());
-		
-		if (file != null && !file.getFileName().isEmpty()) {       	        	
+		// Create the Client using system-properties-based settings:
+        FcmClient client = new FcmClient();
 
-			ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-	        
-			String dir = servletContext.getRealPath("/")+"/images/";
-			
-			// /appservers/images/
-			// /home/fred/images/
-			File file1 = new File(dir, this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
-				
-			this.mensagem.setFileName(this.mensagem.getConteudo().substring(0,2) + "_" + file.getFileName());
-			
-			try {
-				FileOutputStream fos = new FileOutputStream(file1);
-				fos.write(file.getContents());
-				fos.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+        // Message Options:
+        FcmMessageOptions options = FcmMessageOptions.builder()
+                .setTimeToLive(Duration.ofMinutes(2))
+                .build();
 
-		}
-		
-		
-		
-		// recupera usuario logado
-		
-		HttpSession session = SessionUtils.getSession();
-		Integer userId = (Integer)session.getAttribute("userId");
-		
-		Usuario usuarioSessao = usuarioService.getById(userId,getEmpresaSistema());
-		
-		mensagem.setUsuario(usuarioSessao);
-		
-		mensagem.setEmpresaSistema(getEmpresaSistema());
-			
-		
-			mensagemService.create(mensagem,getEmpresaSistema());
-		
-		
-		FacesMessage msg = new FacesMessage("Mensagem Criada com sucesso!");
-		FacesContext.getCurrentInstance().addMessage(null, msg);
-		
-		pesquisaMensagens();
-		
-		lazyModel = new LazyMensagemDataModel(this.lista);
-		
-		mensagens = this.lista;
-		
-		setSelectedUsuarios(new ArrayList<Usuario>());
-		setSelectedGrupos(new ArrayList<Grupo>());
-		
-		this.mensagem = new Mensagem();
-
-		try {
-
-		} catch (Exception e) {
-			str = "sendMessageError";
-
-		}
-		
-		montaImagens();
-		
-		montaTimeLine();
-		
-		} catch (GenericException e1) {
-			e1.printStackTrace();
-		}
+        // Send a Message:
+        client.send(new TopicUnicastMessage(options, new Topic("news"), new PersonData("Philipp", "Wagner")));
 
 		return str;
 	}
@@ -599,5 +620,26 @@ public class MensagemMB implements Serializable {
 	public void setMapImages(Map<String, DefaultStreamedContent> mapImages) {
 		this.mapImages = mapImages;
 	}	
+	
+	private class PersonData {
+
+        private final String firstName;
+        private final String lastName;
+
+        public PersonData(String firstName, String lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        @JsonProperty("firstName")
+        public String getFirstName() {
+            return firstName;
+        }
+
+        @JsonProperty("lastName")
+        public String getLastName() {
+            return lastName;
+        }
+    }
 
 }

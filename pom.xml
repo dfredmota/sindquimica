@@ -39,11 +39,21 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-            <groupId>br.com.martinlabs</groupId>
-            <artifactId>martinlabs-commons</artifactId>
-            <version>3.4</version>
-            <type>jar</type>
-        </dependency>
+			<groupId>de.bytefish.fcmjava</groupId>
+			<artifactId>fcmjava-core</artifactId>
+			<version>0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>de.bytefish.fcmjava</groupId>
+			<artifactId>fcmjava-client</artifactId>
+			<version>0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>br.com.martinlabs</groupId>
+			<artifactId>martinlabs-commons</artifactId>
+			<version>3.4</version>
+			<type>jar</type>
+		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
