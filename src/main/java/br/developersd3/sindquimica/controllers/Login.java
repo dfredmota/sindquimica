@@ -24,28 +24,24 @@ import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
 
-
-
-
 @ManagedBean(name = "login")
 @SessionScoped
 public class Login implements Serializable {
 
 	private static final long serialVersionUID = 1094801825228386363L;
-	
+
 	private String pwd;
 	private String msg;
-	private String user;	
-	
+	private String user;
+
 	private String email;
 	private String usuario;
-	
+
 	@ManagedProperty(name = "usuarioService", value = "#{usuarioService}")
-	private UsuarioService usuarioService; 
-	
-	
-	public String sendPasswordToEmail(){
-		
+	private UsuarioService usuarioService;
+
+	public String sendPasswordToEmail() {
+
 		final String username = "dfredmota@gmail.com";
 		final String password = "Scorge@3873";
 
@@ -54,19 +50,16 @@ public class Login implements Serializable {
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
-		
+
 		Usuario usuario = usuarioService.getByEmail(email);
-		
-		if(usuario != null){
 
-		Session session = Session.getInstance(props,
-		  new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		  });
+		if (usuario != null) {
 
-
+			Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(username, password);
+				}
+			});
 
 			Message message = new MimeMessage(session);
 			try {
@@ -78,11 +71,9 @@ public class Login implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 			try {
-				message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("dfredmota@gmail.com"));
+				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("dfredmota@gmail.com"));
 			} catch (AddressException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -97,9 +88,8 @@ public class Login implements Serializable {
 				e.printStackTrace();
 			}
 			try {
-				message.setText("Caro ,"+usuario.getNome()
-					+ "\n\n Segue sua senha para acesso ao sistema:"+
-						"\n\n Senha:"+usuario.getPassword()+" \n\n\n Atenciosamente, Equipe Sindiquimica.");
+				message.setText("Caro ," + usuario.getNome() + "\n\n Segue sua senha para acesso ao sistema:"
+						+ "\n\n Senha:" + usuario.getPassword() + " \n\n\n Atenciosamente, Equipe Sindiquimica.");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,58 +101,64 @@ public class Login implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			FacesContext.getCurrentInstance().addMessage(null, 
-					new FacesMessage(FacesMessage.SEVERITY_INFO,null,"Sua senha foi enviada pro seu email!"));
-		}
-		
-			return "/login.xhtml?redirect=true";		
-	}
-	
-	//validate login
-		public String validateUsernamePassword() {
-			
-			Integer[] valid = LoginDAO.validate(user, pwd);
-			
-			if (valid != null && valid.length > 0) {
-				HttpSession session = SessionUtils.getSession();
-				session.setAttribute("userId", valid[0]);
-				session.setAttribute("empresaSistemaId", valid[1]);
-				
-				// seta o perfil do mesmo na aplicação
-				Usuario usuario = usuarioService.getById(valid[0], valid[1]);
-				
-				 if(usuario != null){
-					 
-					 this.usuario = usuario.getNome();
-					 
-					 Perfil perfil = usuario.getPerfil();
-					 
-					 if(perfil.getDescricao().equalsIgnoreCase("ADM")){
-						 session.setAttribute("perfil", "ADM");
-					 }else{
-						 session.setAttribute("perfil", "ADMSINDICATO");
-					 }
-				 }
-				
-				
-				return "admin";
-			} else {
-				FacesContext.getCurrentInstance().addMessage(null, 
-						new FacesMessage(FacesMessage.SEVERITY_ERROR,null,"Login e/ou Senha Inválidos!"));
-						
-				return "login";
-			}
+
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, null, "Sua senha foi enviada pro seu email!"));
 		}
 
-		//logout event, invalidate session
-		public String logout() {
+		return "/login.xhtml?redirect=true";
+	}
+
+	// validate login
+	public String validateUsernamePassword() {
+
+		Integer[] valid = LoginDAO.validate(user, pwd);
+
+		if (valid != null && valid.length > 0) {
 			HttpSession session = SessionUtils.getSession();
-			session.invalidate();
-			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+			session.setAttribute("userId", valid[0]);
+			session.setAttribute("empresaSistemaId", valid[1]);
+
+			// seta o perfil do mesmo na aplicação
+			Usuario usuario = usuarioService.getById(valid[0], valid[1]);
+
+			if (usuario != null) {
+
+				this.usuario = usuario.getNome();
+
+				Perfil perfil = usuario.getPerfil();
+
+				if (perfil.getDescricao().equalsIgnoreCase("ADM")) {
+					session.setAttribute("perfil", "ADM");
+				} else {
+					session.setAttribute("perfil", "ADMSINDICATO");
+				}
+			}
+
+			return "admin";
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, null, "Login e/ou Senha Inválidos!"));
+
 			return "login";
 		}
-	
+	}
+
+	// logout event, invalidate session
+	public String logout() {
+		HttpSession session = SessionUtils.getSession();
+		session.invalidate();
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		return "login";
+	}
+
+	public String getPerfilUsuario() {
+		HttpSession session = SessionUtils.getSession();
+		String perfil = (String) session.getAttribute("perfil");
+
+		return perfil;
+	}
+
 	public String getPwd() {
 		return pwd;
 	}

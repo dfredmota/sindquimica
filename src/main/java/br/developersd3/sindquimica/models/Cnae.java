@@ -56,7 +56,7 @@ public class Cnae implements Serializable{
 	}
 
 	public String getDescricao() {
-		return descricao;
+		return this.codigo + " - "+descricao;
 	}
 
 	public void setDescricao(String descricao) {

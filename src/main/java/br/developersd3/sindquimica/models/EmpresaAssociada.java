@@ -80,6 +80,18 @@ public class EmpresaAssociada implements Serializable{
 	@Column(name = "empresa_sistema_id")
 	private Integer empresaSistema;
 	
+	@OneToOne
+	@JoinColumn(name = "segmento_id")
+	private Segmento segmento;
+	
+	public Segmento getSegmento() {
+		return segmento;
+	}
+
+	public void setSegmento(Segmento segmento) {
+		this.segmento = segmento;
+	}
+
 	public Integer getEmpresaSistema() {
 		return empresaSistema;
 	}

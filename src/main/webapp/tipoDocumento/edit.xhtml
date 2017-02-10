@@ -47,7 +47,8 @@
 			  <div class="form-group">
 			    <label for="1" class="col-sm-1 control-label">Descrição</label>
 			    <div class="col-sm-3">
-			      <h:inputText value="#{tipoDocumentoMB.tipoDocumento.descricao}" class="form-control" />
+			    <h:inputText value="#{tipoDocumentoMB.tipoDocumento.descricao}" class="form-control" required="true" 
+			      requiredMessage="Descrição Obrigatória." />
 			    </div>
 			  </div>
 			  
@@ -56,7 +57,7 @@
               <h:commandButton ajax="false" title="Edit" action="#{tipoDocumentoMB.update}" id="btnUpdate" 
 	              value="Salvar"  class="btn btn-primary" /> 
             <span class="pull-right"></span>
-              <h:commandButton ajax="false" title="Cancelar" action="/tipoDocumento/lista.xhtml" id="btnClearForm" 
+              <h:commandButton ajax="false" title="Cancelar" action="/tipoDocumento/lista.xhtml" id="btnClearForm" immediate="true" 
 	              value="Cancelar"  class="btn btn-primary"/> 
          	 </div>
         	</div>	  

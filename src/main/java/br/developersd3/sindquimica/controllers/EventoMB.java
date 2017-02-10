@@ -106,11 +106,7 @@ public class EventoMB implements Serializable {
         	
         }
         
-//        eventModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-//        eventModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-//        eventModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
-//        eventModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
-         
+        
         lazyEventModel = new LazyScheduleModel() {
              
             @Override
@@ -166,84 +162,7 @@ public class EventoMB implements Serializable {
     public ScheduleModel getLazyEventModel() {
         return lazyEventModel;
     }
- 
-    private Calendar today() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
- 
-        return calendar;
-    }
-     
-    private Date previousDay8Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-        t.set(Calendar.HOUR, 8);
-         
-        return t.getTime();
-    }
-     
-    private Date previousDay11Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-        t.set(Calendar.HOUR, 11);
-         
-        return t.getTime();
-    }
-     
-    private Date today1Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 1);
-         
-        return t.getTime();
-    }
-     
-    private Date theDayAfter3Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 2);     
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 3);
-         
-        return t.getTime();
-    }
- 
-    private Date today6Pm() {
-        Calendar t = (Calendar) today().clone(); 
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 6);
-         
-        return t.getTime();
-    }
-     
-    private Date nextDay9Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 9);
-         
-        return t.getTime();
-    }
-     
-    private Date nextDay11Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 11);
-         
-        return t.getTime();
-    }
-     
-    private Date fourDaysLater3pm() {
-        Calendar t = (Calendar) today().clone(); 
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 4);
-        t.set(Calendar.HOUR, 3);
-         
-        return t.getTime();
-    }
-     
+      
     public ScheduleEvent getEvent() {
         return event;
     }
@@ -252,11 +171,16 @@ public class EventoMB implements Serializable {
         this.event = event;
     }
      
-    public void addEvent(ActionEvent actionEvent) {
+    // public void addEvent(ActionEvent actionEvent)
+    public String addEvent() {
       
     	try{
     	
-    	if(event.getId() == null){
+    	if(this.evento.getId() == null){
+    		
+    		this.evento.setUsuarios(getSelectedUsuarios());
+    		
+    		this.evento.setGrupo(getSelectedGrupos());
         	       	
         	event = new DefaultScheduleEvent(this.evento.getDescricao(), this.evento.getInicio(), this.evento.getFim());
         	
@@ -306,6 +230,19 @@ public class EventoMB implements Serializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+    	
+    	return null;
+    }
+    
+    public String voltar(){
+    	
+    	try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/evento.xhtml?redirect=true");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+    	return null;
     }
      
 	public void sendEmailParticipantes(String email,String nomeUsuario,String evento,Date dataInicio,Date dataFim){
@@ -360,7 +297,7 @@ public class EventoMB implements Serializable {
      
     public void onDateSelect(SelectEvent selectEvent) {
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-        
+                
         try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/insert.xhtml");
 		} catch (IOException e) {

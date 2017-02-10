@@ -31,15 +31,13 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
-    
-
+  <body>  
 
 <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="page-header" style="border-bottom:0; margin-top:0">
-            <h2>Cadastro de Tipo de Documento</h2>
+            <h2>Edição de Segmento</h2>
           </div>
         </div>
       </div>
@@ -49,22 +47,22 @@
 			  <div class="form-group">
 			    <label for="1" class="col-sm-1 control-label">Descrição</label>
 			    <div class="col-sm-3">
-			      <h:inputText value="#{tipoDocumentoMB.tipoDocumento.descricao}" class="form-control" required="true" 
+			    <h:inputText value="#{segmentoMB.segmento.descricao}" class="form-control" required="true" 
 			      requiredMessage="Descrição Obrigatória." />
 			    </div>
 			  </div>
 			  
 			  <div class="col-md-12">
           			<div class="page-header" style="border-bottom:0; margin-top:0">
-              <h:commandButton ajax="false" title="Edit" action="#{tipoDocumentoMB.create}" id="btnUpdate" 
+              <h:commandButton ajax="false" title="Edit" action="#{segmentoMB.update}" id="btnUpdate" 
 	              value="Salvar"  class="btn btn-primary" /> 
             <span class="pull-right"></span>
-              <h:commandButton ajax="false" title="Cancelar" action="/tipoDocumento/lista.xhtml" immediate="true" id="btnClearForm" 
-	              value="Cancelar"  class="btn btn-primary"/>
+              <h:commandButton ajax="false" title="Cancelar" action="/segmento/lista.xhtml" id="btnClearForm" immediate="true" 
+	              value="Cancelar"  class="btn btn-primary"/> 
          	 </div>
-        	</div>
-
-			  </h:form>
+        	</div>	  
+			  
+		  </h:form>
       	</div>
       </div>
     </div>

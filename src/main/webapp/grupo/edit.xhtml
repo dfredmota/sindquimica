@@ -49,7 +49,7 @@
 			  <div class="form-group">
 			    <label for="1" class="col-sm-2 control-label">Nome</label>
 			    <div class="col-sm-3">
-			      <h:inputText value="#{grupoMB.grupo.nome}" class="form-control" />
+			      <h:inputText value="#{grupoMB.grupo.nome}" class="form-control" required="true" requiredMessage="Nome Obrigatório"/>
 			    </div>
 			  </div>
 			  
@@ -89,7 +89,44 @@
 							</p:dataTable>
 
 
-						</p:tab>			
+						</p:tab>	
+						
+						
+						<p:tab title="Segmento">
+
+
+							<div class="form-group">
+								<label for="4" class="col-sm-2 control-label">Segmentos</label>
+								<div class="col-sm-4">
+									<p:selectOneMenu value="#{grupoMB.segmentoId}" id="segmentoId">
+										<f:selectItems value="#{grupoMB.segmentos}"
+											var="segmento" itemLabel="#{segmento.descricao}" itemValue="#{segmento.id}" />
+									</p:selectOneMenu>
+									<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addSegmento}" id="btnAddSegmento" 
+	              			value="+"  class="btn btn-primary" style="margin-top:-25px;margin-left:50px" />
+								</div>
+
+							</div>						
+							
+							<p:dataTable var="segmento" value="#{grupoMB.grupo.segmentos}">
+								<p:column headerText="Código" width="10%">
+									<h:outputText value="#{segmento.id}" />
+								</p:column>
+								<p:column headerText="Descrição" width="50%">
+									<h:outputText value="#{segmento.descricao}" />
+								</p:column>
+								<p:column headerText="Ações" width="10%">
+								<h:commandButton ajax="false" title="Edit" action="#{grupoMB.deleteSegmento}" 
+								id="btnOpenDeleteSegmento"
+              					value="Excluir"  class="btn btn-primary"> 
+              					<f:setPropertyActionListener value="#{segmento}" target="#{grupoMB.segmento}">
+              					</f:setPropertyActionListener>
+              					</h:commandButton>
+								</p:column>
+							</p:dataTable>
+
+
+						</p:tab>		
 					
 					</p:tabView>
 												

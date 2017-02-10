@@ -71,12 +71,6 @@
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="6" class="col-sm-1 control-label">Email</label>
-			    <div class="col-sm-4">
-			      <h:inputText required="true" requiredMessage="Email obrigatório" value="#{empresaController.empresa.email}" class="form-control" />
-			    </div>
-			  </div>
-			  <div class="form-group">
 			    <label for="7" class="col-sm-1 control-label">Site</label>
 			    <div class="col-sm-4">
 			      <h:inputText value="#{empresaController.empresa.site}" class="form-control" />
@@ -157,19 +151,56 @@
 								</p:column>
 							</p:dataTable>
 
+						</p:tab>
+						
+						<p:tab title="Emails">
+						
+						<div class="form-group">
+					    <label for="4" class="col-sm-1 control-label">Emails</label>
+					    <div class="col-sm-4">
+						  <h:inputText value="#{empresaController.email}" class="form-control" />
+					    </div>
+					      <h:commandButton ajax="false" title="Edit" action="#{empresaController.addEmail}" id="btnAddEmail" 
+	              			value="+"  class="btn btn-primary" /> 
+					  </div>
+
+							<p:dataTable var="email" value="#{empresaController.emails}">
+								<p:column headerText="Emails">
+									<h:outputText value="#{email}" />
+								</p:column>
+								<p:column headerText="Ações">
+								<h:commandButton ajax="false" title="Edit" action="#{empresaController.deleteEmail}" id="btnOpenDeleteEmail"
+              					value="Excluir"  class="btn btn-primary"> 
+              					<f:setPropertyActionListener value="#{email}" target="#{empresaController.email}">
+              					</f:setPropertyActionListener>
+              					</h:commandButton>
+								</p:column>
+							</p:dataTable>
+
 						</p:tab>	
 						
 						
 						<p:tab title="Cnaes">
 
-
 							<div class="form-group">
 								<label for="4" class="col-sm-2 control-label">Cnae</label>
 								<div class="col-sm-8">
-									<p:selectOneMenu value="#{empresaController.cnaeId}" id="cnaeId">
-										<f:selectItems value="#{empresaController.cnaes}"
-											var="cnae" itemLabel="#{cnae.descricao}" itemValue="#{cnae.id}" />
-									</p:selectOneMenu>
+									
+								<p:selectOneMenu id="advanced" value="#{empresaController.cnaeId}"  panelStyle="width:180px"
+		                         effect="fade"  style="width:160px" filter="true" filterMatchMode="startsWith">
+		                         
+		            			<f:selectItems value="#{empresaController.cnaes}" var="cnae" itemLabel="#{cnae.descricao}" 
+		            			itemValue="#{cnae.id}" />
+		 
+					            <p:column style="width:10%">
+					                <h:outputText styleClass="ui-theme ui-theme-#{c.descricao}" />
+					            </p:column>
+					 
+					            <p:column>
+					                <h:outputText value="#{c.codigo}" />
+					            </p:column>
+					        </p:selectOneMenu>									
+									
 								</div>
 								<h:commandButton ajax="false" title="Edit" action="#{empresaController.addCnae}" id="btnAddCnae" 
 	              			value="+"  class="btn btn-primary" />

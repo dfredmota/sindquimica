@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +26,14 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.primefaces.component.fieldset.Fieldset;
 import org.primefaces.component.graphicimage.GraphicImage;
 import org.primefaces.component.panel.Panel;
@@ -48,12 +55,6 @@ import br.developersd3.sindquimica.service.GrupoService;
 import br.developersd3.sindquimica.service.MensagemService;
 import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
-import de.bytefish.fcmjava.client.FcmClient;
-import de.bytefish.fcmjava.model.options.FcmMessageOptions;
-import de.bytefish.fcmjava.model.topics.Topic;
-import de.bytefish.fcmjava.requests.FcmMessage;
-import de.bytefish.fcmjava.requests.groups.AddDeviceGroupMessage;
-import de.bytefish.fcmjava.requests.topic.TopicUnicastMessage;
 
 @ManagedBean(name = "mensagemMB")
 @RequestScoped
@@ -339,6 +340,8 @@ public class MensagemMB implements Serializable {
 
 		String str = "sendMessageOK";
 		
+		String conteudo = this.mensagem.getConteudo();
+		
 		try {
 		
 		if(getSelectedGrupos() !=null)		
@@ -385,7 +388,13 @@ public class MensagemMB implements Serializable {
 		mensagem.setEmpresaSistema(getEmpresaSistema());
 			
 		
-			mensagemService.create(mensagem,getEmpresaSistema());
+		if(mensagem.getUsuarios() != null && !mensagem.getUsuarios().isEmpty()){
+			
+			for(Usuario user: mensagem.getUsuarios())
+				user.setEmpresaSistema(getEmpresaSistema());
+		}
+		
+		mensagemService.create(mensagem,getEmpresaSistema());
 		
 		
 		FacesMessage msg = new FacesMessage("Mensagem Criada com sucesso!");
@@ -424,35 +433,59 @@ public class MensagemMB implements Serializable {
 			
 		for(Usuario user : getSelectedUsuarios()){
 			
+			if(user.getToken() != null && !user.getToken().isEmpty())
 			tokensUsuarios.add(user.getToken());
 			
 		}
 			
 		}
 		
-		if(tokensUsuarios != null && !tokensUsuarios.isEmpty()){
-		
-		// Create the Client using system-properties-based settings:
-        FcmClient client = new FcmClient();
-
-        // Message Options:
-        FcmMessageOptions options = FcmMessageOptions.builder()
-                .setTimeToLive(Duration.ofMinutes(1))
-                .build();
-
-        AddDeviceGroupMessage usuariosPush = new AddDeviceGroupMessage(options, tokensUsuarios, "Mensagem-Sindquimica", "Sindquimica");
-        
-        client.send(usuariosPush);
-        
+		if(tokensUsuarios != null && !tokensUsuarios.isEmpty()){		
+			
+			for(String token : tokensUsuarios){
+			
+			try {
+				sendMessageFirebase(token,"Nova Mensagem Sindquimica!");
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			}
+			
 		}
-        
-        // Send a Message:
-        //client.send(new TopicUnicastMessage(options, new Topic("news"), new PersonData("Philipp", "Wagner")));
-        
-		setSelectedUsuarios(new ArrayList<Usuario>());
-		setSelectedGrupos(new ArrayList<Grupo>());       
+    
         
 		return str;
+	}
+	
+	private void sendMessageFirebase(String token,String conteudo) throws JSONException, ClientProtocolException, IOException{
+		
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		HttpPost post = new HttpPost("https://fcm.googleapis.com/fcm/send");
+		post.setHeader("Content-type", "application/json");
+		post.setHeader("Authorization", "key=AAAAg6OKGls:APA91bHCLYvN31Zk09s6FmLy5k6pFYGGj74Ah9JSSLlFAMVoxupEVBEe8MFMPAdfyuqw-TsSPdJ_fjmjUzuKFcNXTcDlDHnroM0kGQPt6RDjNpO2hA-rpOU7YTn44SOdMCp9l6fUErc0");
+
+		JSONObject message = new JSONObject();
+		message.put("to", token);
+		message.put("priority", "high");
+
+		JSONObject notification = new JSONObject();
+		notification.put("title", "2BL");
+		notification.put("body", conteudo);
+
+		message.put("notification", notification);
+
+		post.setEntity(new StringEntity(message.toString(), "UTF-8"));
+		HttpResponse response = client.execute(post);
+		System.out.println(response);
+		System.out.println(message);
 	}
 
 	public String update() {

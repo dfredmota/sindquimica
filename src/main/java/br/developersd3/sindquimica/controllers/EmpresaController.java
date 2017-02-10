@@ -39,6 +39,10 @@ public class EmpresaController implements Serializable {
 	private String  telefone;
 	
 	private List<String> telefones;
+	
+	private List<String> emails;
+	
+	private String email;
 
 	@ManagedProperty(name = "empresaService", value = "#{empresaService}")
 	private EmpresaService empresaService;
@@ -56,6 +60,7 @@ public class EmpresaController implements Serializable {
 	public void init() {
 		lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
 		telefones = new ArrayList<String>();
+		emails = new ArrayList<String>();
 
 	}
 	
@@ -95,6 +100,14 @@ public class EmpresaController implements Serializable {
 		return null;
 	}
 	
+	public String addEmail(){
+		
+		emails.add(email);
+		email = "";		
+		
+		return null;
+	}
+	
 	public String deleteTelefone(){
 		
 		if(telefones.contains(telefone)){
@@ -103,6 +116,20 @@ public class EmpresaController implements Serializable {
 		}
 		
 		FacesMessage msg = new FacesMessage("Telefone excluído com sucesso!");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		
+		return null;
+		
+	}
+	
+	public String deleteEmail(){
+		
+		if(emails.contains(email)){
+			emails.remove(email);
+			email = "";
+		}
+		
+		FacesMessage msg = new FacesMessage("Email excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
 		return null;
@@ -131,6 +158,18 @@ public class EmpresaController implements Serializable {
 			}
 						
 		}
+		
+		emails = new ArrayList<String>();
+		
+		if(this.empresa.getEmail() != null && !this.empresa.getEmail().isEmpty()){
+			
+			String[] emailsArr = this.empresa.getEmail().split(";");
+			
+			for(int x =0;x< emailsArr.length;x++){
+				emails.add(emailsArr[x]);
+			}
+						
+		}
 
 		return "prepareUpdate";
 	}
@@ -144,6 +183,8 @@ public class EmpresaController implements Serializable {
 		this.empresa.setCnaes(new ArrayList<Cnae>());
 		
 		telefones = new ArrayList<String>();
+		
+		emails = new ArrayList<String>();
 		
 		this.cnaes = cnaeService.all(getEmpresaSistema());
 		
@@ -174,6 +215,28 @@ public class EmpresaController implements Serializable {
 		}else{
 			
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um telefone","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
+		
+		if(emails != null && !emails.isEmpty()){
+			
+			String emailsUsuario = "";
+			
+			for(String tel : emails){
+				
+				emailsUsuario = emailsUsuario + tel;
+				emailsUsuario = emailsUsuario + ";";
+				
+			}	
+			
+			empresa.setEmail(emailsUsuario);	
+			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um email","");
 			FacesContext.getCurrentInstance().addMessage(null, msg);			
 			
 			return null;
@@ -359,6 +422,21 @@ public class EmpresaController implements Serializable {
 		
 		return empresaSistemaId;
 	}
-	
+
+	public List<String> getEmails() {
+		return emails;
+	}
+
+	public void setEmails(List<String> emails) {
+		this.emails = emails;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 }

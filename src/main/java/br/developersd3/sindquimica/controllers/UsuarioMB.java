@@ -626,13 +626,11 @@ public class UsuarioMB implements Serializable {
 		return empresaSistemaId;
 	}
 	
-	private String getPerfilUsuario(){
+	public String getPerfilUsuario(){
 		HttpSession session = SessionUtils.getSession();
 		String perfil = (String)session.getAttribute("perfil");
 		
 		return perfil;
 	}
-
-	
 	
 }

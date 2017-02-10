@@ -2,7 +2,8 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
     <title>Menu</title>
     <script name="jquery/jquery.js" library="primefaces"></script>
@@ -23,13 +24,23 @@
             <p:menuitem value="Empresa Gestora" rendered="#{usuarioMB.perfilAdm}"  url="/empresa/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Tipo de Documento" url="/tipoDocumento/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Empresa Associada" url="/empresaAssociada/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
-            <p:menuitem value="Usuários" url="/usuario/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" />          
+            <p:menuitem value="Usuários" url="/usuario/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" /> 
+            <p:menuitem value="Segmento" url="/segmento/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" />          
             </p:submenu>
  
+ 		<c:if test = "${login.perfilUsuario == 'ADM'}">
  		<p:menuitem value="Grupos" url="/grupo/lista.xhtml" style="font-weight:bold; color:#FFFFFF;"/>
+ 		</c:if>
+ 		
  		<p:menuitem value="TimeLine" url="/mensagem/mensagem.xhtml" style="font-weight:bold; color:#FFFFFF;"/>
+ 		
+ 		<c:if test = "${login.perfilUsuario == 'ADM'}">
  		<p:menuitem value="Eventos" url="/evento/evento.xhtml" style="font-weight:bold; color:#FFFFFF;"/>
-        <p:menuitem value="Sair" action="#{login.logout}" icon="ui-icon-close" style="font-weight:bold; color:#FFFFFF;" />
+        </c:if>
+        
+        <p:menuitem value="Sair" url="/login.xhtml" icon="ui-icon-close" style="font-weight:bold; color:#FFFFFF;" />
+        
+        
         <p:menuitem value="Usuário: #{login.usuario}" style="font-weight:bold; color:#FFFFFF;" />
         
     </p:menubar>

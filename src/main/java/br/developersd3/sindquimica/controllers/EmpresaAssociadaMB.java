@@ -22,9 +22,11 @@ import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.Empresa;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
+import br.developersd3.sindquimica.models.Segmento;
 import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
 import br.developersd3.sindquimica.service.EmpresaService;
+import br.developersd3.sindquimica.service.SegmentoService;
 import br.developersd3.sindquimica.util.SessionUtils;
 
 @ManagedBean(name = "empresaAssociadaMB")
@@ -52,12 +54,19 @@ public class EmpresaAssociadaMB implements Serializable {
 	
 	@ManagedProperty(name = "cnaeService", value = "#{cnaeService}")
 	private CnaeService cnaeService;
+	
+	@ManagedProperty(name = "segmentoService", value = "#{segmentoService}")
+	private SegmentoService segmentoService;
 		
 	private List<Empresa> empresas;
 	
 	private Integer     cnaeId;
 	
 	private List<Cnae>  cnaes;
+	
+	private List<Segmento> segmentos;
+	
+	private Integer idSegmento;
 
 	@PostConstruct
 	public void init() {
@@ -68,9 +77,7 @@ public class EmpresaAssociadaMB implements Serializable {
 	
 	public void setListaCnaes(){
 		
-		Empresa empresa = empresaService.getById(empresaId,getEmpresaSistema());
-		
-		this.cnaes = empresa.getCnaes();	
+		this.cnaes = cnaeService.all(getEmpresaSistema());	
 		
 		this.empresaAssociada = new EmpresaAssociada();
 		
@@ -149,13 +156,7 @@ public class EmpresaAssociadaMB implements Serializable {
 						
 		}
 		
-		if(this.empresas != null && !empresas.isEmpty()){
-			
-		Empresa emp = empresaService.getById(this.empresas.get(0).getId(), getEmpresaSistema());	
-			
-		this.cnaes	= emp.getCnaes();		
-			
-		}		
+		this.cnaes	= cnaeService.all(getEmpresaSistema());		
 
 		return "prepareUpdate";
 	}
@@ -172,17 +173,13 @@ public class EmpresaAssociadaMB implements Serializable {
 		
 		empresas = empresaService.all(getEmpresaSistema());
 		
+		segmentos = segmentoService.all(getEmpresaSistema());
+		
 		System.out.println("EMPRESA:"+empresas.size());
 		
 		this.empresaAssociada.getEndereco().setEmpresaSistema(getEmpresaSistema());
-		
-		if(this.empresas != null && !empresas.isEmpty()){
 			
-		Empresa emp = empresaService.getById(this.empresas.get(0).getId(), getEmpresaSistema());	
-			
-		this.cnaes	= emp.getCnaes();		
-			
-		}
+		this.cnaes	= cnaeService.all(getEmpresaSistema());		
 
 		return "prepareInsert";
 	}
@@ -195,6 +192,9 @@ public class EmpresaAssociadaMB implements Serializable {
 		
 		empresaAssociada.setEmpresa(empresa);
 		
+		Segmento segmento = segmentoService.getById(idSegmento, getEmpresaSistema());
+		
+		empresaAssociada.setSegmento(segmento);		
 		
 		if(telefones != null && !telefones.isEmpty()){
 			
@@ -264,6 +264,10 @@ public class EmpresaAssociadaMB implements Serializable {
 		}
 
 		try {
+			
+			Segmento segmento = segmentoService.getById(idSegmento, getEmpresaSistema());
+			
+			empresaAssociada.setSegmento(segmento);	
 
 			empresaAssociadaService.update(empresaAssociada);
 			
@@ -408,6 +412,30 @@ public class EmpresaAssociadaMB implements Serializable {
 		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
 		
 		return empresaSistemaId;
+	}
+
+	public List<Segmento> getSegmentos() {
+		return segmentos;
+	}
+
+	public void setSegmentos(List<Segmento> segmentos) {
+		this.segmentos = segmentos;
+	}
+
+	public Integer getIdSegmento() {
+		return idSegmento;
+	}
+
+	public void setIdSegmento(Integer idSegmento) {
+		this.idSegmento = idSegmento;
+	}
+
+	public SegmentoService getSegmentoService() {
+		return segmentoService;
+	}
+
+	public void setSegmentoService(SegmentoService segmentoService) {
+		this.segmentoService = segmentoService;
 	}
 	
 }

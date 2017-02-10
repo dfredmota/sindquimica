@@ -135,8 +135,70 @@
 		</navigation-case>
 	</navigation-rule>
 	
+	<!-- SEGMENTO -->
 	
-	<!-- MPRESA ASSOCIADA -->
+	<navigation-rule>
+		<from-view-id>/segmento/lista.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>prepareInsert</from-outcome>
+			<to-view-id>/segmento/insert.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/segmento/insert.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>insert</from-outcome>
+			<to-view-id>/segmento/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>insertError</from-outcome>
+			<to-view-id>/segmento/insert.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>	
+	
+	<navigation-rule>
+		<from-view-id>/segmento/lista.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show</from-outcome>
+			<to-view-id>/segmento/show.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/segmento/show.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>prepareUpdate</from-outcome>
+			<to-view-id>/segmento/edit.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/segmento/edit.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>update</from-outcome>
+			<to-view-id>/segmento/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>updateError</from-outcome>
+			<to-view-id>/segmento/edit.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/segmento/show.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>delete</from-outcome>
+			<to-view-id>/segmento/lista.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>deleteError</from-outcome>
+			<to-view-id>/segmento/lista.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	
+	<!-- EMPRESA ASSOCIADA -->
 	
 	<navigation-rule>
 		<from-view-id>/empresaAssociada/lista.xhtml</from-view-id>

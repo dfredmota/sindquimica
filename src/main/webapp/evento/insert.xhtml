@@ -121,11 +121,11 @@
 			<h:panelGrid columns="2">
 		     
 		     Nome:
-		     <h:inputText required="true" 
+		     <h:inputText  
 		     value="#{eventoMB.participante.nome}" class="form-control" />
 		     
 		     Email:
-		     <h:inputText required="true" 
+		     <h:inputText  
 		     value="#{eventoMB.participante.email}" class="form-control" />
 		     
 		     <h:commandButton ajax="false" title="Edit" action="#{eventoMB.addParticipante}" id="btnAddParticipante" 
@@ -152,8 +152,17 @@
 					
 			</p:tabView>
 		  
-			  <h:commandButton ajax="false" title="Salvar" actionListener="#{eventoMB.addEvent}" id="btnUpdate" 
-	              value="Salvar"  class="btn btn-primary" /> 
+			  <h:commandButton ajax="false" title="Salvar" action="#{eventoMB.addEvent}" id="btnUpdate" 
+	              value="Salvar"  class="btn btn-primary" >
+	              
+	              <f:setPropertyActionListener target="#{eventoMB.evento}" value="#{eventoMB.evento}" />
+	              
+	              </h:commandButton> 
+	              
+	              <h:commandButton ajax="false" title="Voltar" action="#{eventoMB.voltar}" id="btnVoltar" 
+	              value="Voltar"  class="btn btn-primary" style="margin-left:10px;" immediate="true" >
+	              
+	              </h:commandButton> 
            		  
 			  </h:form>
       	</div>

@@ -1,6 +1,7 @@
 package br.developersd3.sindquimica.controllers;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -14,47 +15,47 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
 
-import br.developersd3.sindquimica.datatable.LazyTipoDocumentoDataModel;
+
 import br.developersd3.sindquimica.exception.GenericException;
-import br.developersd3.sindquimica.models.TipoDocumento;
-import br.developersd3.sindquimica.service.TipoDocumentoService;
+import br.developersd3.sindquimica.models.Segmento;
+import br.developersd3.sindquimica.service.SegmentoService;
 import br.developersd3.sindquimica.util.SessionUtils;
 
-@ManagedBean(name = "tipoDocumentoMB")
+@ManagedBean(name = "segmentoMB")
 @SessionScoped
-public class TipoDocumentoMB implements Serializable {
+public class SegmentoMB implements Serializable {
 
 	private static final long serialVersionUID = 1094801825228386363L;
 
-	private LazyDataModel<TipoDocumento> lazyModel;
+	private List<Segmento> lista;
 
-	@ManagedProperty(value = "#{tipoDocumento}")
-	private TipoDocumento tipoDocumento;
+	@ManagedProperty(value = "#{segmento}")
+	private Segmento segmento;
 
 
-	@ManagedProperty(name = "tipoDocumentoService", value = "#{tipoDocumentoService}")
-	private TipoDocumentoService tipoDocumentoService;
+	@ManagedProperty(name = "segmentoService", value = "#{segmentoService}")
+	private SegmentoService segmentoService;
 
 	@PostConstruct
 	public void init() {
 			
-		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all(getEmpresaSistema()));
+		lista = segmentoService.all(getEmpresaSistema());
 
 	}
 
 	public String prepareUpdate() {
 
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		String idSindicato = params.get("idTipoDocumento");
+		String idSindicato = params.get("idSegmento");
 
-		this.tipoDocumento = tipoDocumentoService.getById(Integer.parseInt(idSindicato),getEmpresaSistema());
+		this.segmento = segmentoService.getById(Integer.parseInt(idSindicato),getEmpresaSistema());
 
 		return "prepareUpdate";
 	}
 	
 	public String prepareInsert() {
 
-		this.tipoDocumento = new TipoDocumento();
+		this.segmento = new Segmento();
 		
 		return "prepareInsert";
 	}
@@ -64,15 +65,15 @@ public class TipoDocumentoMB implements Serializable {
 		String str = "insert";
 		
 		try {
-			tipoDocumentoService.create(tipoDocumento,getEmpresaSistema());
+			segmentoService.create(segmento,getEmpresaSistema());
 		} catch (GenericException e1) {
 
 		}
 		
-		FacesMessage msg = new FacesMessage("Tipo de Documento Criado com sucesso!");
+		FacesMessage msg = new FacesMessage("Segmento Criado com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all(getEmpresaSistema()));
+		lista = segmentoService.all(getEmpresaSistema());
 
 		try {
 
@@ -90,12 +91,12 @@ public class TipoDocumentoMB implements Serializable {
 
 		try {
 
-			tipoDocumentoService.update(tipoDocumento);
+			segmentoService.update(segmento);
 			
 			FacesMessage msg = new FacesMessage("Tipo de Documento Atualizado com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all(getEmpresaSistema()));
+			lista = segmentoService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -110,12 +111,12 @@ public class TipoDocumentoMB implements Serializable {
 
 		try {
 			
-		tipoDocumentoService.delete(tipoDocumento);	
+		segmentoService.delete(segmento);	
 		
 		FacesMessage msg = new FacesMessage("Tipo de Documento excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyTipoDocumentoDataModel(tipoDocumentoService.all(getEmpresaSistema()));
+		lista = segmentoService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -128,35 +129,35 @@ public class TipoDocumentoMB implements Serializable {
 	public void onRowSelect(SelectEvent event) {
 
 		if (event.getObject() != null) {
-			FacesMessage msg = new FacesMessage("Tipo Documento Selected:" + ((TipoDocumento) event.getObject()).getId());
+			FacesMessage msg = new FacesMessage("Tipo Documento Selected:" + ((Segmento) event.getObject()).getId());
 			FacesContext.getCurrentInstance().addMessage(null, msg);
-			this.tipoDocumento = ((TipoDocumento) event.getObject());		
+			this.segmento = ((Segmento) event.getObject());		
 
 		}
 	}	
-	
-	public LazyDataModel<TipoDocumento> getLazyModel() {
-		return lazyModel;
+
+	public List<Segmento> getLista() {
+		return lista;
 	}
 
-	public void setLazyModel(LazyDataModel<TipoDocumento> lazyModel) {
-		this.lazyModel = lazyModel;
+	public void setLista(List<Segmento> lista) {
+		this.lista = lista;
 	}
 
-	public TipoDocumento getTipoDocumento() {
-		return tipoDocumento;
+	public Segmento getSegmento() {
+		return segmento;
 	}
 
-	public void setTipoDocumento(TipoDocumento tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
+	public void setSegmento(Segmento segmento) {
+		this.segmento = segmento;
 	}
 
-	public TipoDocumentoService getTipoDocumentoService() {
-		return tipoDocumentoService;
+	public SegmentoService getSegmentoService() {
+		return segmentoService;
 	}
 
-	public void setTipoDocumentoService(TipoDocumentoService tipoDocumentoService) {
-		this.tipoDocumentoService = tipoDocumentoService;
+	public void setSegmentoService(SegmentoService segmentoService) {
+		this.segmentoService = segmentoService;
 	}
 	
 	private Integer getEmpresaSistema(){

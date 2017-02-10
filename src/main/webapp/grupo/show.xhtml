@@ -3,7 +3,8 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 	<ui:define name="content">
 	
 	
@@ -37,7 +38,7 @@
         <div class="col-md-10">#{grupoMB.grupo.id}</div>
       </div>
       <div class="row form-group">
-        <div class="col-md-2"><b>Nome de Fantasia:</b></div>
+        <div class="col-md-2"><b>Nome:</b></div>
         <div class="col-md-10">#{grupoMB.grupo.nome}</div>
       </div>  
       <div class="row form-group">
@@ -45,6 +46,7 @@
         <div class="col-md-10">#{grupoMB.grupo.participantes}</div>
       </div>
       
+      <c:if test="#{not empty grupoMB.grupo.usuarios}">
       <p:dataTable var="usuario" value="#{grupoMB.grupo.usuarios}">
       
       							<f:facet name="header">
@@ -58,10 +60,12 @@
 									<h:outputText value="#{usuario.nome}" />
 								</p:column>
 	</p:dataTable>
+	</c:if>
 	
 	<br/>
 	<br/>
 	
+	 <c:if test="#{not empty grupoMB.grupo.empresaAssociada}">
 	<p:dataTable var="emp" value="#{grupoMB.grupo.empresaAssociada}">
 	
 								<f:facet name="header">
@@ -75,6 +79,27 @@
 									<h:outputText value="#{emp.nomeFantasia}" />
 								</p:column>
 	</p:dataTable>
+	</c:if>
+      
+      <br/>
+      
+      <c:if test="#{not empty grupoMB.grupo.segmentos}">
+	<p:dataTable var="seg" value="#{grupoMB.grupo.segmentos}">
+	
+								<f:facet name="header">
+								        Segmentos
+								</f:facet>	
+	
+								<p:column headerText="Código" width="10%">
+									<h:outputText value="#{seg.id}" />
+								</p:column>
+								<p:column headerText="Descrição" width="50%">
+									<h:outputText value="#{seg.descricao}" />
+								</p:column>
+	</p:dataTable>
+	</c:if>
+	
+	 <br/> <br/>
       
       <a href="../grupo/lista.xhtml">Voltar</a>
     

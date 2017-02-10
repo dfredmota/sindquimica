@@ -21,10 +21,12 @@ import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Grupo;
+import br.developersd3.sindquimica.models.Segmento;
 import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
 import br.developersd3.sindquimica.service.GrupoService;
+import br.developersd3.sindquimica.service.SegmentoService;
 import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
 
@@ -47,6 +49,9 @@ public class GrupoMB implements Serializable {
 	
 	@ManagedProperty(name = "empresaAssociadaService", value = "#{empresaAssociadaService}")
 	private EmpresaAssociadaService empresaAssociadaService;
+	
+	@ManagedProperty(name = "segmentoService", value = "#{segmentoService}")
+	private SegmentoService segmentoService;
 
 	private Integer empresaAssociadaId;
 	
@@ -63,6 +68,12 @@ public class GrupoMB implements Serializable {
 	private Integer     cnaeId;
 	
 	private List<Cnae>  cnaes;
+	
+	private List<Segmento> segmentos;
+	
+	private Integer     segmentoId;
+	
+	private Segmento segmento;
 	
 	@ManagedProperty(name = "cnaeService", value = "#{cnaeService}")
 	private CnaeService cnaeService;
@@ -143,6 +154,34 @@ public class GrupoMB implements Serializable {
 		return null;
 	}
 	
+	public String addSegmento(){
+		
+		Segmento segmento = segmentoService.getById(segmentoId,getEmpresaSistema());
+		
+		if(!this.grupo.getSegmentos().contains(segmento)){
+			this.grupo.getSegmentos().add(segmento);
+		}else{
+			FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Esse Segmento já existe na lista!", "Esse Segmento já existe na lista!"));
+		}
+		
+		return null;
+	}
+	
+	public String deleteSegmento(){
+		
+		Segmento segmento = segmentoService.getById(segmentoId,getEmpresaSistema());
+		
+		for(Segmento em : this.grupo.getSegmentos()){
+			
+			if(em.getId().equals(segmento.getId()));
+			this.grupo.getSegmentos().remove(em);
+			break;
+		}
+				
+		return null;
+	}
+	
 	public String deleteEmpresaAssociada(){
 		
 		EmpresaAssociada empresa = empresaAssociadaService.getById(empresaAssociadaId,getEmpresaSistema());
@@ -182,6 +221,8 @@ public class GrupoMB implements Serializable {
 			this.grupo.setUsuarios(new ArrayList<Usuario>());
 		
 		this.usuarios = usuarioService.all(getEmpresaSistema());
+		this.empresasAssociadas = empresaAssociadaService.all(getEmpresaSistema());
+		this.segmentos = segmentoService.all(getEmpresaSistema());
 
 		return "prepareUpdate";
 	}
@@ -194,9 +235,13 @@ public class GrupoMB implements Serializable {
 		
 		this.grupo.setEmpresaAssociada(new ArrayList<EmpresaAssociada>());
 		
+		this.grupo.setSegmentos(new ArrayList<Segmento>());
+		
 		this.usuarios = usuarioService.all(getEmpresaSistema());
 		
 		this.empresasAssociadas = empresaAssociadaService.all(getEmpresaSistema());
+		
+		this.segmentos = segmentoService.all(getEmpresaSistema());
 		
 		return "prepareInsert";
 	}
@@ -387,6 +432,38 @@ public class GrupoMB implements Serializable {
 
 	public void setCnaeService(CnaeService cnaeService) {
 		this.cnaeService = cnaeService;
+	}
+
+	public SegmentoService getSegmentoService() {
+		return segmentoService;
+	}
+
+	public void setSegmentoService(SegmentoService segmentoService) {
+		this.segmentoService = segmentoService;
+	}
+
+	public List<Segmento> getSegmentos() {
+		return segmentos;
+	}
+
+	public void setSegmentos(List<Segmento> segmentos) {
+		this.segmentos = segmentos;
+	}
+
+	public Integer getSegmentoId() {
+		return segmentoId;
+	}
+
+	public void setSegmentoId(Integer segmentoId) {
+		this.segmentoId = segmentoId;
+	}
+	
+	public Segmento getSegmento() {
+		return segmento;
+	}
+
+	public void setSegmento(Segmento segmento) {
+		this.segmento = segmento;
 	}
 
 	private Integer getEmpresaSistema(){

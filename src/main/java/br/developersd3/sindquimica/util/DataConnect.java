@@ -4,14 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 //"jdbc:postgresql://localhost:5432/fabricam_sindquimica", "fabricam_developer", "Valente@3873"
-//"jdbc:postgresql://localhost:5432/sindquimica", "postgres", "123456");
+//"jdbc:postgresql://localhost:5432/sindquimica", "postgres", "postgres2530");
 public class DataConnect {
 
 	public static Connection getConnection() {
 		try {
 			Class.forName("org.postgresql.Driver");
 			Connection con = DriverManager
-					.getConnection("jdbc:postgresql://localhost:5432/sindquimica", "postgres", "123456");
+					.getConnection("jdbc:postgresql://localhost:5432/sindquimica", "postgres", "postgres2530");
 			return con;
 		} catch (Exception ex) {
 			System.out.println("Database.getConnection() Error -->"

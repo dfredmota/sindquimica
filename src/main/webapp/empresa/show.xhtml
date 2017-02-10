@@ -58,10 +58,6 @@
         <div class="col-md-10">#{empresaController.empresa.responsavel}</div>
       </div>
       <div class="row form-group">
-        <div class="col-md-2"><b>Email:</b></div>
-        <div class="col-md-10">#{empresaController.empresa.email}</div>
-      </div>
-      <div class="row form-group">
         <div class="col-md-2"><b>Status:</b></div>
         <div class="col-md-10">#{empresaController.empresa.status}</div>
       </div>
@@ -82,6 +78,22 @@
 		</p:dataTable>
 		</c:if> 
 		
+		<br/>
+		
+		<c:if test="#{not empty empresaController.empresa.email}">
+		<p:dataTable var="email" value="#{empresaController.empresa.email}">
+								
+								<f:facet name="header">
+								        Emails
+								</f:facet>
+								
+								<p:column>
+									<h:outputText value="#{email}" />
+								</p:column>								
+																              
+		</p:dataTable>
+		</c:if> 
+
 		<br/>
       
       <c:if test="#{not empty empresaController.empresa.cnaes}">
