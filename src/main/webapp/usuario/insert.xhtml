@@ -47,21 +47,23 @@
       	<div class="col-md-12">
       	<h:form id="form" class="form-horizontal" enctype="multipart/form-data">
 			  <div class="form-group">
-			    <label for="1" class="col-sm-2 control-label">Nome</label>
+			    <label for="1" class="col-sm-2 control-label">*Nome</label>
 			    <div class="col-sm-3">
 			      <h:inputText id="nome_usuario" required="true" requiredMessage="Nome obrigatório" value="#{usuarioMB.usuario.nome}" class="form-control" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="2" class="col-sm-2 control-label">Data de Nascimento</label>
+			    <label for="2" class="col-sm-2 control-label">*Data de Nascimento</label>
 			    <div class="col-sm-8">
-			      <p:calendar id="inline" value="#{usuarioMB.usuario.dtNascimento}" mode="popup" />
+			      <p:calendar id="inline" value="#{usuarioMB.usuario.dtNascimento}" mode="popup" required="true" 
+			      requiredMessage="Data de Nascimento obrigatório" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="3" class="col-sm-2 control-label">Email</label>
+			    <label for="3" class="col-sm-2 control-label">*Email</label>
 			    <div class="col-sm-8">
-			      <h:inputText required="true" requiredMessage="Email obrigatório" value="#{usuarioMB.usuario.email}" class="form-control" />
+			      <h:inputText required="true" requiredMessage="Email obrigatório" 
+			      value="#{usuarioMB.usuario.email}" class="form-control" />
 			    </div>
 			  </div>
 			  			  
@@ -83,9 +85,10 @@
 			  </div>
 			  
 			  <div class="form-group">
-			    <label for="4" class="col-sm-2 control-label">Empresa Associada</label>
+			    <label for="4" class="col-sm-2 control-label">*Empresa Associada</label>
 			    <div class="col-sm-8">
-			<p:selectOneMenu required="true" requiredMessage="Empresa Associada obrigatória" value="#{usuarioMB.empresaAssociadaId}" id="empresaId">
+			<p:selectOneMenu required="true" requiredMessage="Empresa Associada obrigatória" 
+							 value="#{usuarioMB.empresaAssociadaId}" id="empresaId">
 			    <f:selectItems value="#{usuarioMB.listaDeEmpresasAssociadas}" var="empresa" itemLabel="#{empresa.nomeFantasia}" 
 			    itemValue="#{empresa.id}" />
 			</p:selectOneMenu>				
@@ -147,7 +150,7 @@
 						<p:tab title="Telefones">
 						
 						<div class="form-group">
-					    <label for="4" class="col-sm-2 control-label">Telefones</label>
+					    <label for="4" class="col-sm-2 control-label">*Telefones</label>
 					    <div class="col-sm-4">
 						  <p:inputMask id="phone" value="#{usuarioMB.telefone}" mask="(99)99999-9999" class="form-control"/>
 					    </div>

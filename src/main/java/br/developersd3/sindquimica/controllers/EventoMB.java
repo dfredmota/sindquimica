@@ -2,12 +2,11 @@ package br.developersd3.sindquimica.controllers;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +15,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -25,12 +23,19 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.primefaces.event.ScheduleEntryMoveEvent;
 import org.primefaces.event.ScheduleEntryResizeEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
@@ -58,6 +63,8 @@ public class EventoMB implements Serializable {
     private ScheduleModel eventModel;
     
     private Evento evento;
+    
+    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     
     @ManagedProperty(name = "eventoService", value = "#{eventoService}")
     private EventoService eventoService;
@@ -87,8 +94,6 @@ public class EventoMB implements Serializable {
     private ParticipanteEvento participante;
     
     private List<Evento> eventos;
-    
-    DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault());
  
     @PostConstruct
     public void init() {
@@ -100,24 +105,20 @@ public class EventoMB implements Serializable {
         	
         for(Evento ev : this.eventos){
         	
-        eventModel.addEvent(new DefaultScheduleEvent(ev.getDescricao(), ev.getInicio(), ev.getFim()));	        	
+       	DefaultScheduleEvent eventoDB = new DefaultScheduleEvent(ev.getDescricao(), ev.getInicio(), ev.getFim());
+       	
+       	eventoDB.setDescription(ev.getId().toString());
+        	
+        eventModel.addEvent(eventoDB);	        	
         	
         }
         	
         }
         
         
-        lazyEventModel = new LazyScheduleModel() {
-             
-            @Override
-            public void loadEvents(Date start, Date end) {
-                Date random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 1", random, random));
-                 
-                random = getRandomDate(start);
-                addEvent(new DefaultScheduleEvent("Lazy Event 2", random, random));
-            }   
-        };
+         setSelectedUsuarios(new ArrayList<Usuario>());
+         
+         setSelectedGrupos(new ArrayList<Grupo>());
         
 		 usuarios = usuarioService.all(getEmpresaSistema());
 	     
@@ -216,6 +217,7 @@ public class EventoMB implements Serializable {
             
         }
         else{
+        	        	
             eventModel.updateEvent(event);
         }
          
@@ -231,8 +233,161 @@ public class EventoMB implements Serializable {
 			e.printStackTrace();
 		}
     	
-    	return null;
+		List<String> tokensUsuarios = new ArrayList<String>();
+		
+		if(getSelectedUsuarios() != null){
+			
+		for(Usuario user : getSelectedUsuarios()){
+			
+			if(user.getToken() != null && !user.getToken().isEmpty())
+			tokensUsuarios.add(user.getToken());
+			
+		}
+			
+		}
+		
+		if(tokensUsuarios != null && !tokensUsuarios.isEmpty()){		
+			
+			for(String token : tokensUsuarios){
+			
+			try {
+				sendMessageFirebase(token,"Nova Evento 2Bl!");
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			}
+			
+		}
+    	
+     	return null;
     }
+    
+ // public void addEvent(ActionEvent actionEvent)
+    public String updateEvent() {
+      
+    	try{
+    	  		
+    		this.evento.setUsuarios(getSelectedUsuarios());
+    		
+    		this.evento.setGrupo(getSelectedGrupos());
+        	          	
+    		for(ScheduleEvent ev : eventModel.getEvents()){
+    			
+    			if(ev.getDescription().equalsIgnoreCase(this.evento.getId().toString())){
+    				
+    				eventModel.getEvents().remove(ev);
+    				break;
+    			}   			
+    			
+    		}
+    		
+    		event = new DefaultScheduleEvent(this.evento.getDescricao(), this.evento.getInicio(), this.evento.getFim());
+        	
+            eventModel.addEvent(event);
+                        
+            // persisti os usuarios externos antes de salvar o evento
+            if(this.participantes != null){
+            	
+            	for(ParticipanteEvento par: this.participantes){
+            		
+            		par = participanteEventoService.create(par, getEmpresaSistema());
+            		
+            		this.evento.getParticipantes().add(par);  
+            		
+            		sendEmailParticipantes(par.getEmail(),par.getNome(),this.evento.getDescricao(),this.evento.getInicio(),this.evento.getFim());
+            	}
+            	
+            }
+                        
+            try {
+				eventoService.update(evento);
+				FacesMessage msg = new FacesMessage("Evento Atualizado com sucesso!");
+				FacesContext.getCurrentInstance().addMessage(null, msg);
+			} catch (GenericException e) {
+				e.printStackTrace();
+			}
+
+        	        	
+        eventModel.updateEvent(event);
+                
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	
+    	try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/evento.xhtml?redirect=true");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+		List<String> tokensUsuarios = new ArrayList<String>();
+		
+		if(getSelectedUsuarios() != null){
+			
+		for(Usuario user : getSelectedUsuarios()){
+			
+			if(user.getToken() != null && !user.getToken().isEmpty())
+			tokensUsuarios.add(user.getToken());
+			
+		}
+			
+		}
+		
+		if(tokensUsuarios != null && !tokensUsuarios.isEmpty()){		
+			
+			for(String token : tokensUsuarios){
+			
+			try {
+				sendMessageFirebase(token,"Novo Evento 2Bl!");
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			}
+			
+		}
+    	
+     	return null;
+    }
+    
+	private void sendMessageFirebase(String token,String conteudo) throws JSONException, ClientProtocolException, IOException{
+		
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		HttpPost post = new HttpPost("https://fcm.googleapis.com/fcm/send");
+		post.setHeader("Content-type", "application/json");
+		post.setHeader("Authorization", "key=AAAAg6OKGls:APA91bHCLYvN31Zk09s6FmLy5k6pFYGGj74Ah9JSSLlFAMVoxupEVBEe8MFMPAdfyuqw-TsSPdJ_fjmjUzuKFcNXTcDlDHnroM0kGQPt6RDjNpO2hA-rpOU7YTn44SOdMCp9l6fUErc0");
+
+		JSONObject message = new JSONObject();
+		message.put("to", token);
+		message.put("priority", "high");
+
+		JSONObject notification = new JSONObject();
+		notification.put("title", "2BL");
+		notification.put("body", conteudo);
+
+		message.put("notification", notification);
+
+		post.setEntity(new StringEntity(message.toString(), "UTF-8"));
+		HttpResponse response = client.execute(post);
+		System.out.println(response);
+		System.out.println(message);
+	}
+
     
     public String voltar(){
     	
@@ -292,12 +447,24 @@ public class EventoMB implements Serializable {
 	
     
     public void onEventSelect(SelectEvent selectEvent) {
-        event = (ScheduleEvent) selectEvent.getObject();
+        
+    	event = (ScheduleEvent) selectEvent.getObject();
+               
+        this.evento = eventoService.getById(Integer.parseInt(event.getDescription()), getEmpresaSistema());  
+        
+        setSelectedUsuarios(this.evento.getUsuarios());
+        setSelectedGrupos(this.evento.getGrupo());
+        
+        try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/edit.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
      
     public void onDateSelect(SelectEvent selectEvent) {
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-                
+                  
         try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/insert.xhtml");
 		} catch (IOException e) {

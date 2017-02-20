@@ -51,6 +51,8 @@ public class Evento implements Serializable{
 	@Column(name = "empresa_sistema_id")
 	private Integer empresaSistema;
 	
+	private String local;
+	
 	@OneToMany
 	@JoinTable(name="evento_usuario",
             joinColumns={@JoinColumn(name="evento_id",  
@@ -75,6 +77,14 @@ public class Evento implements Serializable{
              referencedColumnName="id")}) 
 	private List<ParticipanteEvento> participantes;
 	
+	public String getLocal() {
+		return local;
+	}
+
+	public void setLocal(String local) {
+		this.local = local;
+	}
+
 	public List<ParticipanteEvento> getParticipantes() {
 		return participantes;
 	}

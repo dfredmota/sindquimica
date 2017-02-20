@@ -48,7 +48,7 @@
       	<h:form id="form" class="form-horizontal">
       	
       		<div class="form-group">
-			    <label for="4" class="col-sm-2 control-label">Empresa</label>
+			    <label for="4" class="col-sm-2 control-label">*Empresa</label>
 			    <div class="col-sm-8">
 			<p:selectOneMenu value="#{empresaAssociadaMB.empresaId}" id="empresaId">
 			    <f:selectItems value="#{empresaAssociadaMB.empresas}" var="empresa" itemLabel="#{empresa.nomeFantasia}" 
@@ -59,7 +59,7 @@
 			  </div>
       	
       		<div class="form-group">
-			    <label for="4" class="col-sm-2 control-label">Segmento</label>
+			    <label for="4" class="col-sm-2 control-label">*Segmento</label>
 			    <div class="col-sm-8">
 			<p:selectOneMenu value="#{empresaAssociadaMB.idSegmento}" id="idSegmento">
 			    <f:selectItems value="#{empresaAssociadaMB.segmentos}" var="segmento" itemLabel="#{segmento.descricao}" 
@@ -71,28 +71,28 @@
       	
       	
 			  <div class="form-group">
-			    <label for="1" class="col-sm-2 control-label">CNPJ</label>
+			    <label for="1" class="col-sm-2 control-label">*CNPJ</label>
 			    <div class="col-sm-3">
 			      <p:inputMask value="#{empresaAssociadaMB.empresaAssociada.cnpj}" class="form-control" mask="99.999.999/9999-99"
 			       required="true" requiredMessage="Cnpj Obrigatório." />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="2" class="col-sm-2 control-label">Nome de Fantasia</label>
+			    <label for="2" class="col-sm-2 control-label">*Nome de Fantasia</label>
 			    <div class="col-sm-8">
 			      <h:inputText value="#{empresaAssociadaMB.empresaAssociada.nomeFantasia}" class="form-control"
 			       required="true" requiredMessage="Nome Fantasia Obrigatório." />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="3" class="col-sm-2 control-label">Razão Social</label>
+			    <label for="3" class="col-sm-2 control-label">*Razão Social</label>
 			    <div class="col-sm-8">
 			      <h:inputText value="#{empresaAssociadaMB.empresaAssociada.razaoSocial}" class="form-control"
 			       required="true" requiredMessage="Razão Social Obrigatória." />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="4" class="col-sm-2 control-label">Responsável</label>
+			    <label for="4" class="col-sm-2 control-label">*Responsável</label>
 			    <div class="col-sm-8">
 			      <h:inputText value="#{empresaAssociadaMB.empresaAssociada.responsavel}" class="form-control"
 			       required="true" requiredMessage="Responsável Obrigatório." />
@@ -101,7 +101,7 @@
 			  
 			  		
 			  <div class="form-group">
-			    <label for="6" class="col-sm-2 control-label">Email</label>
+			    <label for="6" class="col-sm-2 control-label">*Email</label>
 			    <div class="col-sm-4">
 			      <h:inputText value="#{empresaAssociadaMB.empresaAssociada.email}" class="form-control" 
 			      required="true" requiredMessage="Email Obrigatório." />
@@ -167,7 +167,7 @@
 						<p:tab title="Telefones">
 						
 						<div class="form-group">
-					    <label for="4" class="col-sm-2 control-label">Telefones</label>
+					    <label for="4" class="col-sm-2 control-label">*Telefones</label>
 					    <div class="col-sm-4">
 						  <p:inputMask id="phone" value="#{empresaAssociadaMB.telefone}" mask="(99)99999-9999" class="form-control"/>
 					    </div>

@@ -45,27 +45,27 @@
       	<div class="col-md-12">
       	<h:form id="form" class="form-horizontal">
 			  <div class="form-group">
-			    <label for="1" class="col-sm-1 control-label">CNPJ</label>
+			    <label for="1" class="col-sm-1 control-label">*CNPJ</label>
 			    <div class="col-sm-3">
 			      <p:inputMask required="true" requiredMessage="Cnpj obrigatório" 
 			      value="#{empresaController.empresa.cnpj}" class="form-control" mask="99.999.999/9999-99" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="2" class="col-sm-1 control-label">Fantasia</label>
+			    <label for="2" class="col-sm-1 control-label">*Fantasia</label>
 			    <div class="col-sm-8">
 			      <h:inputText required="true" requiredMessage="Nome Fantasia obrigatório"  value="#{empresaController.empresa.nomeFantasia}" class="form-control" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="3" class="col-sm-1 control-label">Razão Social</label>
+			    <label for="3" class="col-sm-1 control-label">*Razão Social</label>
 			    <div class="col-sm-8">
 			      <h:inputText value="#{empresaController.empresa.razaoSocial}" required="true" requiredMessage="Razão social obrigatório" 
 			       class="form-control" />
 			    </div>
 			  </div>
 			  <div class="form-group">
-			    <label for="4" class="col-sm-1 control-label">Responsável</label>
+			    <label for="4" class="col-sm-1 control-label">*Responsável</label>
 			    <div class="col-sm-8">
 			      <h:inputText required="true" requiredMessage="Responsável obrigatório"  value="#{empresaController.empresa.responsavel}" class="form-control" />
 			    </div>
@@ -130,7 +130,7 @@
 						<p:tab title="Telefones">
 						
 						<div class="form-group">
-					    <label for="4" class="col-sm-1 control-label">Telefones</label>
+					    <label for="4" class="col-sm-1 control-label">*Telefones</label>
 					    <div class="col-sm-4">
 						  <p:inputMask id="phone" value="#{empresaController.telefone}" mask="(99) 999-999999" class="form-control"/>
 					    </div>

@@ -17,7 +17,7 @@ public class MensagemDao extends GenericDao<Mensagem, Integer> {
 //	      idEmpresaSistema +" and msg.usuario.id="+idUsuario;
 		
 	      String sql = "select msg from Mensagem msg where msg.usuario.id = "+idUsuario+" and msg.empresaSistema="+
-	      idEmpresaSistema;
+	      idEmpresaSistema +" order by createdAt desc";
 	      
 	      Query q = getEntityManagerFactory().createQuery(sql);
 

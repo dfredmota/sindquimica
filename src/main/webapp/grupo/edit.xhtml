@@ -47,7 +47,7 @@
 			  
       	
 			  <div class="form-group">
-			    <label for="1" class="col-sm-2 control-label">Nome</label>
+			    <label for="1" class="col-sm-2 control-label">*Nome</label>
 			    <div class="col-sm-3">
 			      <h:inputText value="#{grupoMB.grupo.nome}" class="form-control" required="true" requiredMessage="Nome Obrigatório"/>
 			    </div>
@@ -60,7 +60,7 @@
 
 
 							<div class="form-group">
-								<label for="4" class="col-sm-2 control-label">Usuário</label>
+								<label for="4" class="col-sm-2 control-label">*Usuário</label>
 								<div class="col-sm-8">
 									<p:selectOneMenu value="#{grupoMB.usuarioId}" id="usuarioId">
 										<f:selectItems value="#{grupoMB.usuarios}"
@@ -96,7 +96,7 @@
 
 
 							<div class="form-group">
-								<label for="4" class="col-sm-2 control-label">Segmentos</label>
+								<label for="4" class="col-sm-2 control-label">*Segmentos</label>
 								<div class="col-sm-4">
 									<p:selectOneMenu value="#{grupoMB.segmentoId}" id="segmentoId">
 										<f:selectItems value="#{grupoMB.segmentos}"

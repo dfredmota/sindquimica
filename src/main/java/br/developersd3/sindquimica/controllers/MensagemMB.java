@@ -6,11 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -92,7 +91,9 @@ public class MensagemMB implements Serializable {
     
     private UploadedFile file;
     
-    DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault());
+    //DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, Locale.getDefault());
+    
+    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
     
     private DefaultStreamedContent imagem;
     
@@ -445,7 +446,7 @@ public class MensagemMB implements Serializable {
 			for(String token : tokensUsuarios){
 			
 			try {
-				sendMessageFirebase(token,"Nova Mensagem Sindquimica!");
+				sendMessageFirebase(token,"Nova Mensagem 2BL!");
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
