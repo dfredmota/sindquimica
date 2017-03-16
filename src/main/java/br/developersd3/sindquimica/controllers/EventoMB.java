@@ -2,6 +2,10 @@ package br.developersd3.sindquimica.controllers;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,6 +53,7 @@ import br.developersd3.sindquimica.service.GrupoService;
 import br.developersd3.sindquimica.service.ParticipanteEventoService;
 import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
+import br.developersd3.sindquimica.ws.Endereco;
 
 @ManagedBean(name = "eventoMB")
 @SessionScoped
@@ -183,9 +188,8 @@ public class EventoMB implements Serializable {
     		
     		this.evento.setGrupo(getSelectedGrupos());
         	       	
-        	event = new DefaultScheduleEvent(this.evento.getDescricao(), this.evento.getInicio(), this.evento.getFim());
-        	
-            eventModel.addEvent(event);
+    		DefaultScheduleEvent eventoDB = new DefaultScheduleEvent(this.evento.getDescricao(), this.evento.getInicio(), this.evento.getFim());
+           	
             
             // cadastrar evento na base de dados
             
@@ -208,7 +212,12 @@ public class EventoMB implements Serializable {
             }
                         
             try {
-				eventoService.create(evento, getEmpresaSistema());
+            	evento = eventoService.create(evento, getEmpresaSistema());
+				
+	           	eventoDB.setDescription(this.evento.getId().toString());
+    	   		
+	            eventModel.addEvent(eventoDB);
+				
 				FacesMessage msg = new FacesMessage("Evento Criado com sucesso!");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
 			} catch (GenericException e) {
@@ -288,10 +297,12 @@ public class EventoMB implements Serializable {
     			}   			
     			
     		}
-    		
-    		event = new DefaultScheduleEvent(this.evento.getDescricao(), this.evento.getInicio(), this.evento.getFim());
-        	
-            eventModel.addEvent(event);
+           	
+    		DefaultScheduleEvent eventoDB = new DefaultScheduleEvent(this.evento.getDescricao(), this.evento.getInicio(), this.evento.getFim());
+           	
+           	eventoDB.setDescription(this.evento.getId().toString());
+        	   		
+            eventModel.addEvent(eventoDB);
                         
             // persisti os usuarios externos antes de salvar o evento
             if(this.participantes != null){
@@ -452,7 +463,18 @@ public class EventoMB implements Serializable {
                
         this.evento = eventoService.getById(Integer.parseInt(event.getDescription()), getEmpresaSistema());  
         
+        // verifica na base de dados qual dos usuarios ja visualizou no app e confirmou presença
+        
+        for(Usuario user : this.evento.getUsuarios()){
+        	
+        	setConfirmouAndVisualizou(this.evento.getId(),user);        	
+        	
+        }        
+        
         setSelectedUsuarios(this.evento.getUsuarios());
+        
+        setUsuarios(this.evento.getUsuarios());
+        
         setSelectedGrupos(this.evento.getGrupo());
         
         try {
@@ -461,10 +483,66 @@ public class EventoMB implements Serializable {
 			e.printStackTrace();
 		}
     }
+    
+    private Usuario setConfirmouAndVisualizou(Integer eventoId,Usuario usuario){
+    	
+		Connection con = null;
+		PreparedStatement ps = null;
+
+		try {
+			
+			con = br.developersd3.sindquimica.util.DataConnect.getConnection();
+			ps = con.prepareStatement(" Select confirmou,visualizou from evento_usuario where evento_id = "+eventoId+" "
+					+ " and usuario_id="+usuario.getId());
+			
+
+			ResultSet rs = ps.executeQuery();
+			
+			System.out.println(ps);
+
+			if (rs.next()) {
+								
+				Integer confirmou = rs.getInt("confirmou");
+				
+				if(confirmou != null && confirmou != 0){
+				
+				if(confirmou == 1)
+				usuario.setConfirmou(true);
+				else
+				usuario.setConfirmou(false);	
+				
+				}
+				
+				Boolean visualizou = rs.getBoolean("visualizou");
+				
+				if(visualizou != null && visualizou)
+					usuario.setVisualizou(true);
+				else
+					usuario.setVisualizou(false);
+
+			}
+				
+			
+		} catch (SQLException ex) {
+			System.out.println("Login error -->" + ex.getMessage());
+			return usuario;
+		} finally {
+			br.developersd3.sindquimica.util.DataConnect.close(con);
+		}
+		return usuario;   	
+    	
+    }
+    
+
      
     public void onDateSelect(SelectEvent selectEvent) {
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-                  
+           
+        setSelectedUsuarios(new ArrayList<Usuario>());
+        setSelectedGrupos(new ArrayList<Grupo>());
+        
+        this.evento = new Evento();
+        
         try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/insert.xhtml");
 		} catch (IOException e) {

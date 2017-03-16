@@ -26,7 +26,7 @@
         	</h:commandButton>
             <span class="pull-right"></span>
               <h:commandButton ajax="false" title="Edit" action="#{empresaController.delete}" id="btnOpenDelete"
-              value="Deletar"  class="btn btn-primary">    
+              value="Deletar"  class="btn btn-primary" onclick="return confirm('Deseja realmente deletar o registro?');">    
         	 <f:setPropertyActionListener target="#{empresaController.empresa}" value="#{empresaController.empresa}" />   
              </h:commandButton>
             <h2>Informações da Empresas Gestora</h2>
@@ -59,7 +59,7 @@
       </div>
       <div class="row form-group">
         <div class="col-md-2"><b>Status:</b></div>
-        <div class="col-md-10">#{empresaController.empresa.status}</div>
+        <div class="col-md-10">#{empresaController.empresa.ativo}</div>
       </div>
       
       <br/>

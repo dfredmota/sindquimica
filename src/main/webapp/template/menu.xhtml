@@ -21,22 +21,22 @@
     <p:menubar styleClass="menu">
     
     		<p:submenu  label="Cadastros" style="font-weight:bold; color:#000000;">
+            
+            <c:if test = "${login.perfilUsuario == 'ADM'}">
             <p:menuitem value="Empresa Gestora" rendered="#{usuarioMB.perfilAdm}"  url="/empresa/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
+            </c:if>
+            
             <p:menuitem value="Tipo de Documento" url="/tipoDocumento/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Empresa Associada" url="/empresaAssociada/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Usuários" url="/usuario/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" /> 
             <p:menuitem value="Segmento" url="/segmento/lista.xhtml"   style="font-weight:bold; color:#FFFFFF;" />          
             </p:submenu>
  
- 		<c:if test = "${login.perfilUsuario == 'ADM'}">
  		<p:menuitem value="Grupos" url="/grupo/lista.xhtml" style="font-weight:bold; color:#FFFFFF;"/>
- 		</c:if>
  		
  		<p:menuitem value="TimeLine" url="/mensagem/mensagem.xhtml" style="font-weight:bold; color:#FFFFFF;"/>
  		
- 		<c:if test = "${login.perfilUsuario == 'ADM'}">
  		<p:menuitem value="Eventos" url="/evento/evento.xhtml" style="font-weight:bold; color:#FFFFFF;"/>
-        </c:if>
         
         <p:menuitem value="Sair" url="/login.xhtml" icon="ui-icon-close" style="font-weight:bold; color:#FFFFFF;" />
         

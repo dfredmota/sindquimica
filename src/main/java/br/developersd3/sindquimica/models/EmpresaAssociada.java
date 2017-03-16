@@ -215,5 +215,6 @@ public class EmpresaAssociada implements Serializable{
 	public void setCnaes(List<Cnae> cnaes) {
 		this.cnaes = cnaes;
 	}
+	
 
 }

@@ -11,11 +11,35 @@
     <br/>   
     
     <h:commandButton value="Incluir" action="#{usuarioMB.prepareInsert}" class="btn btn-primary"/>
+    
+    <h:commandButton ajax="false" title="Pesquisar" action="#{usuarioMB.searchByFilters}"
+              value="Pesquisar"  class="btn btn-primary" style="background-color:#008B8B;margin-left:20px;"/>
+    
+    <br/>     
+    <br/>
+    
+    	<p:fieldset>
+	
+    <div class="form-group">
+	<label for="1" class="col-sm-1 control-label">Nome</label>
+	<div class="col-sm-3">
+	<h:inputText id="filter_nome" value="#{usuarioMB.nomeFiltro}" class="form-control" size="10" />
+	</div>
+	<label for="1" class="col-sm-1 control-label">Email</label>
+	<div class="col-sm-3">
+	<h:inputText id="filter_email" value="#{usuarioMB.emailFiltro}" class="form-control" size="10" />
+	</div>
+	</div>
+	
+	
+ 	</p:fieldset>   
+    
+    <br/>
            
     <br/>     
     <br/>         
 
-    <p:dataTable var="usuario" value="#{usuarioMB.lazyModel}" paginator="true" rows="10"
+    <p:dataTable var="usuario" value="#{usuarioMB.lista}" paginator="true" rows="10"
     			 rowKey="#{usuario.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{usuarioMB.usuario}" id="usuarioTable" lazy="true">
@@ -24,16 +48,16 @@
         <p:column headerText="Id" width="5%">
             <h:outputText value="#{usuario.id}" />
         </p:column>
-        <p:column headerText="Nome" sortBy="#{usuario.nome}" filterBy="#{usuario.nome}">
+        <p:column headerText="Nome">
             <h:outputText value="#{usuario.nome}" />
         </p:column>
-        <p:column headerText="Email" sortBy="#{usuario.email}" filterBy="#{usuario.email}">
+        <p:column headerText="Email">
             <h:outputText value="#{usuario.email}" />
         </p:column>
-        <p:column headerText="Site" sortBy="#{usuario.site}" filterBy="#{usuario.site}">
+        <p:column headerText="Site">
             <h:outputText value="#{usuario.site}" />
         </p:column>
-        <p:column headerText="Endereço" sortBy="#{usuario.endereco.logradouro}" filterBy="#{usuario.endereco.logradouro}">
+        <p:column headerText="Endereço">
             <h:outputText value="#{usuario.endereco.logradouro}" />
         </p:column>
     </p:dataTable>

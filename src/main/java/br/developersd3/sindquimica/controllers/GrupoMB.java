@@ -36,7 +36,7 @@ public class GrupoMB implements Serializable {
 
 	private static final long serialVersionUID = 1094801825228386363L;
 
-	private LazyDataModel<Grupo> lazyModel;
+	private List<Grupo> lista;
 
 	@ManagedProperty(value = "#{grupo}")
 	private Grupo grupo;
@@ -75,14 +75,29 @@ public class GrupoMB implements Serializable {
 	
 	private Segmento segmento;
 	
+	private String descricaoFiltro;
+	
 	@ManagedProperty(name = "cnaeService", value = "#{cnaeService}")
 	private CnaeService cnaeService;
 	
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyGrupoDataModel(grupoService.all(getEmpresaSistema()));
+		lista = grupoService.all(getEmpresaSistema());
 		this.cnaes = cnaeService.all(getEmpresaSistema());
 
+	}
+	
+	public String searchByFilters(){
+		
+		this.grupo = new Grupo();
+		
+		this.grupo.setNome(descricaoFiltro);
+		
+		lista = grupoService.searchByFilters(this.grupo);		
+		
+		return null;
+		
+		
 	}
 	
 	public String search(){
@@ -113,7 +128,7 @@ public class GrupoMB implements Serializable {
 			
 		}
 		
-		lazyModel = new LazyGrupoDataModel(gruposCnaes);
+		lista = new ArrayList<Grupo>(gruposCnaes);
 			
 		}
 			
@@ -259,7 +274,7 @@ public class GrupoMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Grupo Criado com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyGrupoDataModel(grupoService.all(getEmpresaSistema()));
+		lista = grupoService.all(getEmpresaSistema());
 
 		try {
 
@@ -282,7 +297,7 @@ public class GrupoMB implements Serializable {
 			FacesMessage msg = new FacesMessage("Grupo Atualizado com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyGrupoDataModel(grupoService.all(getEmpresaSistema()));
+			lista = grupoService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -299,10 +314,10 @@ public class GrupoMB implements Serializable {
 			
 		grupoService.delete(grupo);	
 		
-		FacesMessage msg = new FacesMessage("Tipo de Documento excluído com sucesso!");
+		FacesMessage msg = new FacesMessage("Grupo excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyGrupoDataModel(grupoService.all(getEmpresaSistema()));
+		lista = grupoService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -321,13 +336,13 @@ public class GrupoMB implements Serializable {
 
 		}
 	}	
-	
-	public LazyDataModel<Grupo> getLazyModel() {
-		return lazyModel;
+
+	public List<Grupo> getLista() {
+		return lista;
 	}
 
-	public void setLazyModel(LazyDataModel<Grupo> lazyModel) {
-		this.lazyModel = lazyModel;
+	public void setLista(List<Grupo> lista) {
+		this.lista = lista;
 	}
 
 	public Grupo getGrupo() {
@@ -464,6 +479,14 @@ public class GrupoMB implements Serializable {
 
 	public void setSegmento(Segmento segmento) {
 		this.segmento = segmento;
+	}
+
+	public String getDescricaoFiltro() {
+		return descricaoFiltro;
+	}
+
+	public void setDescricaoFiltro(String descricaoFiltro) {
+		this.descricaoFiltro = descricaoFiltro;
 	}
 
 	private Integer getEmpresaSistema(){

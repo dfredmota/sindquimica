@@ -185,4 +185,11 @@ public class Empresa  implements Serializable{
 		this.deletedAt = deletedAt;
 	}
 	
+	public String getAtivo(){
+		if(this.status)
+			return "Ativa";
+		else
+			return "Inativa";
+	}
+	
 }

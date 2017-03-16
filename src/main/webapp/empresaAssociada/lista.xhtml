@@ -12,11 +12,30 @@
     
     <h:commandButton value="Incluir" action="#{empresaAssociadaMB.prepareInsert}" class="btn btn-primary"/>
     
+        <h:commandButton ajax="false" title="Pesquisar" action="#{empresaAssociadaMB.searchByFilters}"
+              value="Pesquisar"  class="btn btn-primary" style="background-color:#008B8B;margin-left:20px;"/>
+    
     <br/>     
     <br/>
+    
+    <p:fieldset>
+	
+    <div class="form-group">
+	<label for="1" class="col-sm-2 control-label">Nome Fantasia</label>
+	<div class="col-sm-3" style="margin-left:-80px;">
+	<h:inputText id="filter_nome" value="#{empresaAssociadaMB.nomeFantasiaFiltro}" class="form-control" size="10" />
+	</div>
+	</div>	
+	
+ 	</p:fieldset>   
+    
+    <br/>
+           
+    <br/>     
+    <br/> 
          
 
-    <p:dataTable var="empresaAssociada" value="#{empresaAssociadaMB.lazyModel}" paginator="true" rows="10"
+    <p:dataTable var="empresaAssociada" value="#{empresaAssociadaMB.lista}" paginator="true" rows="10"
     			 rowKey="#{empresaAssociada.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{empresaAssociadaMB.empresaAssociada}" id="empresaAssociadaTable" lazy="true">
@@ -24,19 +43,19 @@
         <p:column headerText="Id"  width="5%">
             <h:outputText value="#{empresaAssociada.id}" />
         </p:column>
-        <p:column headerText="Razão Social" sortBy="#{empresaAssociada.razaoSocial}" filterBy="#{empresaAssociada.razaoSocial}">
+        <p:column headerText="Razão Social" >
             <h:outputText value="#{empresaAssociada.razaoSocial}" />
         </p:column>
-        <p:column headerText="Nome Fantasia" sortBy="#{empresaAssociada.nomeFantasia}" filterBy="#{empresaAssociada.nomeFantasia}">
+        <p:column headerText="Nome Fantasia" >
             <h:outputText value="#{empresaAssociada.nomeFantasia}" />
         </p:column>
-        <p:column headerText="Responsável" sortBy="#{empresaAssociada.responsavel}" filterBy="#{empresaAssociada.responsavel}">
+        <p:column headerText="Responsável" >
             <h:outputText value="#{empresaAssociada.responsavel}" />
         </p:column>
-        <p:column headerText="Telefones" sortBy="#{empresaAssociada.telefones}" filterBy="#{empresaAssociada.telefones}">
+        <p:column headerText="Telefones" >
             <h:outputText value="#{empresaAssociada.telefones}" />
         </p:column>
-        <p:column headerText="Endereço" sortBy="#{empresaAssociada.endereco.logradouro}" filterBy="#{empresaAssociada.endereco.logradouro}">
+        <p:column headerText="Endereço" >
             <h:outputText value="#{empresaAssociada.endereco.logradouro}" />
         </p:column>
     </p:dataTable>

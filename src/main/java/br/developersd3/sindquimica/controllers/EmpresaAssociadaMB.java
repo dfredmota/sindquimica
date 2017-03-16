@@ -14,15 +14,14 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
 
-import br.developersd3.sindquimica.datatable.LazyEmpresaAssociadaDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.Empresa;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
 import br.developersd3.sindquimica.models.Segmento;
+import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
 import br.developersd3.sindquimica.service.EmpresaService;
@@ -35,7 +34,7 @@ public class EmpresaAssociadaMB implements Serializable {
 
 	private static final long serialVersionUID = 1094801825228386363L;
 
-	private LazyDataModel<EmpresaAssociada> lazyModel;
+	private List<EmpresaAssociada> lista;
 
 	@ManagedProperty(value = "#{empresaAssociada}")
 	private EmpresaAssociada empresaAssociada;
@@ -67,12 +66,28 @@ public class EmpresaAssociadaMB implements Serializable {
 	private List<Segmento> segmentos;
 	
 	private Integer idSegmento;
+	
+	private String nomeFantasiaFiltro;
+	
+	private String emailFiltro;
 
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
+		lista = empresaAssociadaService.all(getEmpresaSistema());
 		empresas = empresaService.all(getEmpresaSistema());
 		telefones = new ArrayList<String>();
+	}
+	
+	public String searchByFilters(){
+		
+		this.empresaAssociada = new EmpresaAssociada();
+		
+		this.empresaAssociada.setNomeFantasia(nomeFantasiaFiltro);
+				
+		lista = empresaAssociadaService.searchByFilters(this.empresaAssociada);	
+		
+		return null;		
+		
 	}
 	
 	public void setListaCnaes(){
@@ -226,7 +241,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Empresa Associada Criada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
+		lista = empresaAssociadaService.all(getEmpresaSistema());
 
 		try {
 
@@ -274,7 +289,7 @@ public class EmpresaAssociadaMB implements Serializable {
 			FacesMessage msg = new FacesMessage("Empresa Associada Atualizada com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
+			lista = empresaAssociadaService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -294,7 +309,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		FacesMessage msg = new FacesMessage("EmpresaAssociada excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyEmpresaAssociadaDataModel(empresaAssociadaService.all(getEmpresaSistema()));
+		lista = empresaAssociadaService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -315,12 +330,12 @@ public class EmpresaAssociadaMB implements Serializable {
 	}
 		
 
-	public LazyDataModel<EmpresaAssociada> getLazyModel() {
-		return lazyModel;
+	public List<EmpresaAssociada> getLista() {
+		return lista;
 	}
 
-	public void setLazyModel(LazyDataModel<EmpresaAssociada> lazyModel) {
-		this.lazyModel = lazyModel;
+	public void setLista(List<EmpresaAssociada> lista) {
+		this.lista = lista;
 	}
 
 	public EmpresaAssociada getEmpresaAssociada() {
@@ -436,6 +451,22 @@ public class EmpresaAssociadaMB implements Serializable {
 
 	public void setSegmentoService(SegmentoService segmentoService) {
 		this.segmentoService = segmentoService;
+	}
+
+	public String getNomeFantasiaFiltro() {
+		return nomeFantasiaFiltro;
+	}
+
+	public void setNomeFantasiaFiltro(String nomeFantasiaFiltro) {
+		this.nomeFantasiaFiltro = nomeFantasiaFiltro;
+	}
+
+	public String getEmailFiltro() {
+		return emailFiltro;
+	}
+
+	public void setEmailFiltro(String emailFiltro) {
+		this.emailFiltro = emailFiltro;
 	}
 	
 }

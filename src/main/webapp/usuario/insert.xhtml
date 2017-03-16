@@ -105,7 +105,8 @@
 			  <div class="form-group">
 			    <label for="8" class="col-sm-2 control-label">Número</label>
 			    <div class="col-sm-4">
-			      <h:inputText value="#{usuarioMB.usuario.endereco.numero}" class="form-control" />
+			      <h:inputText onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" maxlength="10"
+			      value="#{usuarioMB.usuario.endereco.numero}" class="form-control"  />
 			    </div>
 			  </div>
 			  

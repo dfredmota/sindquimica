@@ -8,6 +8,7 @@ import javax.inject.Named;
 import br.developersd3.sindquimica.daos.GrupoDao;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Grupo;
+import br.developersd3.sindquimica.models.Segmento;
 
 @Named("grupoService")
 public class GrupoService implements GenericService<Grupo> {
@@ -49,6 +50,13 @@ public class GrupoService implements GenericService<Grupo> {
 	
 	public List<Grupo> findAllByUsuario(Integer usuarioId) {
 		return dao.findAllByUsuario(usuarioId);
+	}
+	
+	@Override
+	public List<Grupo> searchByFilters(Grupo grupo){
+
+		return dao.searchByFilters(grupo);
+
 	}
 
 }

@@ -25,7 +25,7 @@
         	</h:commandButton>
             <span class="pull-right"></span>
               <h:commandButton ajax="false" title="Edit" action="#{tipoDocumentoMB.delete}" id="btnOpenDelete"
-              value="Deletar"  class="btn btn-primary">    
+              value="Deletar"  class="btn btn-primary" onclick="return confirm('Deseja realmente deletar o registro?');">    
         	 <f:setPropertyActionListener target="#{tipoDocumentoMB.tipoDocumento}" value="#{tipoDocumentoMB.tipoDocumento}" />   
              </h:commandButton>
             <h2>Informações do Tipo de Documento</h2>

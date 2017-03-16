@@ -47,7 +47,7 @@
 			  <div class="form-group">
 			    <label for="1" class="col-sm-2 control-label">*Nome</label>
 			    <div class="col-sm-3">
-			      <h:inputText value="#{usuarioMB.usuario.nome}" class="form-control" required="true" requiredMessage="Nome obrigatório" value="#{usuarioMB.usuario.nome}" />
+			      <h:inputText value="#{usuarioMB.usuario.nome}" class="form-control" required="true" requiredMessage="Nome obrigatório"  />
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -91,7 +91,7 @@
 			  <div class="form-group">
 			    <label for="8" class="col-sm-2 control-label">Número</label>
 			    <div class="col-sm-4">
-			      <h:inputText value="#{usuarioMB.usuario.endereco.numero}" class="form-control" />
+			      <h:inputText onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" maxlength="10" value="#{usuarioMB.usuario.endereco.numero}" class="form-control" />
 			    </div>
 			  </div>
 			  
@@ -136,7 +136,7 @@
 						<div class="form-group">
 					    <label for="4" class="col-sm-2 control-label">Telefones</label>
 					    <div class="col-sm-4">
-					      <p:inputMask id="phone" value="#{usuarioMB.telefone}" mask="(99) 999-999999" class="form-control"/>
+					      <p:inputMask id="phone" value="#{usuarioMB.telefone}" mask="(99)99999-9999" class="form-control"/>
 					    </div>
 					    <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.addTelefone}" id="btnAddTel" 
 	              			value="+"  class="btn btn-primary" /> 

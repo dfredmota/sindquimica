@@ -39,7 +39,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="page-header" style="border-bottom:0; margin-top:0">
-            <h2>Cadastro de Empresa Associada</h2>
+            <h2>Cadastro de Empresa Gestora</h2>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
 			  <div class="form-group">
 			    <label for="8" class="col-sm-1 control-label">Número</label>
 			    <div class="col-sm-4">
-			      <h:inputText value="#{empresaController.empresa.endereco.numero}" class="form-control" />
+			      <h:inputText onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" maxlength="10" value="#{empresaController.empresa.endereco.numero}" class="form-control" />
 			    </div>
 			  </div>
 			  

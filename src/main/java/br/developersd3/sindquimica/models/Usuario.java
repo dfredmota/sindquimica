@@ -18,6 +18,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -88,6 +89,28 @@ public class Usuario implements Serializable{
 	@Column(name = "token_app")
 	private String token;
 	
+	@Transient
+	private Boolean confirmou;
+	
+	@Transient
+	private Boolean visualizou;
+	
+	public Boolean getConfirmou() {
+		return confirmou;
+	}
+
+	public void setConfirmou(Boolean confirmou) {
+		this.confirmou = confirmou;
+	}
+
+	public Boolean getVisualizou() {
+		return visualizou;
+	}
+
+	public void setVisualizou(Boolean visualizou) {
+		this.visualizou = visualizou;
+	}
+
 	public String getToken() {
 		return token;
 	}
@@ -126,6 +149,36 @@ public class Usuario implements Serializable{
 
 	public void setImagemPath(String imagemPath) {
 		this.imagemPath = imagemPath;
+	}
+	
+	public String getConfirmouPresenca(){
+		
+		if(this.confirmou != null){
+			
+			if(confirmou)
+				return "SIM";
+			else
+				return "NÃO";
+					
+		}else{
+			return "";
+		}
+		
+	}
+	
+	public String getVisualizouEvento(){
+		
+		if(this.visualizou != null){
+			
+			if(visualizou)
+				return "SIM";
+			else
+				return "NÃO";
+					
+		}else{
+			return "";
+		}
+		
 	}
 	
 	public String getAtivo(){

@@ -35,12 +35,27 @@ public class SegmentoMB implements Serializable {
 
 	@ManagedProperty(name = "segmentoService", value = "#{segmentoService}")
 	private SegmentoService segmentoService;
+	
+	private String descricaoFiltro;
 
 	@PostConstruct
 	public void init() {
 			
 		lista = segmentoService.all(getEmpresaSistema());
 
+	}
+	
+	public String searchByFilters(){
+		
+		this.segmento = new Segmento();
+		
+		this.segmento.setDescricao(descricaoFiltro);
+		
+		lista = segmentoService.searchByFilters(this.segmento);		
+		
+		return null;
+		
+		
 	}
 
 	public String prepareUpdate() {
@@ -160,6 +175,14 @@ public class SegmentoMB implements Serializable {
 		this.segmentoService = segmentoService;
 	}
 	
+	public String getDescricaoFiltro() {
+		return descricaoFiltro;
+	}
+
+	public void setDescricaoFiltro(String descricaoFiltro) {
+		this.descricaoFiltro = descricaoFiltro;
+	}
+
 	private Integer getEmpresaSistema(){
 		HttpSession session = SessionUtils.getSession();
 		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");

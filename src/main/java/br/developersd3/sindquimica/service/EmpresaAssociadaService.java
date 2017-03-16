@@ -46,5 +46,10 @@ public class EmpresaAssociadaService implements GenericService<EmpresaAssociada>
 	public List<EmpresaAssociada> findAllByCnae(Integer idCnae) {
 		return dao.findAllByCnae(idCnae);		
 	}
+	
+	@Override
+	public List<EmpresaAssociada> searchByFilters(EmpresaAssociada entity) {
+		return dao.searchByFilters(entity);
+	}
 
 }

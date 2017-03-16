@@ -42,4 +42,11 @@ public class EmpresaService implements GenericService<Empresa> {
 		dao.delete(entity);
 	}
 
+	@Override
+	public List<Empresa> searchByFilters(Empresa entity) {
+		return dao.searchByFilters(entity);
+	}
+	
+	
+
 }

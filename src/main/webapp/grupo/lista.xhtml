@@ -12,9 +12,25 @@
     
     <h:commandButton value="Incluir" action="#{grupoMB.prepareInsert}" class="btn btn-primary"/>
     
+    <h:commandButton ajax="false" title="Pesquisar" action="#{grupoMB.searchByFilters}"
+              value="Pesquisar"  class="btn btn-primary" style="background-color:#008B8B;margin-left:20px;"/>
+    
     <br/>     
     <br/>
-    <br/>     
+    
+    	<p:fieldset>
+	
+    <div class="form-group">
+	<label for="1" class="col-sm-1 control-label">Nome</label>
+	<div class="col-sm-3">
+	<h:inputText id="filter_nome" value="#{grupoMB.descricaoFiltro}" class="form-control" size="10" />
+	</div>
+	</div>
+	
+	
+ 	</p:fieldset>   
+    
+    <br/>    
 
 			<div class="form-group">
 				<label for="4" class="col-sm-1 control-label">Cnae</label>
@@ -33,7 +49,7 @@
     		<br/>
 
 
-			<p:dataTable var="grupo" value="#{grupoMB.lazyModel}" paginator="true" rows="10"
+			<p:dataTable var="grupo" value="#{grupoMB.lista}" paginator="true" rows="10"
     			 rowKey="#{grupo.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{grupoMB.grupo}" id="grupoTable" lazy="true">
@@ -41,10 +57,10 @@
         <p:column headerText="Id"  width="5%">
             <h:outputText value="#{grupo.id}" />
         </p:column>
-        <p:column headerText="Nome" sortBy="#{grupo.nome}" filterBy="#{grupo.nome}">
+        <p:column headerText="Nome" >
             <h:outputText value="#{grupo.nome}" />
         </p:column>
-        <p:column headerText="Participantes" sortBy="#{grupo.participantes}" filterBy="#{grupo.participantes}">
+        <p:column headerText="Participantes" >
             <h:outputText value="#{grupo.participantes}" />
         </p:column>
 

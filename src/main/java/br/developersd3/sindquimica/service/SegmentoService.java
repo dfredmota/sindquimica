@@ -41,4 +41,15 @@ public class SegmentoService implements GenericService<Segmento> {
 		dao.delete(entity);
 	}
 
+	@Override
+	public List<Segmento> searchByFilters(Segmento entity){
+
+		return dao.searchByFilters(entity);
+
+	}
+
+	
+	
+	
+
 }

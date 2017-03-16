@@ -32,6 +32,7 @@ import br.developersd3.sindquimica.models.Documento;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
 import br.developersd3.sindquimica.models.Perfil;
+import br.developersd3.sindquimica.models.Segmento;
 import br.developersd3.sindquimica.models.TipoDocumento;
 import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.DocumentoService;
@@ -47,7 +48,7 @@ public class UsuarioMB implements Serializable {
 
 	private static final long serialVersionUID = 1094801825228386363L;
 
-	private LazyDataModel<Usuario> lazyModel;
+	private List<Usuario> lista;
 
 	@ManagedProperty(value = "#{usuario}")
 	private Usuario usuario;
@@ -61,6 +62,10 @@ public class UsuarioMB implements Serializable {
 	private List<String> telefones;
 	
 	private Boolean  isAdm;
+	
+	private String nomeFiltro;
+	
+	private String emailFiltro;
 
 	@ManagedProperty(name = "usuarioService", value = "#{usuarioService}")
 	private UsuarioService usuarioService;
@@ -91,9 +96,22 @@ public class UsuarioMB implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyUsuarioDataModel(usuarioService.all(getEmpresaSistema()));
+		lista = usuarioService.all(getEmpresaSistema());
 		listaDeEmpresasAssociadas = empresaAssociadaService.all(getEmpresaSistema());
 		telefones = new ArrayList<String>();
+	}
+	
+	public String searchByFilters(){
+		
+		this.usuario = new Usuario();
+		
+		this.usuario.setNome(nomeFiltro);
+		this.usuario.setEmail(emailFiltro);
+		
+		lista = usuarioService.searchByFilters(this.usuario);	
+		
+		return null;		
+		
 	}
 	
 	public String addTelefone(){
@@ -359,7 +377,7 @@ public class UsuarioMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Usuário Criado com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyUsuarioDataModel(usuarioService.all(getEmpresaSistema()));
+		lista = usuarioService.all(getEmpresaSistema());
 
 		try {
 
@@ -422,7 +440,7 @@ public class UsuarioMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Usuário Atualizado com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-		lazyModel = new LazyUsuarioDataModel(usuarioService.all(getEmpresaSistema()));
+		lista = usuarioService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -442,7 +460,7 @@ public class UsuarioMB implements Serializable {
 		FacesMessage msg = new FacesMessage("Usuario excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyUsuarioDataModel(usuarioService.all(getEmpresaSistema()));
+		lista = usuarioService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -476,12 +494,12 @@ public class UsuarioMB implements Serializable {
 		this.empresaAssociadaService = service;
 	}
 
-	public LazyDataModel<Usuario> getLazyModel() {
-		return lazyModel;
+	public List<Usuario> getLista() {
+		return lista;
 	}
 
-	public void setLazyModel(LazyDataModel<Usuario> lazyModel) {
-		this.lazyModel = lazyModel;
+	public void setLista(List<Usuario> lista) {
+		this.lista = lista;
 	}
 
 	public Usuario getUsuario() {
@@ -617,6 +635,22 @@ public class UsuarioMB implements Serializable {
 
 	public void setPerfilService(PerfilService perfilService) {
 		this.perfilService = perfilService;
+	}
+
+	public String getNomeFiltro() {
+		return nomeFiltro;
+	}
+
+	public void setNomeFiltro(String nomeFiltro) {
+		this.nomeFiltro = nomeFiltro;
+	}
+
+	public String getEmailFiltro() {
+		return emailFiltro;
+	}
+
+	public void setEmailFiltro(String emailFiltro) {
+		this.emailFiltro = emailFiltro;
 	}
 
 	private Integer getUsuarioSistema(){

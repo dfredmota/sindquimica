@@ -29,12 +29,12 @@
         <div class="col-md-12">
           <div class="page-header" style="border-bottom:0; margin-top:0">
               <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.prepareUpdate}" id="btnOpenEdit" 
-              value="Editar"  class="btn btn-primary">  
+              value="Editar"  class="btn btn-primary" >  
        		 <f:param name="idUsuario" value="#{usuarioMB.usuario.id}" />  
         	</h:commandButton>
             <span class="pull-right"></span>
               <h:commandButton ajax="false" title="Edit" action="#{usuarioMB.delete}" id="btnOpenDelete"
-              value="Deletar"  class="btn btn-primary">    
+              value="Deletar"  class="btn btn-primary" onclick="return confirm('Deseja realmente deletar o registro?');">    
         	 
         	 <f:setPropertyActionListener target="#{usuarioMB.usuario}" value="#{usuarioMB.usuario}" />   
              

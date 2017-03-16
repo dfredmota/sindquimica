@@ -4,6 +4,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
+	<html>
 	<ui:define name="content">
 	
 	
@@ -13,7 +14,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Evento</title>
 
-<head>
+<h:head>
 
 <style type="text/css">
    .ui-fieldset .ui-fieldset-legend {
@@ -22,8 +23,8 @@
    }
 </style>
 
-</head>
-
+</h:head>
+ <h:body>
     <!-- Bootstrap -->
 	
 	<h:form>
@@ -42,6 +43,7 @@
         </h:panelGrid>
         
 </h:form>
+</h:body>
  
 <script type="text/javascript">
     PrimeFaces.locales['tr'] = {
@@ -74,4 +76,5 @@
 </style>
 
 </ui:define>
+</html>
 </ui:composition>

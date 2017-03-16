@@ -20,6 +20,7 @@ import br.developersd3.sindquimica.datatable.LazyEmpresaDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.Empresa;
+import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
 import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaService;
@@ -31,7 +32,7 @@ public class EmpresaController implements Serializable {
 
 	private static final long serialVersionUID = 1094801825228386363L;
 
-	private LazyDataModel<Empresa> lazyModel;
+	private List<Empresa> lista;
 
 	@ManagedProperty(value = "#{empresa}")
 	private Empresa empresa;
@@ -55,13 +56,27 @@ public class EmpresaController implements Serializable {
 	private Integer     cnaeId;
 	
 	private List<Cnae>  cnaes;
+	
+	private String 		nomeFantasiaFiltro;
 
 	@PostConstruct
 	public void init() {
-		lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
+		lista = empresaService.all(getEmpresaSistema());
 		telefones = new ArrayList<String>();
 		emails = new ArrayList<String>();
 
+	}
+	
+	public String searchByFilters(){
+		
+		this.empresa = new Empresa();
+		
+		this.empresa.setNomeFantasia(nomeFantasiaFiltro);
+				
+		lista = empresaService.searchByFilters(this.empresa);	
+		
+		return null;		
+		
 	}
 	
 	public String addCnae(){
@@ -107,6 +122,7 @@ public class EmpresaController implements Serializable {
 		
 		return null;
 	}
+	
 	
 	public String deleteTelefone(){
 		
@@ -255,7 +271,7 @@ public class EmpresaController implements Serializable {
 		FacesMessage msg = new FacesMessage("Empresa Criada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
+		lista = empresaService.all(getEmpresaSistema());
 
 		try {
 
@@ -299,7 +315,7 @@ public class EmpresaController implements Serializable {
 			FacesMessage msg = new FacesMessage("Empresa Atualizado com sucesso!");
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			
-			lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
+			lista = empresaService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "updateError";
@@ -319,7 +335,7 @@ public class EmpresaController implements Serializable {
 		FacesMessage msg = new FacesMessage("Empresa excluído com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		
-		lazyModel = new LazyEmpresaDataModel(empresaService.all(getEmpresaSistema()));
+		lista = empresaService.all(getEmpresaSistema());
 
 		} catch (Exception e) {
 			str = "deleteError";
@@ -339,14 +355,6 @@ public class EmpresaController implements Serializable {
 		}
 	}
 		
-
-	public LazyDataModel<Empresa> getLazyModel() {
-		return lazyModel;
-	}
-
-	public void setLazyModel(LazyDataModel<Empresa> lazyModel) {
-		this.lazyModel = lazyModel;
-	}
 
 	public Empresa getEmpresa() {
 		return empresa;
@@ -414,8 +422,20 @@ public class EmpresaController implements Serializable {
 
 	public void setCnaes(List<Cnae> cnaes) {
 		this.cnaes = cnaes;
-	}		
+	}	
 	
+	public String getNomeFantasiaFiltro() {
+		return nomeFantasiaFiltro;
+	}
+
+	public void setNomeFantasiaFiltro(String nomeFantasiaFiltro) {
+		this.nomeFantasiaFiltro = nomeFantasiaFiltro;
+	}
+
+	public void setLista(List<Empresa> lista) {
+		this.lista = lista;
+	}
+
 	private Integer getEmpresaSistema(){
 		HttpSession session = SessionUtils.getSession();
 		Integer empresaSistemaId = (Integer)session.getAttribute("empresaSistemaId");
@@ -437,6 +457,10 @@ public class EmpresaController implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public List<Empresa> getLista() {
+		return lista;
 	}
 	
 }

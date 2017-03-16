@@ -25,7 +25,7 @@
         	</h:commandButton>
             <span class="pull-right"></span>
               <h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.delete}" id="btnOpenDelete"
-              value="Deletar"  class="btn btn-primary">    
+              value="Deletar"  class="btn btn-primary" onclick="return confirm('Deseja realmente deletar o registro?');">    
         	 <f:setPropertyActionListener target="#{empresaAssociadaMB.empresaAssociada}" value="#{empresaAssociadaMB.empresaAssociada}" />   
              </h:commandButton>
             <h2>Informações de Empresa Associada</h2>
@@ -94,7 +94,7 @@
       </div>
       <div class="row form-group">
         <div class="col-md-2"><b>Status:</b></div>
-        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.status}</div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.ativo}</div>
       </div>
       
       <c:if test="#{not empty empresaAssociadaMB.empresaAssociada.telefones}">
