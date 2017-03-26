@@ -23,7 +23,9 @@ import br.developersd3.sindquimica.models.Perfil;
 import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
+import br.developersd3.sindquimica.util.Validations;
 
+//          <!--  <c:if test = "${login.perfilUsuario == 'ADM'}"/>-->
 @ManagedBean(name = "login")
 @SessionScoped
 public class Login implements Serializable {
@@ -42,8 +44,20 @@ public class Login implements Serializable {
 
 	public String sendPasswordToEmail() {
 
-		final String username = "dfredmota@gmail.com";
-		final String password = "Scorge@3873";
+		boolean isValidEmail = Validations.isValidEmailAddress(email.trim());
+		
+		if(!isValidEmail){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
+		
+		
+		final String username = "2biportal@gmail.com";
+		final String password = "biportal";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -63,7 +77,7 @@ public class Login implements Serializable {
 
 			Message message = new MimeMessage(session);
 			try {
-				message.setFrom(new InternetAddress("dfredmota@gmail.com"));
+				message.setFrom(new InternetAddress("2biportal@gmail.com"));
 			} catch (AddressException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -73,7 +87,7 @@ public class Login implements Serializable {
 			}
 
 			try {
-				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("dfredmota@gmail.com"));
+				message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			} catch (AddressException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -88,7 +102,7 @@ public class Login implements Serializable {
 				e.printStackTrace();
 			}
 			try {
-				message.setText("Caro ," + usuario.getNome() + "\n\n Segue sua senha para acesso ao sistema:"
+				message.setText("Olá ," + usuario.getNome() + "\n\n Segue sua senha para acesso ao sistema:"
 						+ "\n\n Senha:" + usuario.getPassword() + " \n\n\n Atenciosamente, Equipe Sindiquimica.");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block

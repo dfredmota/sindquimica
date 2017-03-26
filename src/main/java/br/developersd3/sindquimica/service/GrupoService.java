@@ -53,7 +53,7 @@ public class GrupoService implements GenericService<Grupo> {
 	}
 	
 	@Override
-	public List<Grupo> searchByFilters(Grupo grupo){
+	public List<Grupo> searchByFilters(Grupo grupo,String field){
 
 		return dao.searchByFilters(grupo);
 

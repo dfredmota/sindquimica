@@ -21,12 +21,12 @@ import br.developersd3.sindquimica.models.Empresa;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
 import br.developersd3.sindquimica.models.Segmento;
-import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaAssociadaService;
 import br.developersd3.sindquimica.service.EmpresaService;
 import br.developersd3.sindquimica.service.SegmentoService;
 import br.developersd3.sindquimica.util.SessionUtils;
+import br.developersd3.sindquimica.util.Validations;
 
 @ManagedBean(name = "empresaAssociadaMB")
 @SessionScoped
@@ -67,9 +67,9 @@ public class EmpresaAssociadaMB implements Serializable {
 	
 	private Integer idSegmento;
 	
-	private String nomeFantasiaFiltro;
+	private String tipoFiltro;
 	
-	private String emailFiltro;
+	private String filtro;	
 
 	@PostConstruct
 	public void init() {
@@ -82,9 +82,37 @@ public class EmpresaAssociadaMB implements Serializable {
 		
 		this.empresaAssociada = new EmpresaAssociada();
 		
-		this.empresaAssociada.setNomeFantasia(nomeFantasiaFiltro);
+		if(this.tipoFiltro.equals("todos")){
+			
+			lista = empresaAssociadaService.all(getEmpresaSistema());
+			return null;
+		}
+		
+		if(this.tipoFiltro.equals("nomeFantasia") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresaAssociada.setNomeFantasia(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("razaoSocial") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresaAssociada.setRazaoSocial(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("email") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresaAssociada.setEmail(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("site") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresaAssociada.setSite(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("cnpj") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresaAssociada.setCnpj(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("responsavel") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresaAssociada.setResponsavel(filtro);
+		}
 				
-		lista = empresaAssociadaService.searchByFilters(this.empresaAssociada);	
+		lista = empresaAssociadaService.searchByFilters(this.empresaAssociada,this.tipoFiltro);	
 		
 		return null;		
 		
@@ -132,6 +160,15 @@ public class EmpresaAssociadaMB implements Serializable {
 
 	public String addTelefone(){
 		
+		if(telefone.trim().isEmpty()){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Telefone Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
+		
 		telefones.add(telefone);
 		telefone = "";		
 		
@@ -172,6 +209,8 @@ public class EmpresaAssociadaMB implements Serializable {
 		}
 		
 		this.cnaes	= cnaeService.all(getEmpresaSistema());		
+		
+		segmentos = segmentoService.all(getEmpresaSistema());
 
 		return "prepareUpdate";
 	}
@@ -200,6 +239,17 @@ public class EmpresaAssociadaMB implements Serializable {
 	}
 
 	public String create() {
+		
+		boolean isValidEmail = Validations.isValidEmailAddress(empresaAssociada.getEmail().trim());
+		
+		if(!isValidEmail){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
 
 		String str = "insert";
 		
@@ -254,6 +304,17 @@ public class EmpresaAssociadaMB implements Serializable {
 	}
 
 	public String update() {
+		
+		boolean isValidEmail = Validations.isValidEmailAddress(empresaAssociada.getEmail().trim());
+		
+		if(!isValidEmail){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
 
 		String str = "update";
 		
@@ -453,20 +514,20 @@ public class EmpresaAssociadaMB implements Serializable {
 		this.segmentoService = segmentoService;
 	}
 
-	public String getNomeFantasiaFiltro() {
-		return nomeFantasiaFiltro;
+	public String getTipoFiltro() {
+		return tipoFiltro;
 	}
 
-	public void setNomeFantasiaFiltro(String nomeFantasiaFiltro) {
-		this.nomeFantasiaFiltro = nomeFantasiaFiltro;
+	public void setTipoFiltro(String tipoFiltro) {
+		this.tipoFiltro = tipoFiltro;
 	}
 
-	public String getEmailFiltro() {
-		return emailFiltro;
+	public String getFiltro() {
+		return filtro;
 	}
 
-	public void setEmailFiltro(String emailFiltro) {
-		this.emailFiltro = emailFiltro;
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
 	}
 	
 }

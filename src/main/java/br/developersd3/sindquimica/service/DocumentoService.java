@@ -46,4 +46,10 @@ public class DocumentoService implements GenericService<Documento> {
 		dao.delete(entity);
 	}
 
+	@Override
+	public List<Documento> searchByFilters(Documento entity,String field) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

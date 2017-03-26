@@ -22,9 +22,11 @@
     
     		<p:submenu  label="Cadastros" style="font-weight:bold; color:#000000;">
             
-            <c:if test = "${login.perfilUsuario == 'ADM'}">
-            <p:menuitem value="Empresa Gestora" rendered="#{usuarioMB.perfilAdm}"  url="/empresa/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
+            
+   			<c:if test = "${login.perfilUsuario == 'ADM'}">
+            <p:menuitem value="Empresa Gestora" url="/empresa/lista.xhtml" style="font-weight:bold; color:#FFFFFF;" />
             </c:if>
+            
             
             <p:menuitem value="Tipo de Documento" url="/tipoDocumento/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />
             <p:menuitem value="Empresa Associada" url="/empresaAssociada/lista.xhtml"  style="font-weight:bold; color:#FFFFFF;" />

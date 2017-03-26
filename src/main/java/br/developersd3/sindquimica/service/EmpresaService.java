@@ -43,8 +43,8 @@ public class EmpresaService implements GenericService<Empresa> {
 	}
 
 	@Override
-	public List<Empresa> searchByFilters(Empresa entity) {
-		return dao.searchByFilters(entity);
+	public List<Empresa> searchByFilters(Empresa entity,String field) {
+		return dao.searchByFilters(entity,field);
 	}
 	
 	

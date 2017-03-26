@@ -42,4 +42,10 @@ public class ParticipanteEventoService implements GenericService<ParticipanteEve
 		dao.delete(entity);
 	}
 
+	@Override
+	public List<ParticipanteEvento> searchByFilters(ParticipanteEvento entity,String field) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

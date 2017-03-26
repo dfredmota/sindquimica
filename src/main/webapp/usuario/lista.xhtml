@@ -8,6 +8,25 @@
     <h:form id="form">    
     <h2>Lista de Usuários</h2>
     
+        <script>
+
+function habilitaFiltros(){
+	
+	
+	var tipoFiltro = document.getElementById("form:tipoFiltro").value;
+	
+	if(tipoFiltro == "todos")	
+	document.getElementById("form:filtro").style.display="none";
+	else
+	document.getElementById("form:filtro").style.display="block";	
+	
+}
+
+
+</script>  
+ 
+ <body onload="habilitaFiltros();"></body>
+    
     <br/>   
     
     <h:commandButton value="Incluir" action="#{usuarioMB.prepareInsert}" class="btn btn-primary"/>
@@ -18,17 +37,22 @@
     <br/>     
     <br/>
     
-    	<p:fieldset>
+   	<p:fieldset>
 	
     <div class="form-group">
-	<label for="1" class="col-sm-1 control-label">Nome</label>
-	<div class="col-sm-3">
-	<h:inputText id="filter_nome" value="#{usuarioMB.nomeFiltro}" class="form-control" size="10" />
-	</div>
-	<label for="1" class="col-sm-1 control-label">Email</label>
-	<div class="col-sm-3">
-	<h:inputText id="filter_email" value="#{usuarioMB.emailFiltro}" class="form-control" size="10" />
-	</div>
+    
+    
+	<label for="1" class="col-sm-1 control-label">Filtro</label>
+	
+	<h:selectOneMenu value = "#{usuarioMB.tipoFiltro}" style="margin-left:-30px;" id="tipoFiltro" onchange="habilitaFiltros()"> 
+   			<f:selectItem itemValue = "todos" itemLabel = "Todos" />
+   			<f:selectItem itemValue = "nome" itemLabel   = "Nome" />
+   			<f:selectItem itemValue = "email" itemLabel  = "Email" /> 
+   			<f:selectItem itemValue = "site" itemLabel   = "Site" />
+	</h:selectOneMenu> 
+	
+	<h:inputText id="filtro" value="#{usuarioMB.filtro}" style="margin-left:220px;margin-top:-20px;display:none"></h:inputText>
+	
 	</div>
 	
 	

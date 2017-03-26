@@ -22,17 +22,14 @@ import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
-import br.developersd3.sindquimica.datatable.LazyUsuarioDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Documento;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
 import br.developersd3.sindquimica.models.Perfil;
-import br.developersd3.sindquimica.models.Segmento;
 import br.developersd3.sindquimica.models.TipoDocumento;
 import br.developersd3.sindquimica.models.Usuario;
 import br.developersd3.sindquimica.service.DocumentoService;
@@ -41,6 +38,7 @@ import br.developersd3.sindquimica.service.PerfilService;
 import br.developersd3.sindquimica.service.TipoDocumentoService;
 import br.developersd3.sindquimica.service.UsuarioService;
 import br.developersd3.sindquimica.util.SessionUtils;
+import br.developersd3.sindquimica.util.Validations;
 
 @ManagedBean(name = "usuarioMB")
 @SessionScoped
@@ -63,10 +61,6 @@ public class UsuarioMB implements Serializable {
 	
 	private Boolean  isAdm;
 	
-	private String nomeFiltro;
-	
-	private String emailFiltro;
-
 	@ManagedProperty(name = "usuarioService", value = "#{usuarioService}")
 	private UsuarioService usuarioService;
 	
@@ -94,6 +88,10 @@ public class UsuarioMB implements Serializable {
 	
 	private List<Perfil> listaPerfil;
 	
+	private String tipoFiltro;
+	
+	private String filtro;
+	
 	@PostConstruct
 	public void init() {
 		lista = usuarioService.all(getEmpresaSistema());
@@ -102,19 +100,44 @@ public class UsuarioMB implements Serializable {
 	}
 	
 	public String searchByFilters(){
-		
+						
 		this.usuario = new Usuario();
 		
-		this.usuario.setNome(nomeFiltro);
-		this.usuario.setEmail(emailFiltro);
+		if(this.tipoFiltro.equals("todos")){
+			
+			lista = usuarioService.all(getEmpresaSistema());
+			return null;
+		}
 		
-		lista = usuarioService.searchByFilters(this.usuario);	
+		if(this.tipoFiltro.equals("nome") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.usuario.setNome(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("email") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.usuario.setEmail(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("site") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.usuario.setSite(filtro);
+		}
+		
+				
+		lista = usuarioService.searchByFilters(this.usuario,this.tipoFiltro);	
 		
 		return null;		
 		
 	}
 	
 	public String addTelefone(){
+		
+		if(telefone.trim().isEmpty()){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Telefone Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
 		
 		telefones.add(telefone);
 		telefone = "";		
@@ -199,6 +222,20 @@ public class UsuarioMB implements Serializable {
 		}
 		
 		this.listaPerfil = perfilService.all(getEmpresaSistema());
+		
+		if(getPerfilSindicato()){
+			
+			for(Perfil perfil : this.listaPerfil){
+				
+				if(perfil.getId() == 1){
+					this.listaPerfil.remove(perfil);
+					break;
+				}
+					
+			}
+			
+			
+		}
 
 		return "prepareUpdate";
 	}
@@ -226,6 +263,21 @@ public class UsuarioMB implements Serializable {
 		this.usuario.setPerfil(new Perfil());
 		
 		this.listaPerfil = perfilService.all(getEmpresaSistema());
+		
+		
+		if(getPerfilSindicato()){
+			
+			for(Perfil perfil : this.listaPerfil){
+				
+				if(perfil.getId() == 1){
+					this.listaPerfil.remove(perfil);
+					break;
+				}
+					
+			}
+			
+			
+		}
 
 		return "prepareInsert";
 	}
@@ -295,6 +347,17 @@ public class UsuarioMB implements Serializable {
 	}
 
 	public String create() {
+		
+		boolean isValidEmail = Validations.isValidEmailAddress(usuario.getEmail().trim());
+		
+		if(!isValidEmail){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
 
 		String str = "insert";
 		
@@ -637,20 +700,20 @@ public class UsuarioMB implements Serializable {
 		this.perfilService = perfilService;
 	}
 
-	public String getNomeFiltro() {
-		return nomeFiltro;
+	public String getFiltro() {
+		return filtro;
 	}
 
-	public void setNomeFiltro(String nomeFiltro) {
-		this.nomeFiltro = nomeFiltro;
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
 	}
 
-	public String getEmailFiltro() {
-		return emailFiltro;
+	public String getTipoFiltro() {
+		return tipoFiltro;
 	}
 
-	public void setEmailFiltro(String emailFiltro) {
-		this.emailFiltro = emailFiltro;
+	public void setTipoFiltro(String tipoFiltro) {
+		this.tipoFiltro = tipoFiltro;
 	}
 
 	private Integer getUsuarioSistema(){

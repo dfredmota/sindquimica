@@ -51,7 +51,7 @@ public class SegmentoMB implements Serializable {
 		
 		this.segmento.setDescricao(descricaoFiltro);
 		
-		lista = segmentoService.searchByFilters(this.segmento);		
+		lista = segmentoService.searchByFilters(this.segmento,null);		
 		
 		return null;
 		

@@ -53,7 +53,7 @@
 			  <div class="form-group">
 			    <label for="2" class="col-sm-2 control-label">*Data de Nascimento</label>
 			    <div class="col-sm-8">
-			      <p:calendar id="inline" value="#{usuarioMB.usuario.dtNascimento}" mode="popup" required="true" 
+			      <p:calendar id="inline" pattern="dd/MM/yyyy" mask="true" value="#{usuarioMB.usuario.dtNascimento}" mode="popup" required="true" 
 			      requiredMessage="Data de Nascimento obrigatório" />
 			    </div>
 			  </div>
@@ -68,6 +68,20 @@
 			    <label for="4" class="col-sm-2 control-label">Site</label>
 			    <div class="col-sm-8">
 			      <h:inputText value="#{usuarioMB.usuario.site}" class="form-control" />
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="4" class="col-sm-2 control-label">Login</label>
+			    <div class="col-sm-8">
+			      <h:inputText value="#{usuarioMB.usuario.login}" class="form-control" />
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="4" class="col-sm-2 control-label">Senha</label>
+			    <div class="col-sm-8">
+			      <h:inputText value="#{usuarioMB.usuario.password}" class="form-control" />
 			    </div>
 			  </div>
 			  

@@ -42,4 +42,10 @@ public class EnderecoService implements GenericService<Endereco> {
 		dao.delete(entity);
 	}
 
+	@Override
+	public List<Endereco> searchByFilters(Endereco entity,String field) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -51,4 +51,10 @@ public class MensagemService implements GenericService<Mensagem> {
 		return dao.findAllByGrupo(idEmpresaSistema,grupoId);		
 	}
 
+	@Override
+	public List<Mensagem> searchByFilters(Mensagem entity,String field) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -45,4 +45,12 @@ public class PerfilService implements GenericService<Perfil> {
 		return null;
 	}
 
+	@Override
+	public List<Perfil> searchByFilters(Perfil entity,String field) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+
 }

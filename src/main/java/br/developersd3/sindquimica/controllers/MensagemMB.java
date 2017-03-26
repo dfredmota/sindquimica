@@ -446,7 +446,7 @@ public class MensagemMB implements Serializable {
 			for(String token : tokensUsuarios){
 			
 			try {
-				sendMessageFirebase(token,"Nova Mensagem 2BL!");
+				sendMessageFirebase(token,"Você tem uma Nova Mensagem!");
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -478,7 +478,7 @@ public class MensagemMB implements Serializable {
 		message.put("priority", "high");
 
 		JSONObject notification = new JSONObject();
-		notification.put("title", "2BL");
+		notification.put("title", "Sindquimica");
 		notification.put("body", conteudo);
 
 		message.put("notification", notification);

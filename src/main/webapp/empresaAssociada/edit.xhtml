@@ -55,19 +55,7 @@
 			</p:selectOneMenu>				
 			    </div>
 			  </div>
-			  
-			  <div class="form-group">
-			    <label for="4" class="col-sm-2 control-label">Segmento</label>
-			    <div class="col-sm-8">
-			<p:selectOneMenu value="#{empresaAssociadaMB.idSegmento}" id="idSegmento">
-			    <f:selectItems value="#{empresaAssociadaMB.segmentos}" var="segmento" itemLabel="#{segmento.descricao}" 
-			    itemValue="#{segmento.id}" />
-<!--  		<f:ajax event="change" render="@form" listener="#{empresaAssociadaMB.setListaCnaes}" />   -->
-			</p:selectOneMenu>				
-			    </div>
-			  </div>  	
-      	
-      	
+			       	
 		  <div class="form-group">
 			    <label for="1" class="col-sm-2 control-label">*CNPJ</label>
 			    <div class="col-sm-3">
@@ -75,6 +63,19 @@
 			       required="true" requiredMessage="Cnpj Obrigatório." />
 			    </div>
 			  </div>
+			  
+			  <div class="form-group">
+			    <label for="4" class="col-sm-2 control-label">*Segmento</label>
+			    <div class="col-sm-8">
+			<p:selectOneMenu value="#{empresaAssociadaMB.idSegmento}" id="idSegmento">
+			    <f:selectItems value="#{empresaAssociadaMB.segmentos}" var="segmento" itemLabel="#{segmento.descricao}" 
+			    itemValue="#{segmento.id}" />
+<!--  			    <f:ajax event="change" render="@form" listener="#{empresaAssociadaMB.setListaCnaes}" />   -->
+			</p:selectOneMenu>				
+			    </div>
+			  </div>
+			  
+			  
 			  <div class="form-group">
 			    <label for="2" class="col-sm-2 control-label">*Nome de Fantasia</label>
 			    <div class="col-sm-8">
@@ -167,7 +168,7 @@
 						<div class="form-group">
 					    <label for="4" class="col-sm-2 control-label">*Telefones</label>
 					    <div class="col-sm-4">
-						  <p:inputMask id="phone" value="#{empresaAssociadaMB.telefone}" mask="(99) 999-999999" class="form-control"/>
+						  <p:inputMask id="phone" value="#{empresaAssociadaMB.telefone}" mask="(99)99999-9999" class="form-control"/>
 					    </div>
 					      <h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.addTelefone}" id="btnAddTel" 
 	              			value="+"  class="btn btn-primary" /> 

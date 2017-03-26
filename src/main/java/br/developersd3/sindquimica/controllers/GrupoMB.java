@@ -93,7 +93,7 @@ public class GrupoMB implements Serializable {
 		
 		this.grupo.setNome(descricaoFiltro);
 		
-		lista = grupoService.searchByFilters(this.grupo);		
+		lista = grupoService.searchByFilters(this.grupo,null);		
 		
 		return null;
 		

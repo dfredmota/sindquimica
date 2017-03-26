@@ -14,17 +14,15 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
 
-import br.developersd3.sindquimica.datatable.LazyEmpresaDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.Empresa;
-import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Endereco;
 import br.developersd3.sindquimica.service.CnaeService;
 import br.developersd3.sindquimica.service.EmpresaService;
 import br.developersd3.sindquimica.util.SessionUtils;
+import br.developersd3.sindquimica.util.Validations;
 
 @ManagedBean(name = "empresaController")
 @SessionScoped
@@ -57,7 +55,9 @@ public class EmpresaController implements Serializable {
 	
 	private List<Cnae>  cnaes;
 	
-	private String 		nomeFantasiaFiltro;
+	private String tipoFiltro;
+	
+	private String filtro;
 
 	@PostConstruct
 	public void init() {
@@ -71,9 +71,37 @@ public class EmpresaController implements Serializable {
 		
 		this.empresa = new Empresa();
 		
-		this.empresa.setNomeFantasia(nomeFantasiaFiltro);
+		if(this.tipoFiltro.equals("todos")){
+			
+			lista = empresaService.all(getEmpresaSistema());
+			return null;
+		}
+		
+		if(this.tipoFiltro.equals("nomeFantasia") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresa.setNomeFantasia(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("razaoSocial") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresa.setRazaoSocial(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("email") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresa.setEmail(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("site") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresa.setSite(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("cnpj") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresa.setCnpj(filtro);
+		}
+		
+		if(this.tipoFiltro.equals("responsavel") && (this.filtro != null && !this.filtro.isEmpty())){
+			this.empresa.setResponsavel(filtro);
+		}
 				
-		lista = empresaService.searchByFilters(this.empresa);	
+		lista = empresaService.searchByFilters(this.empresa,this.tipoFiltro);	
 		
 		return null;		
 		
@@ -109,6 +137,15 @@ public class EmpresaController implements Serializable {
 	
 	public String addTelefone(){
 		
+		if(telefone.trim().isEmpty()){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Telefone Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
+		
 		telefones.add(telefone);
 		telefone = "";		
 		
@@ -116,6 +153,17 @@ public class EmpresaController implements Serializable {
 	}
 	
 	public String addEmail(){
+		
+		boolean isValidEmail = Validations.isValidEmailAddress(email.trim());
+		
+		if(!isValidEmail){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
 		
 		emails.add(email);
 		email = "";		
@@ -424,13 +472,6 @@ public class EmpresaController implements Serializable {
 		this.cnaes = cnaes;
 	}	
 	
-	public String getNomeFantasiaFiltro() {
-		return nomeFantasiaFiltro;
-	}
-
-	public void setNomeFantasiaFiltro(String nomeFantasiaFiltro) {
-		this.nomeFantasiaFiltro = nomeFantasiaFiltro;
-	}
 
 	public void setLista(List<Empresa> lista) {
 		this.lista = lista;
@@ -461,6 +502,22 @@ public class EmpresaController implements Serializable {
 
 	public List<Empresa> getLista() {
 		return lista;
+	}
+
+	public String getTipoFiltro() {
+		return tipoFiltro;
+	}
+
+	public void setTipoFiltro(String tipoFiltro) {
+		this.tipoFiltro = tipoFiltro;
+	}
+
+	public String getFiltro() {
+		return filtro;
+	}
+
+	public void setFiltro(String filtro) {
+		this.filtro = filtro;
 	}
 	
 }

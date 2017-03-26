@@ -1,5 +1,8 @@
 package br.developersd3.sindquimica.controllers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -25,6 +28,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.apache.http.HttpResponse;
@@ -42,6 +46,7 @@ import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
+import org.primefaces.model.UploadedFile;
 
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Evento;
@@ -52,8 +57,9 @@ import br.developersd3.sindquimica.service.EventoService;
 import br.developersd3.sindquimica.service.GrupoService;
 import br.developersd3.sindquimica.service.ParticipanteEventoService;
 import br.developersd3.sindquimica.service.UsuarioService;
+import br.developersd3.sindquimica.util.DataConnect;
 import br.developersd3.sindquimica.util.SessionUtils;
-import br.developersd3.sindquimica.ws.Endereco;
+import br.developersd3.sindquimica.util.Validations;
 
 @ManagedBean(name = "eventoMB")
 @SessionScoped
@@ -99,6 +105,8 @@ public class EventoMB implements Serializable {
     private ParticipanteEvento participante;
     
     private List<Evento> eventos;
+    
+    private UploadedFile file;
  
     @PostConstruct
     public void init() {
@@ -114,6 +122,7 @@ public class EventoMB implements Serializable {
        	
        	eventoDB.setDescription(ev.getId().toString());
         	
+       	if(ev.getStatus() == null || ev.getStatus())    	
         eventModel.addEvent(eventoDB);	        	
         	
         }
@@ -138,10 +147,105 @@ public class EventoMB implements Serializable {
 	     this.participantes = new ArrayList<ParticipanteEvento>();
     }
     
+    private void inicializaEvents(){
+    	
+        eventModel = new DefaultScheduleModel();
+        
+        this.eventos = eventoService.all(getEmpresaSistema());
+        
+        if(this.eventos != null){
+        	
+        for(Evento ev : this.eventos){
+        	
+       	DefaultScheduleEvent eventoDB = new DefaultScheduleEvent(ev.getDescricao(), ev.getInicio(), ev.getFim());
+       	
+       	eventoDB.setDescription(ev.getId().toString());
+        	
+       	if(ev.getStatus() == null || ev.getStatus())    	
+        eventModel.addEvent(eventoDB);	        	
+        	
+        }
+        	
+        }        
+        
+         setSelectedUsuarios(new ArrayList<Usuario>());
+         
+         setSelectedGrupos(new ArrayList<Grupo>());
+        
+		 usuarios = usuarioService.all(getEmpresaSistema());
+	     
+	     grupos   = grupoService.all(getEmpresaSistema());
+	     
+	     this.participante = new ParticipanteEvento();
+	     
+	     this.evento = new Evento();
+	     
+	     this.evento.setParticipantes(new ArrayList<ParticipanteEvento>());
+	     
+	     this.participantes = new ArrayList<ParticipanteEvento>();
+    	
+    }
+    
     
     public String addParticipante(){
     	
-    	this.getParticipantes().add(participante);  	
+    	boolean jaExiste = false;
+    	
+    	for(ParticipanteEvento p : this.getParticipantes()){
+    		
+    		if(p.getNome().equals(participante.getNome())){
+    			
+    			jaExiste = true;
+    			break;
+    		}
+    		
+    	}
+    	
+    	if(!jaExiste)    	{
+    	
+    	boolean isValidEmail = Validations.isValidEmailAddress(participante.getEmail().trim());	
+    		
+    	if(!isValidEmail){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}	
+    	
+    	this.getParticipantes().add(participante); 
+    	
+    	}else{
+    		
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Participante já consta na lista!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;	
+    		
+    	}
+    	
+    	
+    	participante = new ParticipanteEvento();
+    	
+    	return null;
+    }
+    
+    public String deleteParticipante(){
+    	
+    	for(ParticipanteEvento p : this.getParticipantes()){
+    		
+    		if(p.getNome().equals(participante.getNome())){
+    			
+    			this.getParticipantes().remove(participante);
+    			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Participante Excluído com sucesso!","");
+    			FacesContext.getCurrentInstance().addMessage(null, msg);	
+    			break;
+    		}
+    		
+    	} 
+    	
+    	participante = new ParticipanteEvento();
     	
     	return null;
     }
@@ -200,19 +304,41 @@ public class EventoMB implements Serializable {
             // persisti os usuarios externos antes de salvar o evento
             if(this.participantes != null){
             	
+            	if(this.evento.getParticipantes() != null)
+            		this.evento.setParticipantes(new ArrayList<ParticipanteEvento>());
+            	
             	for(ParticipanteEvento par: this.participantes){
             		
             		par = participanteEventoService.create(par, getEmpresaSistema());
             		
+            		if(par != null){
             		this.evento.getParticipantes().add(par);  
             		
             		sendEmailParticipantes(par.getEmail(),par.getNome(),this.evento.getDescricao(),this.evento.getInicio(),this.evento.getFim());
+            	
+            		}
             	}
             	
             }
                         
             try {
+            	
+            	// seta a imagem caso exista
+            	
+    	
+            	
+            	evento.setStatus(true);
+            	
             	evento = eventoService.create(evento, getEmpresaSistema());
+            	            	
+            	if(evento != null && evento.getId() != null){            		
+            		
+                	if (file != null && !file.getFileName().isEmpty()) {       	        	
+
+                		DataConnect.salvaImagemEvento(evento.getId(),file.getContents());                		
+                	}                 		
+            		
+            	}
 				
 	           	eventoDB.setDescription(this.evento.getId().toString());
     	   		
@@ -229,12 +355,49 @@ public class EventoMB implements Serializable {
         	        	
             eventModel.updateEvent(event);
         }
-         
+    	
         event = new DefaultScheduleEvent();
+        
+        
+        
         
     	}catch(Exception e){
     		e.printStackTrace();
     	}
+    	
+    	List<String> tokensUsuarios = new ArrayList<String>();
+		
+		if(getSelectedUsuarios() != null){
+			
+		for(Usuario user : getSelectedUsuarios()){
+			
+			if(user.getToken() != null && !user.getToken().isEmpty())
+			tokensUsuarios.add(user.getToken());
+			
+		}
+			
+		}
+		
+		if(tokensUsuarios != null && !tokensUsuarios.isEmpty()){		
+			
+			for(String token : tokensUsuarios){
+			
+			try {
+				sendMessageFirebase(token,"Você tem um Novo Evento!");
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			}
+			
+		}
     	
     	try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/evento.xhtml?redirect=true");
@@ -242,6 +405,27 @@ public class EventoMB implements Serializable {
 			e.printStackTrace();
 		}
     	
+		
+    	
+     	return null;
+    }
+    
+ // public void addEvent(ActionEvent actionEvent)
+    
+    public String cancelarEvent() {
+    	
+		this.evento.setUsuarios(getSelectedUsuarios());
+		
+		this.evento.setGrupo(getSelectedGrupos());
+		
+		this.evento.setStatus(false);
+		
+		try {
+			eventoService.update(evento);
+		} catch (GenericException e1) {
+			e1.printStackTrace();
+		}
+		
 		List<String> tokensUsuarios = new ArrayList<String>();
 		
 		if(getSelectedUsuarios() != null){
@@ -260,7 +444,7 @@ public class EventoMB implements Serializable {
 			for(String token : tokensUsuarios){
 			
 			try {
-				sendMessageFirebase(token,"Nova Evento 2Bl!");
+				sendMessageFirebase(token,"Cancelamento de Evento!");
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -275,11 +459,23 @@ public class EventoMB implements Serializable {
 			}
 			
 		}
+		
+		FacesMessage msg = new FacesMessage("Evento Cancelado com sucesso!");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		
+		inicializaEvents();
+		
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/evento.xhtml?redirect=true");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     	
-     	return null;
+    	
+    	return null;
     }
     
- // public void addEvent(ActionEvent actionEvent)
+    
     public String updateEvent() {
       
     	try{
@@ -319,6 +515,16 @@ public class EventoMB implements Serializable {
             }
                         
             try {
+            	
+            	if(evento != null && evento.getId() != null){            		
+            		
+                	if (file != null && !file.getFileName().isEmpty()) {       	        	
+
+                		DataConnect.salvaImagemEvento(evento.getId(),file.getContents());                		
+                	}                 		
+            		
+            	}            	
+            	
 				eventoService.update(evento);
 				FacesMessage msg = new FacesMessage("Evento Atualizado com sucesso!");
 				FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -333,13 +539,7 @@ public class EventoMB implements Serializable {
     		e.printStackTrace();
     	}
     	
-    	try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/evento.xhtml?redirect=true");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	
-		List<String> tokensUsuarios = new ArrayList<String>();
+    	List<String> tokensUsuarios = new ArrayList<String>();
 		
 		if(getSelectedUsuarios() != null){
 			
@@ -357,7 +557,7 @@ public class EventoMB implements Serializable {
 			for(String token : tokensUsuarios){
 			
 			try {
-				sendMessageFirebase(token,"Novo Evento 2Bl!");
+				sendMessageFirebase(token,"Você tem um Novo Evento!");
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -372,6 +572,14 @@ public class EventoMB implements Serializable {
 			}
 			
 		}
+    	
+    	try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/evento.xhtml?redirect=true");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	
+		
     	
      	return null;
     }
@@ -388,7 +596,7 @@ public class EventoMB implements Serializable {
 		message.put("priority", "high");
 
 		JSONObject notification = new JSONObject();
-		notification.put("title", "2BL");
+		notification.put("title", "Sindquimica");
 		notification.put("body", conteudo);
 
 		message.put("notification", notification);
@@ -415,8 +623,8 @@ public class EventoMB implements Serializable {
 		
 		try{
 		
-		final String username = "dfredmota@gmail.com";
-		final String password = "Scorge@3873";
+		final String username = "2biportal@gmail.com";
+		final String password = "biportal";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -433,7 +641,7 @@ public class EventoMB implements Serializable {
 
 		Message message = new MimeMessage(session);
 
-		message.setFrom(new InternetAddress("dfredmota@gmail.com"));
+		message.setFrom(new InternetAddress("2biportal@gmail.com"));
 
 		message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(email));
@@ -686,6 +894,21 @@ public class EventoMB implements Serializable {
 		this.eventos = eventos;
 	}
 
+	public SimpleDateFormat getDf() {
+		return df;
+	}
+
+	public void setDf(SimpleDateFormat df) {
+		this.df = df;
+	}
+
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
 
 	private Integer getEmpresaSistema(){
 		HttpSession session = SessionUtils.getSession();

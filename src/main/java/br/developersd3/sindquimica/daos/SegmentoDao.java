@@ -23,7 +23,7 @@ public class SegmentoDao extends GenericDao<Segmento, Integer> {
 		 Query query = getSession().createQuery(sql.toString());
 
 		 if(seg.getDescricao() != null && !seg.getDescricao().isEmpty()){
-			 query.setParameter("descFiltro", seg.getDescricao());
+			 query.setParameter("descFiltro", "%"+seg.getDescricao()+"%");
 		 }
 		 
 		 List<Segmento> lista = query.list();	

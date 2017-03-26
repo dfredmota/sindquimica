@@ -50,10 +50,6 @@
         <div class="col-md-10">#{empresaController.empresa.razaoSocial}</div>
       </div>
       <div class="row form-group">
-        <div class="col-md-2"><b>Fones:</b></div>
-        <div class="col-md-10">#{empresaController.empresa.telefones}</div>
-      </div>
-      <div class="row form-group">
         <div class="col-md-2"><b>Responsável:</b></div>
         <div class="col-md-10">#{empresaController.empresa.responsavel}</div>
       </div>
@@ -62,7 +58,34 @@
         <div class="col-md-10">#{empresaController.empresa.ativo}</div>
       </div>
       
-      <br/>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Site:</b></div>
+        <div class="col-md-10">#{empresaController.empresa.site}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Endereço:</b></div>
+        <div class="col-md-10">#{empresaController.empresa.endereco.logradouro}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Número:</b></div>
+        <div class="col-md-10">#{empresaController.empresa.endereco.numero}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Bairro:</b></div>
+        <div class="col-md-10">#{empresaController.empresa.endereco.bairro}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Cidade:</b></div>
+        <div class="col-md-10">#{empresaController.empresa.endereco.cidade}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Complemento:</b></div>
+        <div class="col-md-10">#{empresaController.empresa.endereco.complemento}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Status:</b></div>
+        <div class="col-md-10">#{empresaController.empresa.ativo}</div>
+      </div>
       
       <c:if test="#{not empty empresaController.empresa.telefones}">
 		<p:dataTable var="telefone" value="#{empresaController.empresa.telefones}">

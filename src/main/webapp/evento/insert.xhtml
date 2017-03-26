@@ -45,7 +45,7 @@
       </div>
       <div class="row">
       	<div class="col-md-12">
-      	<h:form id="form" class="form-horizontal">
+      	<h:form id="form" class="form-horizontal" enctype="multipart/form-data">
 			  <div class="form-group">
 			    <label for="1" class="col-sm-1 control-label">*Descrição</label>
 			    <div class="col-sm-3">
@@ -74,6 +74,8 @@
 			      required="true" requiredMessage="Fim Obrigatório."/>
 			    </div>
 			  </div>	
+			  
+			  
 			  
 			  <p:tabView scrollable="true">
 			  
@@ -156,8 +158,20 @@
 		        <p:column headerText="Email" width="10%">
 		            <h:outputText value="#{participante.email}" />
 		        </p:column>
+		        <p:column headerText="Ações" width="10%">
+		            <h:commandButton ajax="false" title="Excluir" action="#{eventoMB.deleteParticipante}" id="btnDelParticipante" 
+	              value="Excluir"  class="btn btn-primary" >
+	              <f:setPropertyActionListener target="#{eventoMB.participante}" value="#{participante}" />
+	              </h:commandButton>
+		        </p:column>
 		    </p:dataTable>    					
 											
+			</p:tab>
+			
+			<p:tab title="Imagem">
+			
+			<p:fileUpload value="#{eventoMB.file}" label="Selecione a Imagem" mode="simple" skinSimple="true" style="width:50px;" />
+			
 			</p:tab>				
 					
 			</p:tabView>

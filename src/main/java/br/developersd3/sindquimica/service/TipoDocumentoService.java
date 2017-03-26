@@ -42,4 +42,13 @@ public class TipoDocumentoService implements GenericService<TipoDocumento> {
 		dao.delete(entity);
 	}
 
+	@Override
+	public List<TipoDocumento> searchByFilters(TipoDocumento entity,String field) {
+		
+		return dao.searchByFilters(entity);
+	}
+	
+
+	
+
 }

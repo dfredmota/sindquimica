@@ -45,7 +45,7 @@ public class GrupoDao extends GenericDao<Grupo, Integer> {
 		 org.hibernate.Query query = getSession().createQuery(sql.toString());
 
 		 if(grupo.getNome() != null && !grupo.getNome().isEmpty()){
-			 query.setParameter("nomeFiltro", grupo.getNome());
+			 query.setParameter("nomeFiltro", "%"+grupo.getNome()+"%");
 		 }
 		 
 		 List<Grupo> lista = query.list();	

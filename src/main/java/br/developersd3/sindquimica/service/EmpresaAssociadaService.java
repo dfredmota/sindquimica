@@ -48,8 +48,8 @@ public class EmpresaAssociadaService implements GenericService<EmpresaAssociada>
 	}
 	
 	@Override
-	public List<EmpresaAssociada> searchByFilters(EmpresaAssociada entity) {
-		return dao.searchByFilters(entity);
+	public List<EmpresaAssociada> searchByFilters(EmpresaAssociada entity,String field) {
+		return dao.searchByFilters(entity,field);
 	}
 
 }

@@ -48,9 +48,9 @@ public class UsuarioService implements GenericService<Usuario> {
 	}
 	
 	@Override
-	public List<Usuario> searchByFilters(Usuario entity){
+	public List<Usuario> searchByFilters(Usuario entity,String field){
 
-		return dao.searchByFilters(entity);
+		return dao.searchByFilters(entity,field);
 
 	}
 

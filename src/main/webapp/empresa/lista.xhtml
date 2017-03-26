@@ -7,27 +7,59 @@
      <ui:define name="content">
        <h:form id="form"> 
     <h2>Lista de Empresas Gestoras</h2>
+  
+<script>
+
+function habilitaFiltros(){
+	
+	
+	var tipoFiltro = document.getElementById("form:tipoFiltro").value;
+	
+	if(tipoFiltro == "todos")	
+	document.getElementById("form:filtro").style.display="none";
+	else
+	document.getElementById("form:filtro").style.display="block";	
+	
+}
+
+
+</script>  
+ 
+ <body onload="habilitaFiltros();"></body>
     
     <br/>   
     
     <h:commandButton value="Incluir" action="#{empresaController.prepareInsert}" class="btn btn-primary"/>
     
-           <h:commandButton ajax="false" title="Pesquisar" action="#{empresaAssociadaMB.searchByFilters}"
+           <h:commandButton ajax="false" title="Pesquisar" action="#{empresaController.searchByFilters}"
               value="Pesquisar"  class="btn btn-primary" style="background-color:#008B8B;margin-left:20px;"/>
     
     <br/>     
-    <br/>
+    <br/> 
     
     <p:fieldset>
 	
     <div class="form-group">
-	<label for="1" class="col-sm-2 control-label">Nome Fantasia</label>
-	<div class="col-sm-3" style="margin-left:-80px;">
-	<h:inputText id="filter_nome" value="#{empresaController.nomeFantasiaFiltro}" class="form-control" size="10" />
-	</div>
-	</div>	
+    
+    
+	<label for="1" class="col-sm-1 control-label">Filtro</label>
 	
- 	</p:fieldset>   
+	<h:selectOneMenu value = "#{empresaController.tipoFiltro}" style="margin-left:-30px;" id="tipoFiltro" onchange="habilitaFiltros()"> 
+   			<f:selectItem itemValue = "todos" itemLabel = "Todos" />
+   			<f:selectItem itemValue = "nomeFantasia" itemLabel   = "Nome Fantasia" />
+   			<f:selectItem itemValue = "razaoSocial" itemLabel   = "Razão Social" />
+   			<f:selectItem itemValue = "email" itemLabel  = "Email" /> 
+   			<f:selectItem itemValue = "site" itemLabel   = "Site" />
+   			<f:selectItem itemValue = "cnpj" itemLabel   = "Cnpj" />
+   			<f:selectItem itemValue = "responsavel" itemLabel   = "Responsável" />
+	</h:selectOneMenu> 
+	
+	<h:inputText id="filtro" value="#{empresaController.filtro}" style="margin-left:220px;margin-top:-20px;display:none"></h:inputText>
+	
+	</div>
+	
+	
+ 	</p:fieldset> 
     
     <br/>
            

@@ -42,4 +42,10 @@ public class CnaeService implements GenericService<Cnae> {
 		dao.delete(entity);
 	}
 
+	@Override
+	public List<Cnae> searchByFilters(Cnae entity,String field) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

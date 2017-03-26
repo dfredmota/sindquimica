@@ -11,11 +11,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -77,6 +79,27 @@ public class Evento implements Serializable{
              referencedColumnName="id")}) 
 	private List<ParticipanteEvento> participantes;
 	
+	private Boolean status;
+	
+	@Transient
+	private byte[] imagem;
+	
+	public byte[] getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(byte[] imagem) {
+		this.imagem = imagem;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
 	public String getLocal() {
 		return local;
 	}

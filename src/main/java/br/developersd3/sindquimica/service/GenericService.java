@@ -16,6 +16,6 @@ public interface GenericService<T> {
 
 	public void delete(T entity) throws GenericException;
 	
-	public List<T> searchByFilters(T entity);
+	public List<T> searchByFilters(T entity,String field);
 
 }

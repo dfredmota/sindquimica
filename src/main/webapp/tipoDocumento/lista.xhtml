@@ -12,11 +12,28 @@
     
     <h:commandButton value="Incluir" action="#{tipoDocumentoMB.prepareInsert}" class="btn btn-primary" />
     
+    <h:commandButton ajax="false" title="Pesquisar" action="#{tipoDocumentoMB.searchByFilters}"
+              value="Pesquisar"  class="btn btn-primary" style="background-color:#008B8B;margin-left:20px;"/>
+    
     <br/>     
+    <br/>
+    
+    	<p:fieldset>
+	
+    <div class="form-group">
+	<label for="1" class="col-sm-1 control-label">Nome</label>
+	<div class="col-sm-3">
+	<h:inputText id="filter_nome" value="#{tipoDocumentoMB.descricaoFiltro}" class="form-control" size="10" />
+	</div>
+	</div>
+	
+	
+ 	</p:fieldset>   
+    
     <br/>
          
 
-    <p:dataTable var="tipoDocumento" value="#{tipoDocumentoMB.lazyModel}" paginator="true" rows="10"
+    <p:dataTable var="tipoDocumento" value="#{tipoDocumentoMB.lista}" paginator="true" rows="10"
     			 rowKey="#{tipoDocumento.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{tipoDocumentoMB.tipoDocumento}" id="tipoDocumentoTable" lazy="true">

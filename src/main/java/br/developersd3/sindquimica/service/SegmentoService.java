@@ -42,7 +42,7 @@ public class SegmentoService implements GenericService<Segmento> {
 	}
 
 	@Override
-	public List<Segmento> searchByFilters(Segmento entity){
+	public List<Segmento> searchByFilters(Segmento entity,String field){
 
 		return dao.searchByFilters(entity);
 
