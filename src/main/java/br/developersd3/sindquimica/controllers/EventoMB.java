@@ -314,7 +314,8 @@ public class EventoMB implements Serializable {
             		if(par != null){
             		this.evento.getParticipantes().add(par);  
             		
-            		sendEmailParticipantes(par.getEmail(),par.getNome(),this.evento.getDescricao(),this.evento.getInicio(),this.evento.getFim());
+            		sendEmailParticipantes(par.getEmail(),par.getNome(),this.evento.getDescricao(),this.evento.getInicio(),this.evento.getFim(),
+            				this.evento.getLocal());
             	
             		}
             	}
@@ -509,7 +510,8 @@ public class EventoMB implements Serializable {
             		
             		this.evento.getParticipantes().add(par);  
             		
-            		sendEmailParticipantes(par.getEmail(),par.getNome(),this.evento.getDescricao(),this.evento.getInicio(),this.evento.getFim());
+            		sendEmailParticipantes(par.getEmail(),par.getNome(),this.evento.getDescricao(),this.evento.getInicio(),this.evento.getFim(),
+            				this.evento.getLocal());
             	}
             	
             }
@@ -619,7 +621,7 @@ public class EventoMB implements Serializable {
     	return null;
     }
      
-	public void sendEmailParticipantes(String email,String nomeUsuario,String evento,Date dataInicio,Date dataFim){
+	public void sendEmailParticipantes(String email,String nomeUsuario,String evento,Date dataInicio,Date dataFim,String local){
 		
 		try{
 		
@@ -639,22 +641,23 @@ public class EventoMB implements Serializable {
 			}
 		  });
 
-		Message message = new MimeMessage(session);
+		MimeMessage message = new MimeMessage(session);
 
 		message.setFrom(new InternetAddress("2biportal@gmail.com"));
 
 		message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(email));
 
-		message.setSubject("Notificação de Evento - Sindquimica");
+		message.setSubject("Notificação de Evento - Sindquimica","UTF-8");
 
 		message.setText("Caro ,"+nomeUsuario
 					+ "\n\n Segue os dados do Evento:"+
 						"\n\n Evento: "+evento+" \n\n\n"
 								+ "Data de Ínicio:"+df.format(dataInicio)+" \n\n"
-								+ "Data de Fim:"+df.format(dataFim)+" \n\n "
+								+ "Data de Fim:"+df.format(dataFim)+" \n\n "+
+								  "Local: "+local+"\n\n"
 										+ "Atenciosamente, \n\n "
-										+ "Equipe Sindquimica.");
+										+ "Equipe Sindquimica.","UTF-8");
 
 		Transport.send(message);
 
