@@ -145,10 +145,17 @@ public class Grupo implements Serializable{
 	}
 	
 	public Integer getParticipantes(){
+		
+		Integer numParticipantes = 0;
+		
 		if(this.usuarios != null)
-			return this.usuarios.size();
-		else
-			return new Integer(0);
+			numParticipantes = numParticipantes + this.usuarios.size();
+		
+		if(this.empresaAssociada != null)
+			numParticipantes = numParticipantes + this.empresaAssociada.size();
+		
+		return numParticipantes;
+		
 	}
 
 	public void setParticipantes(Integer participantes) {

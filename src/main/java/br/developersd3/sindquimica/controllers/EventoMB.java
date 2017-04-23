@@ -285,6 +285,15 @@ public class EventoMB implements Serializable {
     public String addEvent() {
       
     	try{
+    		
+    		if(getSelectedUsuarios().isEmpty() && getSelectedGrupos().isEmpty()) {
+    			
+    			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Favor Adicionar 1 usuário ou grupo ao evento.","");
+    			FacesContext.getCurrentInstance().addMessage(null, msg);
+    			
+    			return null;
+    			
+    		}
     	
     	if(this.evento.getId() == null){
     		
@@ -304,7 +313,7 @@ public class EventoMB implements Serializable {
             // persisti os usuarios externos antes de salvar o evento
             if(this.participantes != null){
             	
-            	if(this.evento.getParticipantes() != null)
+            	if(this.evento.getParticipantes() == null)
             		this.evento.setParticipantes(new ArrayList<ParticipanteEvento>());
             	
             	for(ParticipanteEvento par: this.participantes){

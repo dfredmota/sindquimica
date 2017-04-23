@@ -14,9 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
 
-import br.developersd3.sindquimica.datatable.LazyGrupoDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.Cnae;
 import br.developersd3.sindquimica.models.EmpresaAssociada;
@@ -265,8 +263,48 @@ public class GrupoMB implements Serializable {
 
 		String str = "insert";
 		
+		
 		try {
+			
+			if(grupo.getEmpresaAssociada() == null)
+				grupo.setEmpresaAssociada(new ArrayList<EmpresaAssociada>());
+			
+			if(grupo.getSegmentos() != null && !grupo.getSegmentos().isEmpty()){
+				
+				// recupera a lista de empresas com o segmento e adicona ao grupo
+				
+				for(Segmento seg : grupo.getSegmentos()){
+					
+					
+				 List<EmpresaAssociada> lista = empresaAssociadaService.findAllBySegmento(seg.getId());
+					
+				 
+				 if(lista != null && !lista.isEmpty()){
+					 
+					for(EmpresaAssociada emp : lista){
+						 
+						 if(!this.grupo.getEmpresaAssociada().contains(emp))
+						 this.grupo.getEmpresaAssociada().add(emp);
+						 
+					 }					 
+					 
+				 }
+					
+					
+					
+				}
+				
+				
+				
+			}
+			
+			
+			
+			
+			
 			grupoService.create(grupo,getEmpresaSistema());
+		
+		
 		} catch (GenericException e1) {
 
 		}
