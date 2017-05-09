@@ -14,9 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyDataModel;
 
-import br.developersd3.sindquimica.datatable.LazyTipoDocumentoDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
 import br.developersd3.sindquimica.models.TipoDocumento;
 import br.developersd3.sindquimica.service.TipoDocumentoService;

@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.developersd3</groupId>
-	<artifactId>sindquimica</artifactId>
+	<artifactId>sindquimica_desenv</artifactId>
 	<version>1</version>
 	<packaging>war</packaging>
 	<properties>
@@ -39,6 +39,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20090211</version>
+</dependency>
+		<dependency>
 			<groupId>de.bytefish.fcmjava</groupId>
 			<artifactId>fcmjava-core</artifactId>
 			<version>0.6</version>
@@ -47,12 +52,6 @@
 			<groupId>de.bytefish.fcmjava</groupId>
 			<artifactId>fcmjava-client</artifactId>
 			<version>0.6</version>
-		</dependency>
-		<dependency>
-			<groupId>br.com.martinlabs</groupId>
-			<artifactId>martinlabs-commons</artifactId>
-			<version>3.4</version>
-			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>

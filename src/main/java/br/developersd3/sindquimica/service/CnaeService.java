@@ -44,8 +44,8 @@ public class CnaeService implements GenericService<Cnae> {
 
 	@Override
 	public List<Cnae> searchByFilters(Cnae entity,String field) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return dao.searchByFilters(entity);
 	}
 
 }

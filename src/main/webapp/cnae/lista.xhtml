@@ -1,0 +1,41 @@
+<ui:composition template="/template/layout.xhtml"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui">
+     <ui:define name="content">
+     <h:form id="form">   
+    <h2>Lista de Cnae</h2>
+    
+    <br/>   
+    
+    <h:commandButton value="Incluir" action="#{cnaeMB.prepareInsert}" class="btn btn-primary" />
+    
+    <h:commandButton ajax="false" title="Pesquisar" action="#{cnaeMB.searchByFilters}"
+              value="Pesquisar"  class="btn btn-primary" style="background-color:#008B8B;margin-left:20px;"/>
+    
+    <br/>     
+    
+    <br/>
+         
+
+    <p:dataTable var="cnae" value="#{cnaeMB.lista}" paginator="true" rows="10"
+    			 rowKey="#{cnae.id}" paginatorPosition="bottom"
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{cnaeMB.cnae}" id="cnaeTable" lazy="true">
+        <p:ajax event="rowSelect" listener="#{cnaeMB.onRowSelect}"/>
+        <p:column headerText="Id"  width="5%">
+            <h:outputText value="#{cnae.id}" />
+        </p:column>
+        <p:column headerText="Código"  width="15%">
+            <h:outputText value="#{cnae.codigo}" />
+        </p:column>
+        <p:column headerText="Descrição">
+            <h:outputText value="#{cnae.descricao}" />
+        </p:column>
+    </p:dataTable>
+             
+    </h:form>
+</ui:define>
+</ui:composition>

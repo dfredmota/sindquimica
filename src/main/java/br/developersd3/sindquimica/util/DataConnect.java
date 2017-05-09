@@ -16,7 +16,7 @@ public class DataConnect {
 		try {
 			Class.forName("org.postgresql.Driver");
 			Connection con = DriverManager
-					.getConnection("jdbc:postgresql://localhost:5432/sindquimica", "postgres", "postgres2530");
+					.getConnection("jdbc:postgresql://localhost:5432/sindquimica_desenv", "postgres", "postgres2530");
 			return con;
 		} catch (Exception ex) {
 			System.out.println("Database.getConnection() Error -->"
