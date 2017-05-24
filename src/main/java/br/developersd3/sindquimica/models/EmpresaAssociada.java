@@ -84,6 +84,28 @@ public class EmpresaAssociada implements Serializable{
 	@JoinColumn(name = "segmento_id")
 	private Segmento segmento;
 	
+	@Column(name="data_filiacao")
+	private Date dataFiliacao;	
+	
+	@Column(name="pontos_fidelidade")
+	private Integer pontosFidelidade;
+	
+	public Integer getPontosFidelidade() {
+		return pontosFidelidade;
+	}
+
+	public void setPontosFidelidade(Integer pontosFidelidade) {
+		this.pontosFidelidade = pontosFidelidade;
+	}
+
+	public Date getDataFiliacao() {
+		return dataFiliacao;
+	}
+
+	public void setDataFiliacao(Date dataFiliacao) {
+		this.dataFiliacao = dataFiliacao;
+	}
+
 	public Segmento getSegmento() {
 		return segmento;
 	}

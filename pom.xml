@@ -4,7 +4,7 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.developersd3</groupId>
-	<artifactId>sindquimica_desenv</artifactId>
+	<artifactId>sindquimica</artifactId>
 	<version>1</version>
 	<packaging>war</packaging>
 	<properties>

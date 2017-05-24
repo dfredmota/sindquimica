@@ -24,17 +24,26 @@
     			 rowKey="#{cnae.id}" paginatorPosition="bottom"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{cnaeMB.cnae}" id="cnaeTable" lazy="true">
-        <p:ajax event="rowSelect" listener="#{cnaeMB.onRowSelect}"/>
+        <p:ajax event="rowSelect" listener="#{cnaeMB.onRowSelect}" oncomplete="document.getElementById('form:btnOpenShow').click();"/>
+       
         <p:column headerText="Id"  width="5%">
             <h:outputText value="#{cnae.id}" />
         </p:column>
+       
         <p:column headerText="Código"  width="15%">
             <h:outputText value="#{cnae.codigo}" />
         </p:column>
+       
         <p:column headerText="Descrição">
             <h:outputText value="#{cnae.descricao}" />
         </p:column>
+    
     </p:dataTable>
+    
+    <h:commandButton ajax="false" title="Edit" action="/cnae/show.xhtml" id="btnOpenShow" style="display:block"
+            value="Show">    
+        <f:setPropertyActionListener target="#{cnaeMB.cnae}" value="#{cnaeMB.cnae}" />
+        </h:commandButton>
              
     </h:form>
 </ui:define>

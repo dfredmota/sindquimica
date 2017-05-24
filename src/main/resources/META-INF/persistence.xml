@@ -4,7 +4,7 @@
 
     <properties>
 
-      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/sindquimica_desenv"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://31.220.54.249:5432/sindquimica"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
       <property name="javax.persistence.jdbc.password" value="postgres2530"/>
       <property name="hibernate.show_sql" value="true"/>

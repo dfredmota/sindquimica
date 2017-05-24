@@ -68,6 +68,23 @@
 			</p:selectOneMenu>				
 			    </div>
 			  </div>
+			  
+			  <div class="form-group">
+			    <label for="2" class="col-sm-2 control-label">*Data de Filiação</label>
+			    <div class="col-sm-8">
+			      <p:calendar pattern="dd/MM/yyyy" mask="true" id="inline" value="#{empresaAssociadaMB.empresaAssociada.dataFiliacao}" mode="popup" required="true" 
+			      requiredMessage="Data de Filiação obrigatória" />
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="7" class="col-sm-2 control-label">Pontos de Fidelidade</label>
+			    <div class="col-sm-4">
+			      <h:inputText value="#{empresaAssociadaMB.empresaAssociada.pontosFidelidade}" class="form-control" />
+			    </div>
+			  </div>
+			  
+			  
       	
       	
 			  <div class="form-group">
@@ -99,14 +116,6 @@
 			    </div>
 			  </div>
 			  
-			  		
-			  <div class="form-group">
-			    <label for="6" class="col-sm-2 control-label">*Email</label>
-			    <div class="col-sm-4">
-			      <h:inputText value="#{empresaAssociadaMB.empresaAssociada.email}" class="form-control" 
-			      required="true" requiredMessage="Email Obrigatório." />
-			    </div>
-			  </div>
 			  <div class="form-group">
 			    <label for="7" class="col-sm-2 control-label">Site</label>
 			    <div class="col-sm-4">
@@ -188,7 +197,33 @@
 								</p:column>
 							</p:dataTable>
 
-						</p:tab>		
+						</p:tab>	
+						
+						<p:tab title="Emails">
+						
+						<div class="form-group">
+					    <label for="4" class="col-sm-1 control-label">Emails</label>
+					    <div class="col-sm-4">
+						  <h:inputText value="#{empresaAssociadaMB.email}" class="form-control" />
+					    </div>
+					      <h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.addEmail}" id="btnAddEmail" 
+	              			value="+"  class="btn btn-primary" /> 
+					  </div>
+
+							<p:dataTable var="email" value="#{empresaAssociadaMB.emails}">
+								<p:column headerText="Emails">
+									<h:outputText value="#{email}" />
+								</p:column>
+								<p:column headerText="Ações">
+								<h:commandButton ajax="false" title="Edit" action="#{empresaAssociadaMB.deleteEmail}" id="btnOpenDeleteEmail"
+              					value="Excluir"  class="btn btn-primary"> 
+              					<f:setPropertyActionListener value="#{email}" target="#{empresaAssociadaMB.email}">
+              					</f:setPropertyActionListener>
+              					</h:commandButton>
+								</p:column>
+							</p:dataTable>
+
+						</p:tab>	
 						
 						
 						<p:tab title="Cnaes">

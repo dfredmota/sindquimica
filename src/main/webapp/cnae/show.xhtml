@@ -1,0 +1,52 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+	
+	
+	<meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Detalhe de Cnae</title>
+
+    <!-- Bootstrap -->
+<h:form id="form">	
+	<div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="page-header" style="border-bottom:0; margin-top:0">
+              <h:commandButton ajax="false" title="Edit" action="#{cnaeMB.prepareUpdate}" id="btnOpenEdit" 
+              value="Editar"  class="btn btn-primary">  
+       		 <f:param name="idCnae" value="#{cnaeMB.cnae.id}" />  
+        	</h:commandButton>
+            <span class="pull-right"></span>
+              <h:commandButton ajax="false" title="Edit" action="#{cnaeMB.delete}" id="btnOpenDelete"
+              value="Deletar"  class="btn btn-primary" onclick="return confirm('Deseja realmente deletar o registro?');">    
+        	 <f:setPropertyActionListener target="#{cnaeMB.cnae}" value="#{cnaeMB.cnae}" />   
+             </h:commandButton>
+            <h2>Informações do Cnae</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Id:</b></div>
+        <div class="col-md-10">#{cnaeMB.cnae.id}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Código:</b></div>
+        <div class="col-md-10">#{cnaeMB.cnae.codigo}</div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Descrição:</b></div>
+        <div class="col-md-10">#{cnaeMB.cnae.descricao}</div>
+      </div>  
+      <a href="../cnae/lista.xhtml">Voltar</a>
+    </div>
+			
+</h:form>
+</ui:define>
+</ui:composition>

@@ -44,6 +44,10 @@ public class EmpresaAssociadaMB implements Serializable {
 	private String  telefone;
 	
 	private List<String> telefones;
+	
+	private List<String> emails;
+	
+	private String email;
 
 	@ManagedProperty(name = "empresaAssociadaService", value = "#{empresaAssociadaService}")
 	private EmpresaAssociadaService empresaAssociadaService;
@@ -76,6 +80,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		lista = empresaAssociadaService.all(getEmpresaSistema());
 		empresas = empresaService.all(getEmpresaSistema());
 		telefones = new ArrayList<String>();
+		emails = new ArrayList<String>();
 	}
 	
 	public String searchByFilters(){
@@ -189,6 +194,39 @@ public class EmpresaAssociadaMB implements Serializable {
 		
 	}
 	
+	public String addEmail(){
+		
+		boolean isValidEmail = Validations.isValidEmailAddress(email.trim());
+		
+		if(!isValidEmail){
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
+		
+		emails.add(email);
+		email = "";		
+		
+		return null;
+	}
+	
+	public String deleteEmail(){
+		
+		if(emails.contains(email)){
+			emails.remove(email);
+			email = "";
+		}
+		
+		FacesMessage msg = new FacesMessage("Email excluído com sucesso!");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+		
+		return null;
+		
+	}
+	
 	public String prepareUpdate() {
 
 		Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -204,6 +242,18 @@ public class EmpresaAssociadaMB implements Serializable {
 			
 			for(int x =0;x< telefonesArr.length;x++){
 				telefones.add(telefonesArr[x]);
+			}
+						
+		}
+		
+		emails = new ArrayList<String>();
+		
+		if(this.empresaAssociada.getEmail() != null && !this.empresaAssociada.getEmail().isEmpty()){
+			
+			String[] emailsArr = this.empresaAssociada.getEmail().split(";");
+			
+			for(int x =0;x< emailsArr.length;x++){
+				emails.add(emailsArr[x]);
 			}
 						
 		}
@@ -224,6 +274,8 @@ public class EmpresaAssociadaMB implements Serializable {
 		this.empresaAssociada.setCnaes(new ArrayList<Cnae>());
 				
 		telefones = new ArrayList<String>();
+		
+		emails = new ArrayList<String>();
 		
 		empresas = empresaService.all(getEmpresaSistema());
 		
@@ -282,6 +334,28 @@ public class EmpresaAssociadaMB implements Serializable {
 			
 		}
 		
+		if(emails != null && !emails.isEmpty()){
+			
+			String emailsUsuario = "";
+			
+			for(String tel : emails){
+				
+				emailsUsuario = emailsUsuario + tel;
+				emailsUsuario = emailsUsuario + ";";
+				
+			}	
+			
+			empresaAssociada.setEmail(emailsUsuario);	
+			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um email","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
+		
 		try {
 			empresaAssociadaService.create(empresaAssociada,getEmpresaSistema());
 		} catch (GenericException e1) {
@@ -333,6 +407,28 @@ public class EmpresaAssociadaMB implements Serializable {
 		}else{
 			
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um telefone","");
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			
+			return null;
+			
+		}
+		
+		if(emails != null && !emails.isEmpty()){
+			
+			String emailsUsuario = "";
+			
+			for(String tel : emails){
+				
+				emailsUsuario = emailsUsuario + tel;
+				emailsUsuario = emailsUsuario + ";";
+				
+			}	
+			
+			empresaAssociada.setEmail(emailsUsuario);	
+			
+		}else{
+			
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Adicione ao menos um email","");
 			FacesContext.getCurrentInstance().addMessage(null, msg);			
 			
 			return null;
@@ -529,5 +625,22 @@ public class EmpresaAssociadaMB implements Serializable {
 	public void setFiltro(String filtro) {
 		this.filtro = filtro;
 	}
+
+	public List<String> getEmails() {
+		return emails;
+	}
+
+	public void setEmails(List<String> emails) {
+		this.emails = emails;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	
 }

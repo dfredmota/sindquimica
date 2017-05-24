@@ -45,6 +45,20 @@
         <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.segmento.descricao}</div>
       </div>
       <div class="row form-group">
+        <div class="col-md-2"><b>Data de Filiação:</b></div>
+        <div class="col-md-10">
+        
+        <h:outputText value="#{empresaAssociadaMB.empresaAssociada.dataFiliacao}">
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+        </h:outputText>        
+        
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-2"><b>Pontos de Fidelidade:</b></div>
+        <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.pontosFidelidade}</div>
+      </div>
+      <div class="row form-group">
         <div class="col-md-2"><b>Nome de Fantasia:</b></div>
         <div class="col-md-10">#{empresaAssociadaMB.empresaAssociada.nomeFantasia}</div>
       </div>  

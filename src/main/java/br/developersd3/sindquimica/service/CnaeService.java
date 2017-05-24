@@ -45,7 +45,7 @@ public class CnaeService implements GenericService<Cnae> {
 	@Override
 	public List<Cnae> searchByFilters(Cnae entity,String field) {
 
-		return dao.searchByFilters(entity);
+		return null;
 	}
 
 }
