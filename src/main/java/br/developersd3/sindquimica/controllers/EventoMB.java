@@ -635,7 +635,7 @@ public class EventoMB implements Serializable {
 		try{
 		
 		final String username = "2biportal@gmail.com";
-		final String password = "biportal";
+		final String password = "eaccsl2017";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");

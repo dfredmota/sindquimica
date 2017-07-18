@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<!-- <ui:include src="leftMenu.xhtml" /> -->
+	<h:form prependId="false">
+		<ui:include src="header.xhtml" />
+		<div class="modal fade" id="confirm-power" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" style="width: 260px; top: 120px;">
+				<div class="modal-content">
+					<div class="modal-body">Deseja realmente sair do Sistema ?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<h:commandLink action="#{authenticMB.logout()}"
+							styleClass="btn btn-primary">
+							<i class="fa fa-fw fa-power-off"></i>
+						 Sair
+						</h:commandLink>
+					</div>
+				</div>
+			</div>
+		</div>
+	</h:form>
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<ui:insert name="content-main" />
+	</div>
+	<h:outputScript name="js/general.js" />
+</ui:composition>
+

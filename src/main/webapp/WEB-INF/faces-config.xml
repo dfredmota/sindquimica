@@ -13,6 +13,14 @@
 	</navigation-rule>
 	
 	<navigation-rule>
+		<from-view-id>/index.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>abas</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
 		<from-view-id>/empresa/lista.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>prepareInsert</from-outcome>

@@ -49,6 +49,11 @@
 			<version>0.6</version>
 		</dependency>
 		<dependency>
+    <groupId>javax.servlet.jsp.jstl</groupId>
+    <artifactId>jstl-api</artifactId>
+    <version>1.2</version>
+</dependency>
+		<dependency>
 			<groupId>de.bytefish.fcmjava</groupId>
 			<artifactId>fcmjava-client</artifactId>
 			<version>0.6</version>

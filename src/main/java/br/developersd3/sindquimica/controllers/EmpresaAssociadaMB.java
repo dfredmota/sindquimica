@@ -292,16 +292,6 @@ public class EmpresaAssociadaMB implements Serializable {
 
 	public String create() {
 		
-		boolean isValidEmail = Validations.isValidEmailAddress(empresaAssociada.getEmail().trim());
-		
-		if(!isValidEmail){
-			
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
-			FacesContext.getCurrentInstance().addMessage(null, msg);			
-			
-			return null;
-			
-		}
 
 		String str = "insert";
 		

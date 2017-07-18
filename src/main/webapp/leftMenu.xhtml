@@ -1,0 +1,252 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+				xmlns:ui="http://java.sun.com/jsf/facelets">
+    <!-- Left side column. contains the logo and sidebar -->
+		<aside class="main-sidebar"> <!-- sidebar: style can be found in sidebar.less -->
+		<section class="sidebar"> <!-- Sidebar user panel -->
+		<h:form>
+		<p:remoteCommand name="rcClose" oncomplete="closeDialog()"/>
+		<ul class="sidebar-menu">
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Estratégia</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Diagnóstico Empresarial</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Planejamento estratégico</span>
+						</a>
+					</li>
+					<li>
+						<a href="vendas_apartamento_categoria.jsf">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Metodologia</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Comercial</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Sistema e Franchising</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Marketing</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Vendas</span>
+						</a>
+					</li>
+						
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Financeiro</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Resultado</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Finanças pessoais</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Caixa</span>
+						</a>
+					</li>
+						
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Processos</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Operacional</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Recusos Humano</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Recrutamento</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Comportamento</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Sistema da Qualidade</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>ISO 9001</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Sistema 5s</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Planejamento Societário</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Holding</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Pré-falimentar e Falimentar</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Gestão de passivos</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Holding</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Gestão de Ativos</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Tributário</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Planejamento tributário</span>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Recuperação tributária admin.</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="treeview">
+				<a href="#">
+					<i class="fa fa-dollar"></i>
+					<span>Contratos</span>
+					<i class="fa fa-angle-left pull-right"></i>
+				</a>
+				<ul class="treeview-menu">
+					<li>
+						<a href="#">
+							<i class="fa fa-circle-o text-green"></i>
+							<span>Contratos</span>
+						</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		</h:form>
+		<div class="img-left-menu" style="text-align: center; position: relative; margin-top: 30px;">
+			<h:graphicImage library="img" name="consultoria2.png" alt="Logo"/>
+		</div>
+		</section> <!-- /.sidebar -->
+		</aside>
+		<p:dialog modal="true" widgetVar="loadingDownload" showHeader="false"
+			draggable="false" closable="false" style="text-align: center;" styleClass="dialogsCustom">
+			<img src="#{request.contextPath}/resources/img/ajax-loader.gif" />
+			<br />
+			<br />Efetuando backup...
+		</p:dialog>
+		<h:outputScript>
+			//<![CDATA[
+				function closeDialog(){
+					PF('loadingDownload').hide();
+				}
+			//]]>
+		</h:outputScript>
+</ui:composition>
+

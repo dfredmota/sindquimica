@@ -1,0 +1,14 @@
+#container {
+    width: 100%;
+    overflow: hidden;
+}
+.divs{
+	float: left;
+}
+
+#form {
+    width: 30%
+}
+#panelFileView{
+	width: 70%;
+}
