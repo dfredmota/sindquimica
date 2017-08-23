@@ -473,7 +473,7 @@ public class MensagemMB implements Serializable {
 		post.setHeader("Content-type", "application/json");
 		post.setHeader("Authorization", "key=AAAAg6OKGls:APA91bHCLYvN31Zk09s6FmLy5k6pFYGGj74Ah9JSSLlFAMVoxupEVBEe8MFMPAdfyuqw-TsSPdJ_fjmjUzuKFcNXTcDlDHnroM0kGQPt6RDjNpO2hA-rpOU7YTn44SOdMCp9l6fUErc0");
 
-		JSONObject message = new JSONObject();
+		JSONObject message = new JSONObject(); 
 		message.put("to", token);
 		message.put("priority", "high");
 

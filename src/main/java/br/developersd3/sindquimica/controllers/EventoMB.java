@@ -693,9 +693,13 @@ public class EventoMB implements Serializable {
         
         setSelectedUsuarios(this.evento.getUsuarios());
         
-        setUsuarios(this.evento.getUsuarios());
+        usuarios = usuarioService.all(getEmpresaSistema());
+        
+        setUsuarios(usuarios);
         
         setSelectedGrupos(this.evento.getGrupo());
+        
+        setGrupos(grupoService.all(getEmpresaSistema()));
         
         try {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("../evento/edit.xhtml");
