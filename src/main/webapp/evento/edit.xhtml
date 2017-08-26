@@ -192,8 +192,8 @@
 	               
 	              </h:commandButton> 
 	              
-	            <h:commandButton ajax="false" title="Cancelar Evento" action="#{eventoMB.cancelarEvent}" id="btnCancelar"
-	              value="Cancelar Evento"  class="btn btn-primary" style="margin-left:30px;" >
+	            <h:commandButton ajax="false" title="Cancelar Evento"  id="btnCancelar" immediate="true" type="button"
+	              value="Cancelar Evento"  class="btn btn-primary" style="margin-left:30px;" onclick="PF('dlg3').show();">
 	              
 	              <f:setPropertyActionListener target="#{eventoMB.evento}" value="#{eventoMB.evento}" />
 	              
@@ -203,6 +203,16 @@
 	              value="Voltar"  class="btn btn-primary" style="margin-left:10px;" immediate="true" >
 	              
 	              </h:commandButton> 
+	              
+	              <p:dialog id="modal" header="Você deseja realmente cancelar o evento?" widgetVar="dlg3" 
+							height="100" width="300" modal="false" appendToBody="true" resizable="false" 
+    						draggable="false">
+    						
+    			<p:commandButton value="Sim" action="#{eventoMB.cancelarEvent}" oncomplete="PF('dlg3').hide();" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        		<p:commandButton value="Não" onclick="PF('dlg3').hide();" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    						
+    						
+    			</p:dialog>
            		  
 			  </h:form>
       	</div>

@@ -697,6 +697,24 @@ public class EventoMB implements Serializable {
         
         setUsuarios(usuarios);
         
+        // faz um for pra setar o confirmou e visualizou 
+        for(Usuario us : usuarios){
+        	
+        	
+        	for(Usuario u : this.evento.getUsuarios()){
+        		
+        		
+        		if(us.getId() == u.getId()){
+        			
+        			us.setConfirmou(u.getConfirmou());
+        			us.setVisualizou(u.getVisualizou());
+        		}
+        	}
+        	
+        	
+        	
+        }
+        
         setSelectedGrupos(this.evento.getGrupo());
         
         setGrupos(grupoService.all(getEmpresaSistema()));
