@@ -48,7 +48,8 @@ public class Grupo implements Serializable{
 	@OneToMany
 	@JoinTable(name="grupo_usuarios",
             joinColumns={@JoinColumn(name="grupo_id",  
-             referencedColumnName="id")},  
+             referencedColumnName="id"),@JoinColumn(name="empresa_sistema_id",  
+             referencedColumnName="empresa_sistema_id")},  
             inverseJoinColumns={@JoinColumn(name="usuario_id",   
              referencedColumnName="id")}) 
 	private List<Usuario> usuarios;
@@ -58,7 +59,8 @@ public class Grupo implements Serializable{
             joinColumns={@JoinColumn(name="grupo_id",  
              referencedColumnName="id")},  
             inverseJoinColumns={@JoinColumn(name="empresa_associada_id",   
-             referencedColumnName="id")}) 
+             referencedColumnName="id"),@JoinColumn(name="empresa_sistema_id",  
+             referencedColumnName="empresa_sistema_id")}) 
 	private List<EmpresaAssociada> empresaAssociada;
 	
 	@OneToMany

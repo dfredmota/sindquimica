@@ -101,13 +101,15 @@
 								<div class="col-sm-4">
 									<p:selectOneMenu value="#{grupoMB.empresaAssociadaId}" id="empresaAssociadaId">
 										<f:selectItems value="#{grupoMB.empresasAssociadas}"
-											var="empresa" itemLabel="#{empresa.razaoSocial}" itemValue="#{empresa.id}" />
+											var="empresa" itemLabel="#{empresa.nomeFantasia}" itemValue="#{empresa.id}" />
 									</p:selectOneMenu>
-									<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addEmpresaAssociada}" id="btnAddEmpresa" 
-	              			value="+"  class="btn btn-primary" style="margin-top:-25px;margin-left:50px" />
+									
 								</div>
 
 							</div>
+							
+							<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addEmpresaAssociada}" id="btnAddEmpresa" 
+	              			value="+"  class="btn btn-primary" style="margin-top:-80px;margin-left:720px" />
 							
 						
 							
@@ -142,11 +144,13 @@
 										<f:selectItems value="#{grupoMB.segmentos}"
 											var="segmento" itemLabel="#{segmento.descricao}" itemValue="#{segmento.id}" />
 									</p:selectOneMenu>
-									<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addSegmento}" id="btnAddSegmento" 
-	              			value="+"  class="btn btn-primary" style="margin-top:-25px;margin-left:50px" />
+									
 								</div>
 
-							</div>						
+							</div>	
+							
+							<h:commandButton ajax="false" title="Edit" action="#{grupoMB.addSegmento}" id="btnAddSegmento" 
+	              			value="+"  class="btn btn-primary" style="margin-top:-85px;margin-left:550px" />					
 							
 							<p:dataTable var="segmento" value="#{grupoMB.grupo.segmentos}">
 								<p:column headerText="Código" width="10%">

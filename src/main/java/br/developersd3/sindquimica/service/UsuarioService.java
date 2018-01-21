@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import br.developersd3.sindquimica.daos.UsuarioDao;
 import br.developersd3.sindquimica.exception.GenericException;
-import br.developersd3.sindquimica.models.Segmento;
 import br.developersd3.sindquimica.models.Usuario;
 
 @Named("usuarioService")
@@ -19,7 +18,7 @@ public class UsuarioService implements GenericService<Usuario> {
 
 	@Override
 	public List<Usuario> all(Integer empresaSistema) {
-		return dao.findAll(empresaSistema);
+		return dao.all(empresaSistema);
 	}
 
 	@Override

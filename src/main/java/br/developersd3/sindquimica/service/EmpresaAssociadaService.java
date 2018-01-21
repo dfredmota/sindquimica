@@ -19,7 +19,7 @@ public class EmpresaAssociadaService implements GenericService<EmpresaAssociada>
 
 	@Override
 	public List<EmpresaAssociada> all(Integer empresaSistema) {
-		return dao.findAll(empresaSistema);
+		return dao.all(empresaSistema);
 	}
 
 	@Override

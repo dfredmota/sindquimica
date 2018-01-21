@@ -33,17 +33,20 @@
     <br/>    
 
 			<div class="form-group">
+				
 				<label for="4" class="col-sm-1 control-label">Cnae</label>
-				<div class="col-sm-5" style="margin-left:-40px">
+				<div class="col-sm-4" style="margin-left:-40px">
 					<p:selectOneMenu value="#{grupoMB.cnaeId}" id="cnaeId">
 						<f:selectItems value="#{grupoMB.cnaes}" var="cnae"
 							itemLabel="#{cnae.descricao}" itemValue="#{cnae.id}" />
 					</p:selectOneMenu>
 				</div>
-				<h:commandButton ajax="false" title="Search"
-					action="#{grupoMB.search}" id="btnAddCnae" value="Pesquisar"
-					class="btn btn-primary" style="margin-left:10px" />
+				
 			</div>
+			
+			<h:commandButton ajax="false" title="Search"
+					action="#{grupoMB.search}" id="btnAddCnae" value="Pesquisar"
+					class="btn btn-primary" style="margin-left:500px;margin-top:-15px;" />
 			
 			<br/>     
     		<br/>

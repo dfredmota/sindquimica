@@ -299,7 +299,7 @@ public class GrupoMB implements Serializable {
 			}
 			
 			
-			
+			grupo.setEmpresaSistema(getEmpresaSistema());
 			
 			
 			grupoService.create(grupo,getEmpresaSistema());

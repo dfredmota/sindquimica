@@ -11,6 +11,21 @@ import br.developersd3.sindquimica.models.EmpresaAssociada;
 @Named("empresaAssociadaDao")
 public class EmpresaAssociadaDao extends GenericDao<EmpresaAssociada, Integer> {
 	
+	public List<EmpresaAssociada> all(Integer empresaSistema) {
+
+		List<EmpresaAssociada> lista;
+
+		StringBuilder sql = new StringBuilder(
+				"from EmpresaAssociada emp where 1=1 and empresaSistema = " + empresaSistema + " order by emp.nomeFantasia asc");
+
+		Query query = getSession().createQuery(sql.toString());
+
+		lista = query.list();
+
+		return lista;
+
+	}
+	
 	public List<EmpresaAssociada> findAllBySegmento(Integer idSegmento) {
 		
 	      String sql = "select emp from EmpresaAssociada emp  where segmento.id =" +idSegmento+" and status = true";
