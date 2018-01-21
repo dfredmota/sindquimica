@@ -25,6 +25,22 @@ public class UsuarioDao extends GenericDao<Usuario, Integer> {
 		return lista;
 
 	}
+	
+	
+	public List<Usuario> getAllByEmpresa(Integer empresa,Integer empresaSistema) {
+
+		List<Usuario> lista;
+
+		StringBuilder sql = new StringBuilder(
+				"from Usuario user where 1=1 and empresaSistema = " + empresaSistema + " and user.empresa.id="+empresa+"");
+
+		Query query = getSession().createQuery(sql.toString());
+
+		lista = query.list();
+
+		return lista;
+
+	}
 
 	public List<Usuario> searchByFilters(Usuario user, String field) {
 

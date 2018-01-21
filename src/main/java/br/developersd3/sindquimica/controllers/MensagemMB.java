@@ -47,6 +47,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.developersd3.sindquimica.datatable.LazyMensagemDataModel;
 import br.developersd3.sindquimica.exception.GenericException;
+import br.developersd3.sindquimica.models.EmpresaAssociada;
 import br.developersd3.sindquimica.models.Grupo;
 import br.developersd3.sindquimica.models.Mensagem;
 import br.developersd3.sindquimica.models.Usuario;
@@ -386,8 +387,7 @@ public class MensagemMB implements Serializable {
 		
 		mensagem.setUsuario(usuarioSessao);
 		
-		mensagem.setEmpresaSistema(getEmpresaSistema());
-			
+		mensagem.setEmpresaSistema(getEmpresaSistema());			
 		
 		if(mensagem.getUsuarios() != null && !mensagem.getUsuarios().isEmpty()){
 			
@@ -395,8 +395,7 @@ public class MensagemMB implements Serializable {
 				user.setEmpresaSistema(getEmpresaSistema());
 		}
 		
-		mensagemService.create(mensagem,getEmpresaSistema());
-		
+		mensagemService.create(mensagem,getEmpresaSistema());		
 		
 		FacesMessage msg = new FacesMessage("Mensagem Criada com sucesso!");
 		FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -407,9 +406,6 @@ public class MensagemMB implements Serializable {
 		
 		mensagens = this.lista;
 		
-
-		
-		this.mensagem = new Mensagem();
 
 		try {
 
@@ -438,6 +434,62 @@ public class MensagemMB implements Serializable {
 			tokensUsuarios.add(user.getToken());
 			
 		}
+			
+		}
+		
+		
+		// pegar os tokens dos usuarios que pertencem ao grupo
+		
+		List<Usuario> listaUsuarioGrupos = new ArrayList<Usuario>();
+		
+		if(getSelectedGrupos() != null && !getSelectedGrupos().isEmpty()) {			
+			
+			for(Grupo gp : getSelectedGrupos()) {
+				
+				// primeiro recupera os usuarios dentro do grupo
+				if(gp.getUsuarios() != null && !gp.getUsuarios().isEmpty()) {					
+					
+					for(Usuario us : gp.getUsuarios()) {						
+						
+						listaUsuarioGrupos.add(us);
+						
+					}
+				}
+				
+				if(gp.getEmpresaAssociada() != null && !gp.getEmpresaAssociada().isEmpty()) {					
+					
+					for(EmpresaAssociada emp : gp.getEmpresaAssociada()) {
+						
+						List<Usuario> listaUsuario =  usuarioService.getAllByEmpresa(emp.getId(), getEmpresaSistema());
+						
+						if(listaUsuario != null && !listaUsuario.isEmpty()) {							
+							
+							for(Usuario usEmpesa : listaUsuario) {
+								
+								listaUsuarioGrupos.add(usEmpesa);
+								
+							}
+						}						
+						
+					}
+				}	
+				
+			}
+			
+		}
+		
+		this.mensagem = new Mensagem();
+		
+		
+		if(listaUsuarioGrupos != null && !listaUsuarioGrupos.isEmpty()) {
+			
+			for(Usuario userGroup : listaUsuarioGrupos){
+				
+				if(userGroup.getToken() != null && !userGroup.getToken().isEmpty())
+				tokensUsuarios.add(userGroup.getToken());
+				
+			}
+			
 			
 		}
 		

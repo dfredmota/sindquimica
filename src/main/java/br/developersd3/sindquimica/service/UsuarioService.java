@@ -52,5 +52,10 @@ public class UsuarioService implements GenericService<Usuario> {
 		return dao.searchByFilters(entity,field);
 
 	}
+	
+	public List<Usuario> getAllByEmpresa(Integer empresa,Integer empresaSistema) {
+		
+		return dao.getAllByEmpresa(empresa, empresaSistema);
+	}
 
 }
