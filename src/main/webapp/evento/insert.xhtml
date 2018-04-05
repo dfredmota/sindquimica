@@ -63,14 +63,14 @@
 			  <div class="form-group">
 			    <label for="2" class="col-sm-1 control-label">*Inicio</label>
 			    <div class="col-sm-8">
-			      <p:calendar id="from" value="#{eventoMB.evento.inicio}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"
+			      <p:calendar id="from" value="#{eventoMB.evento.inicio}" pattern="dd/MM/yyyy HH:mm"
 			      required="true" requiredMessage="Inicio Obrigatório."/>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="3" class="col-sm-1 control-label">*Fim</label>
 			    <div class="col-sm-8">
-			      <p:calendar id="to" value="#{eventoMB.evento.fim}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"
+			      <p:calendar id="to" value="#{eventoMB.evento.fim}" pattern="dd/MM/yyyy HH:mm"
 			      required="true" requiredMessage="Fim Obrigatório."/>
 			    </div>
 			  </div>	
@@ -170,11 +170,13 @@
 			
 			<p:tab title="Imagem">
 			
-			<p:fileUpload value="#{eventoMB.file}" label="Selecione a Imagem" mode="simple" skinSimple="true" style="width:50px;" />
+			<p:fileUpload value="#{eventoMB.file}" label="Selecione a Imagem" mode="simple" skinSimple="true" style="margin-left:800px;" />
 			
 			</p:tab>				
 					
 			</p:tabView>
+			
+			<div style="margin-top:80px;">
 		  
 			  <h:commandButton ajax="false" title="Salvar" action="#{eventoMB.addEvent}" id="btnUpdate" 
 	              value="Salvar"  class="btn btn-primary" >
@@ -187,6 +189,9 @@
 	              value="Voltar"  class="btn btn-primary" style="margin-left:10px;" immediate="true" >
 	              
 	              </h:commandButton> 
+	              
+	              
+	       </div>       
            		  
 			  </h:form>
       	</div>

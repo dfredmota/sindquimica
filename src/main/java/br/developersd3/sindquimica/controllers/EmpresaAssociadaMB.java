@@ -234,6 +234,8 @@ public class EmpresaAssociadaMB implements Serializable {
 
 		this.empresaAssociada = empresaAssociadaService.getById(Integer.parseInt(idEmpresaAssociada),getEmpresaSistema());
 		
+		setIdSegmento(this.empresaAssociada.getSegmento().getId());
+		
 		telefones = new ArrayList<String>();
 		
 		if(this.empresaAssociada.getTelefones() != null && !this.empresaAssociada.getTelefones().isEmpty()){
@@ -348,6 +350,7 @@ public class EmpresaAssociadaMB implements Serializable {
 		
 		try {
 			empresaAssociadaService.create(empresaAssociada,getEmpresaSistema());
+			setIdSegmento(null);
 		} catch (GenericException e1) {
 
 		}
@@ -369,16 +372,16 @@ public class EmpresaAssociadaMB implements Serializable {
 
 	public String update() {
 		
-		boolean isValidEmail = Validations.isValidEmailAddress(empresaAssociada.getEmail().trim());
-		
-		if(!isValidEmail){
-			
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
-			FacesContext.getCurrentInstance().addMessage(null, msg);			
-			
-			return null;
-			
-		}
+//		boolean isValidEmail = Validations.isValidEmailAddress(empresaAssociada.getEmail().trim());
+//		
+//		if(!isValidEmail){
+//			
+//			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Email Inválido!","");
+//			FacesContext.getCurrentInstance().addMessage(null, msg);			
+//			
+//			return null;
+//			
+//		}
 
 		String str = "update";
 		

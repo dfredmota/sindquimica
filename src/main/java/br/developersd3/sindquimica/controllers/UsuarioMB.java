@@ -202,6 +202,8 @@ public class UsuarioMB implements Serializable {
 
 		this.usuario = usuarioService.getById(Integer.parseInt(idUsuario),getEmpresaSistema());
 		
+		setEmpresaAssociadaId(this.usuario.getEmpresa().getId());
+		
 		listDeDocumentos = documentoService.findAllByUsuario(this.usuario.getId());
 		
 		documento = new Documento();
@@ -448,6 +450,8 @@ public class UsuarioMB implements Serializable {
 			str = "insertError";
 
 		}
+		
+		empresaAssociadaId = null;
 
 		return str;
 	}
