@@ -6,7 +6,7 @@
 
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/sindquimica"/>
       <property name="javax.persistence.jdbc.user" value="postgres"/>
-      <property name="javax.persistence.jdbc.password" value="Root@3873"/>
+      <property name="javax.persistence.jdbc.password" value="lojapesada@3873"/>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
